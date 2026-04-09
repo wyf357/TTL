@@ -1,0 +1,9 @@
+
+defaults:
+  - model: qwen35
+  - _self_
+
+adapter_path: null
+merge_lora: false
+output_json: outputs/adapteval_metrics.json
+max_new_tokens: 64

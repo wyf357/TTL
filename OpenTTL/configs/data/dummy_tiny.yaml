@@ -1,0 +1,9 @@
+
+source: dummy
+hf_path: null
+hf_name: null
+split: train
+text_column: text
+max_samples: 32
+max_length: 256
+use_chat_template: false

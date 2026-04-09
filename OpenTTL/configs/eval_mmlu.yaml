@@ -1,0 +1,14 @@
+defaults:
+  - model: gemma_e2b
+  - _self_
+
+adapter_path: null
+merge_lora: false
+hf_path: cais/mmlu
+hf_name: abstract_algebra
+split: test
+mmlu_local_root: /root/autodl-tmp/mmlu
+mmlu_data_files: null
+max_samples: null
+answer_suffix: "\nAnswer: "
+output_json: outputs/mmlu_eval_metrics.json

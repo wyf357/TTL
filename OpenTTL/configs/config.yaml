@@ -1,0 +1,14 @@
+
+defaults:
+  - model: qwen35
+  - strategy: tlm
+  - data: dummy_tiny
+  - train: default
+  - _self_
+
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}

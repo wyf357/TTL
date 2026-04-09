@@ -1,0 +1,6 @@
+
+defaults:
+  - default
+pretrained_model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+peft:
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]

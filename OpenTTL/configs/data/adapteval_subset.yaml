@@ -1,0 +1,10 @@
+
+# 将 hf_path / text_column 替换为 AdaptEval 实际 HF repo 与字段
+source: huggingface
+hf_path: YOUR_ORG/ADAPTEVAL_PLACEHOLDER
+hf_name: null
+split: train
+text_column: text
+max_samples: null
+max_length: 512
+use_chat_template: false

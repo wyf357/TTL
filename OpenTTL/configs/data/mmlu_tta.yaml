@@ -1,0 +1,20 @@
+# MMLU 无标签测试时适应：仅题干 + A/B/C/D 四选项，不包含标准答案。
+# 在线/离线共用：run_online.py / run_offline.py 均使用 data=mmlu_tta
+#
+# 完全离线（推荐无外网时）：设置 mmlu_local_root 为 snapshot_download 得到的仓库根目录，
+#   其下应有子目录 {hf_name}/（如 abstract_algebra/），内含 test-*.parquet 等；不会访问 Hugging Face。
+#   若学科目录直接在 /root/autodl-tmp/abstract_algebra，则 mmlu_local_root 填 /root/autodl-tmp。
+# 有网时：将 mmlu_local_root 设为 null，可走 Hub；国内可 export HF_ENDPOINT=https://hf-mirror.com
+# 显式文件列表：设置 mmlu_data_files（parquet/jsonl 路径或列表），优先级高于 mmlu_local_root。
+#
+# 学科列表见 https://huggingface.co/datasets/cais/mmlu/tree/main
+source: mmlu
+hf_path: cais/mmlu
+hf_name: abstract_algebra
+split: test
+mmlu_local_root: /root/autodl-tmp/mmlu
+mmlu_data_files: null
+text_column: text
+max_samples: null
+max_length: 2048
+use_chat_template: false

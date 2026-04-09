@@ -1,0 +1,18 @@
+
+defaults:
+  - default
+
+# 本地 Gemma-E2B（AutoDL）；与 Qwen 流程一致，由 transformers AutoModel 加载。
+pretrained_model_name_or_path: /root/autodl-tmp/gemma_E2B
+trust_remote_code: true
+attn_implementation: sdpa
+peft:
+  enabled: true
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj

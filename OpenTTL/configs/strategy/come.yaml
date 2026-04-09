@@ -1,0 +1,13 @@
+name: come
+# come.md：自回归 rollout 步数 T（适应阶段可较短，如 10–20）
+rollout_steps: 16
+# L_p 范数类型，p=2 为推荐；inf 为 max 范数
+norm_p: 2.0
+# logit 尺度约束强度 tau（1 为标准）
+tau: 1.0
+# 数值稳定项（belief / uncertainty 的 log）
+epsilon: 1.0e-8
+# 采样：原始 logits 上 Softmax 采样（非 Logits_come）
+temperature: 1.0
+top_k: 0
+top_p: 1.0

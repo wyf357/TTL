@@ -1,0 +1,4 @@
+
+name: tent
+# tent.md 数值稳定项 epsilon（Softmax 后对 log(p+eps)）
+epsilon: 1.0e-8

@@ -1,0 +1,18 @@
+
+output_dir: outputs/tta_run
+num_train_epochs: 1
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4
+learning_rate: 1.0e-4
+weight_decay: 0.0
+warmup_ratio: 0.0
+logging_steps: 1
+save_steps: 500
+save_total_limit: 2
+bf16: true
+fp16: false
+gradient_checkpointing: false
+report_to: none
+remove_unused_columns: false
+seed: 42
+online_max_steps: 100

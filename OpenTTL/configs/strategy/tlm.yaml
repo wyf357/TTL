@@ -1,0 +1,5 @@
+
+name: tlm
+# TLM.md: λ scaling, P0 perplexity threshold (e^3)
+lambda: 0.1
+p0: 20.085536923187668
