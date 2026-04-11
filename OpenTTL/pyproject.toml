@@ -29,6 +29,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=7.0", "ruff>=0.6"]
 tensorboard = ["tensorboard>=2.14"]
+# EmbodiedBench 本体依赖由上游 conda / 手动安装为主；此处仅声明可编辑安装入口。
+embodiedbench = ["embodiedbench @ git+https://github.com/EmbodiedBench/EmbodiedBench.git"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

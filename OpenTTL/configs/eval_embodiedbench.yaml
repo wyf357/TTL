@@ -1,0 +1,36 @@
+# EmbodiedBench 桥接：字段与官方 embodiedbench/configs/{eb_env}.yaml 对齐，并增加 eb_env / tta。
+# 运行示例（在远程 Linux、已配置 EmbodiedBench 与数据后）:
+#   cd OpenTTL && python evaluations/run_embodiedbench.py eb_env=eb-alf model_name=gpt-4o-mini
+defaults:
+  - _self_
+
+eb_env: eb-alf
+
+model_name: gpt-4o-mini
+model_type: remote
+down_sample_ratio: 1.0
+language_only: false
+eval_sets: []
+chat_history: false
+n_shots: 10
+detection_box: false
+multistep: false
+resolution: 500
+exp_name: openttl_bridge
+env_feedback: true
+tp: 1
+multiview: false
+visual_icl: false
+truncate: true
+start_epi_index: 0
+selected_indexes: []
+
+# 首期 TTA：instruction_entropy 使用下方 OpenTTL model 组（与 EB planner 独立）
+tta:
+  enabled: false
+  backend: none
+  lr: 0.0001
+  max_instruction_chars: 2048
+  max_length: 512
+  strategy:
+    epsilon: 1.0e-8
