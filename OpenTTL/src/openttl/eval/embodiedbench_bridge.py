@@ -29,6 +29,43 @@ _EVAL_MODULE_NAMES: dict[str, str] = {
     "eb-man": "eb_manipulation_evaluator",
 }
 
+_remote_model_local_patch_applied: bool = False
+
+
+def _patch_embodiedbench_remote_model_qwen35_local() -> None:
+    """本地 Qwen3.5 走 LMDeploy PyTorch 引擎会拉 fla/triton，常与当前环境不兼容；改用 TurboMind pipeline。"""
+    global _remote_model_local_patch_applied
+    if _remote_model_local_patch_applied:
+        return
+    from embodiedbench.planner import remote_model as rm
+
+    if getattr(rm.RemoteModel, "_openttl_qwen35_turbomind_patched", False):
+        _remote_model_local_patch_applied = True
+        return
+
+    _orig_init = rm.RemoteModel.__init__
+
+    def _init(
+        self: Any,
+        model_name: str,
+        model_type: str = "remote",
+        language_only: bool = False,
+        tp: int = 1,
+        task_type: Any = None,
+    ) -> None:
+        if model_type == "local" and rm._local_model_prefers_turbomind(model_name):
+            self.model_name = model_name
+            self.model_type = model_type
+            self.language_only = language_only
+            self.task_type = task_type
+            self.model = rm.pipeline(self.model_name)
+            return
+        _orig_init(self, model_name, model_type, language_only, tp, task_type)
+
+    rm.RemoteModel.__init__ = _init  # type: ignore[method-assign]
+    setattr(rm.RemoteModel, "_openttl_qwen35_turbomind_patched", True)
+    _remote_model_local_patch_applied = True
+
 
 def _require_embodiedbench() -> None:
     try:
@@ -45,7 +82,14 @@ def embodiedbench_package_dir() -> Path:
     _require_embodiedbench()
     import embodiedbench
 
-    return Path(embodiedbench.__file__).resolve().parent
+    init = getattr(embodiedbench, "__file__", None)
+    if init:
+        return Path(init).resolve().parent
+    # 上游仓库常为无 __init__.py 的 namespace 包，此时 __file__ 为 None
+    paths = getattr(embodiedbench, "__path__", None)
+    if paths:
+        return Path(next(iter(paths))).resolve()
+    raise RuntimeError("无法解析 embodiedbench 包路径")
 
 
 def get_embodiedbench_evaluator_class(env_name: str) -> type:
@@ -100,6 +144,7 @@ def run_embodiedbench_eval(
 ) -> None:
     """构造官方 Evaluator 并执行 ``check_config_valid`` + ``evaluate_main``。"""
     _require_embodiedbench()
+    _patch_embodiedbench_remote_model_qwen35_local()
     ensure_embodiedbench_env_patches()
     ev_cfg = _strip_for_evaluator(dict(merged_config))
     cls = get_embodiedbench_evaluator_class(env_name)

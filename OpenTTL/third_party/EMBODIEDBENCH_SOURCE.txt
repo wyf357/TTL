@@ -1,0 +1,19 @@
+EmbodiedBench 上游仓库体积大，建议克隆到数据盘并在此目录放置符号链接，例如：
+
+  git clone https://github.com/EmbodiedBench/EmbodiedBench.git /path/on/big/disk/EmbodiedBench
+  ln -sfn /path/on/big/disk/EmbodiedBench third_party/EmbodiedBench
+
+然后执行：
+
+  bash scripts/setup_embodiedbench_env.sh
+  bash scripts/download_eb_alfred_dataset.sh
+  bash scripts/verify_embodiedbench_readiness.sh
+  bash scripts/run_embodiedbench_embench.sh
+
+AutoDL / 无物理显示器 + 默认本地 Qwen3.5-2B（另开 tmux 先起 X，见脚本内说明）：
+
+  bash scripts/run_embodiedbench_autodl.sh
+
+可选：校验本地模型目录与 config.json（有 GPU 时会尝试 LMDeploy pipeline 加载）：
+
+  EMB_LOCAL_MODEL_PATH=/path/to/HF-snapshot bash scripts/verify_embodiedbench_readiness.sh

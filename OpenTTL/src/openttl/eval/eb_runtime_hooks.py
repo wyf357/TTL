@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import importlib
 import types
 from contextlib import contextmanager
 from contextvars import ContextVar
@@ -71,17 +72,26 @@ def _make_patched_init(orig_cls: type, orig_init: Callable[..., None]) -> Callab
 
 
 def ensure_embodiedbench_env_patches() -> None:
-    """幂等：为 EB 四个 Env 类打补丁，在构造完成后自动包装 reset/step。"""
+    """幂等：为已安装依赖的 EB Env 类打补丁；可选环境（如 habitat）缺失时跳过。"""
     global _PATCH_LOCK
     if _PATCH_LOCK:
         return
 
-    from embodiedbench.envs.eb_alfred.EBAlfEnv import EBAlfEnv
-    from embodiedbench.envs.eb_habitat.EBHabEnv import EBHabEnv
-    from embodiedbench.envs.eb_manipulation.EBManEnv import EBManEnv
-    from embodiedbench.envs.eb_navigation.EBNavEnv import EBNavigationEnv
+    _env_modules: tuple[tuple[str, str], ...] = (
+        ("embodiedbench.envs.eb_alfred.EBAlfEnv", "EBAlfEnv"),
+        ("embodiedbench.envs.eb_habitat.EBHabEnv", "EBHabEnv"),
+        ("embodiedbench.envs.eb_manipulation.EBManEnv", "EBManEnv"),
+        ("embodiedbench.envs.eb_navigation.EBNavEnv", "EBNavigationEnv"),
+    )
+    classes: list[type] = []
+    for mod_name, attr in _env_modules:
+        try:
+            mod = importlib.import_module(mod_name)
+            classes.append(getattr(mod, attr))
+        except ImportError:
+            continue
 
-    for cls in (EBAlfEnv, EBHabEnv, EBNavigationEnv, EBManEnv):
+    for cls in classes:
         if cls in _PATCHED_INITS:
             continue
         _PATCHED_INITS[cls] = cls.__init__  # type: ignore[assignment]
