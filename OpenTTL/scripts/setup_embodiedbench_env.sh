@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-# 在数据盘创建 Python venv、安装 PyTorch + LMDeploy + EmbodiedBench 运行 EB-ALFRED（model_type=local）所需依赖。
+# 安装 EmbodiedBench 运行所需的 Python 环境与依赖
+#
 # 用法：
-#   export EMBENCH_VENV=/path/to/embench-venv   # 默认 /root/autodl-tmp/conda-envs/embench
-#   export EMBODIEDBENCH_SRC=/path/to/EmbodiedBench  # 默认与仓库 third_party 符号链接目标一致
 #   bash scripts/setup_embodiedbench_env.sh
+#
+# 可选环境变量：
+#   EMBENCH_VENV=/path/to/venv        # 默认 /root/autodl-tmp/conda-envs/embench
+#   EMBODIEDBENCH_SRC=/path/to/EB     # 默认 third_party/EmbodiedBench
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 : "${EMBENCH_VENV:=/root/autodl-tmp/conda-envs/embench}"
@@ -45,6 +48,7 @@ mkdir -p "$TMPDIR"
 rm -f "$EMBENCH_VENV"/lib/python*/site-packages/__editable__.embodiedbench-*.pth 2>/dev/null || true
 rm -f "$EMBENCH_VENV"/lib/python*/site-packages/__editable___embodiedbench_*_finder.py 2>/dev/null || true
 
-echo "完成。请运行: bash scripts/download_eb_alfred_dataset.sh"
-echo "自检: bash scripts/verify_embodiedbench_readiness.sh"
-echo "评测: bash scripts/run_embodiedbench_embench.sh"
+echo "完成。下一步："
+echo "  1. 下载数据: bash scripts/download_eb_alfred_dataset.sh"
+echo "  2. 验证环境: bash scripts/verify_embodiedbench_readiness.sh"
+echo "  3. 运行评测: bash scripts/run_embodiedbench_with_xvfb.sh"

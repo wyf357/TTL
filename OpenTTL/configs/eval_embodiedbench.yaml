@@ -1,13 +1,13 @@
 # EmbodiedBench 桥接：字段与官方 embodiedbench/configs/{eb_env}.yaml 对齐，并增加 eb_env / tta。
-# 本地 LMDeploy（model_type=local）推荐用脚本（自动设置 PYTHONPATH）:
-#   bash scripts/run_embodiedbench_embench.sh eb_env=eb-alf
-# 一键跑通（推荐顺序）：
-#   1) bash scripts/setup_embodiedbench_env.sh          # embench venv；EB-ALFRED 需 ai2thor==2.1.0（脚本已固定）
-#   2) bash scripts/download_eb_alfred_dataset.sh       # 数据（若 json_2.1.0 已就绪可跳过）
-#   3) bash scripts/verify_embodiedbench_readiness.sh   # Python/数据/模型
-#   4) bash scripts/verify_nvidia_x_stack.sh            # GPU+X+GLX（先 export DISPLAY=:N 再测）
-#   5a) 有 NVIDIA 真 X：另 tmux 起 startx 后 → bash scripts/run_embodiedbench_autodl.sh
-#   5b) 仅软件显示：bash scripts/run_embodiedbench_with_xvfb.sh   # 内部起 Xvfb 再调 autodl 脚本
+#
+# 运行方式（无显示器环境，使用 Xvfb）：
+#   bash scripts/run_embodiedbench_with_xvfb.sh
+#
+# 前置准备：
+#   1) bash scripts/setup_embodiedbench_env.sh          # 安装依赖
+#   2) bash scripts/download_eb_alfred_dataset.sh       # 下载数据集
+#   3) bash scripts/verify_embodiedbench_readiness.sh   # 验证环境
+#
 # Hydra 覆盖示例：selected_indexes='[0]' n_shots=1 exp_name=smoke
 defaults:
   - _self_

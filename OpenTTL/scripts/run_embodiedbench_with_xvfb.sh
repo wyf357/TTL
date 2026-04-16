@@ -1,9 +1,27 @@
 #!/usr/bin/env bash
-# 无物理显示器且 nvidia Xorg 不可用时：用 Xvfb 提供 GLX 显示，再跑 EB-ALFRED 桥接。
-# 依赖：apt install xvfb x11-utils（或等价包）
+# 无显示器环境运行 EmbodiedBench 评测（使用 Xvfb 提供 GLX 显示）
+#
+# 用法：
+#   bash scripts/run_embodiedbench_with_xvfb.sh
+#   bash scripts/run_embodiedbench_with_xvfb.sh eb_env=eb-alf n_shots=10 exp_name=my_eval
+#
+# 可选环境变量：
+#   TTA_GPU=0          # TTA/推理使用的 GPU（默认 0）
+#   RENDER_GPU=1       # 渲染使用的 GPU（默认 1）
+#   XVFB_DISPLAY_NUM=99  # Xvfb 显示号（默认 99）
+#
+# 前置准备：
+#   1) bash scripts/setup_embodiedbench_env.sh
+#   2) bash scripts/download_eb_alfred_dataset.sh
+#   3) bash scripts/verify_embodiedbench_readiness.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+: "${EMBODIEDBENCH_SRC:="$ROOT/third_party/EmbodiedBench"}"
+: "${EMBENCH_VENV:=/root/autodl-tmp/conda-envs/embench}"
 : "${XVFB_DISPLAY_NUM:=99}"
+: "${TTA_GPU:=0}"
+: "${RENDER_GPU:=1}"
+
 DISP=":${XVFB_DISPLAY_NUM}"
 
 if command -v xdpyinfo >/dev/null 2>&1 && xdpyinfo -display "$DISP" >/dev/null 2>&1; then
@@ -28,5 +46,19 @@ if command -v xdpyinfo >/dev/null 2>&1 && ! xdpyinfo -display "$DISP" >/dev/null
   exit 1
 fi
 
-export EB_DISPLAY="$DISP"
-exec bash "$ROOT/scripts/run_embodiedbench_autodl.sh" "$@"
+export DISPLAY="$DISP"
+export EB_ALF_X_DISPLAY="${XVFB_DISPLAY_NUM}"
+
+# GPU 设备隔离：TTA/推理与渲染使用不同 GPU
+export CUDA_VISIBLE_DEVICES="$TTA_GPU"
+export TTA_CUDA_DEVICE="$TTA_GPU"
+export RENDER_CUDA_DEVICE="$RENDER_GPU"
+
+export PYTHONPATH="${EMBODIEDBENCH_SRC}:${ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
+
+echo "开始运行 EmbodiedBench 评测..." >&2
+echo "显示设备: $DISPLAY" >&2
+echo "TTA/推理 GPU: $TTA_GPU" >&2
+echo "渲染 GPU: $RENDER_GPU" >&2
+
+exec "${EMBENCH_VENV}/bin/python" "$ROOT/evaluations/run_embodiedbench.py" "$@"

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# 自检 EmbodiedBench 桥接运行前置（源码、venv、数据、可选本地模型路径）。
+# 自检 EmbodiedBench 运行前置条件（源码、venv、数据、模型）
+#
 # 用法：
 #   bash scripts/verify_embodiedbench_readiness.sh
-#   EMB_LOCAL_MODEL_PATH=/path/to/HF-snapshot bash scripts/verify_embodiedbench_readiness.sh
+#   EMB_LOCAL_MODEL_PATH=/path/to/model bash scripts/verify_embodiedbench_readiness.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 : "${EMBODIEDBENCH_SRC:="$ROOT/third_party/EmbodiedBench"}"

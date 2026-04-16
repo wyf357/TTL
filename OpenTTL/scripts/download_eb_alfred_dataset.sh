@@ -1,24 +1,19 @@
 #!/usr/bin/env bash
-# 从 Hugging Face 下载数据集 EmbodiedBench/EB-ALFRED。
-#
-# 国内镜像（推荐）：
-#   export HF_ENDPOINT=https://hf-mirror.com
-#
-# 下载到临时目录（默认即 /tmp 下 json_2.1.0 根）：
-#   export EB_DEST=/tmp/eb_alfred_json_2.1.0
-#
-# 仅下载 splits 中的一条任务（与 base 的第 0 条一致，便于先跑通）：
-#   export EB_DOWNLOAD_MODE=single
-#   export EB_EVAL_SET=base          # 可选，默认 base
-#   export EB_TASK_INDEX=0           # 可选，默认 0
-#
-# 下载后把目录链到 EmbodiedBench 期望路径（会替换已有 json_2.1.0 符号链接）：
-#   export EB_SYMLINK=1
+# 从 Hugging Face 下载 EB-ALFRED 数据集（支持国内镜像）
 #
 # 用法：
+#   # 完整下载（推荐国内镜像）
 #   export HF_ENDPOINT=https://hf-mirror.com
-#   export EMBODIEDBENCH_SRC=/path/to/EmbodiedBench   # 默认 third_party/EmbodiedBench
-#   export EMBENCH_VENV=/path/to/embench-venv
+#   bash scripts/download_eb_alfred_dataset.sh
+#
+#   # 仅下载单条任务测试
+#   export HF_ENDPOINT=https://hf-mirror.com
+#   export EB_DOWNLOAD_MODE=single
+#   export EB_TASK_INDEX=0
+#   bash scripts/download_eb_alfred_dataset.sh
+#
+#   # 自动创建符号链接
+#   export EB_SYMLINK=1
 #   bash scripts/download_eb_alfred_dataset.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
