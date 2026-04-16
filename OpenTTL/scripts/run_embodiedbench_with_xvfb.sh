@@ -4,11 +4,16 @@
 # 用法：
 #   bash scripts/run_embodiedbench_with_xvfb.sh
 #   bash scripts/run_embodiedbench_with_xvfb.sh eb_env=eb-alf n_shots=10 exp_name=my_eval
+#   bash scripts/run_embodiedbench_with_xvfb.sh --config-name=eval_embodiedbench_qwen35_9b
+#   bash scripts/run_embodiedbench_with_xvfb.sh model_name=/root/autodl-tmp/Qwen3.5-VL-9B-Instruct model_type=local
 #
 # 可选环境变量：
 #   TTA_GPU=0          # TTA/推理使用的 GPU（默认 0）
 #   RENDER_GPU=1       # 渲染使用的 GPU（默认 1）
 #   XVFB_DISPLAY_NUM=99  # Xvfb 显示号（默认 99）
+#
+# AI2-THOR（CloudRendering）在无头/Xvfb 下常无法成功运行 vulkaninfo，会误报「请安装 vulkaninfo」。
+# 若 ~/.ai2thor/cuda-vulkan-mapping.json 不存在，本脚本会写入默认双卡映射以跳过该探测。
 #
 # 前置准备：
 #   1) bash scripts/setup_embodiedbench_env.sh
@@ -55,6 +60,13 @@ export TTA_CUDA_DEVICE="$TTA_GPU"
 export RENDER_CUDA_DEVICE="$RENDER_GPU"
 
 export PYTHONPATH="${EMBODIEDBENCH_SRC}:${ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
+
+_map="${HOME}/.ai2thor/cuda-vulkan-mapping.json"
+if [ ! -f "$_map" ]; then
+  mkdir -p "${HOME}/.ai2thor"
+  printf '%s\n' '{"0": 0, "1": 1}' > "$_map"
+  echo "已写入默认 CUDA↔Vulkan 映射（${_map}），避免 vulkaninfo 在无头环境下失败。" >&2
+fi
 
 echo "开始运行 EmbodiedBench 评测..." >&2
 echo "显示设备: $DISPLAY" >&2

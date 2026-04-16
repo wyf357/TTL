@@ -9,5 +9,5 @@ dist/
 build/
 .wandb/
 
-# EmbodiedBench 上游克隆与 ALFRED 数据（大文件；可用符号链接指向数据盘）
-third_party/EmbodiedBench
+# 第三方依赖与上游克隆（不纳入版本库）
+third_party/

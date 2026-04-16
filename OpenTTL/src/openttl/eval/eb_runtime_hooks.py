@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import importlib
+import os
 import types
 from contextlib import contextmanager
 from contextvars import ContextVar
@@ -87,6 +88,17 @@ def ensure_embodiedbench_env_patches() -> None:
     for mod_name, attr in _env_modules:
         try:
             mod = importlib.import_module(mod_name)
+            # EmbodiedBench 上游默认 X_DISPLAY='1'；run_embodiedbench_with_xvfb.sh 会设 EB_ALF_X_DISPLAY。
+            if mod_name.endswith("EBAlfEnv"):
+                xd = os.environ.get("EB_ALF_X_DISPLAY")
+                if xd is None:
+                    disp = os.environ.get("DISPLAY", "")
+                    if disp.startswith(":"):
+                        head = disp[1:].split(".", 1)[0]
+                        if head.isdigit():
+                            xd = head
+                if xd is not None:
+                    mod.X_DISPLAY = str(xd)
             classes.append(getattr(mod, attr))
         except ImportError:
             continue

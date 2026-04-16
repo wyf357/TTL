@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib
+import json
 from pathlib import Path
 from typing import Any, Dict, Mapping, Optional
 
@@ -32,12 +33,60 @@ _EVAL_MODULE_NAMES: dict[str, str] = {
 _remote_model_local_patch_applied: bool = False
 
 
+def _local_model_requires_transformers_backend_impl(model_name: str) -> bool:
+    """Qwen3.5（config: model_type=qwen3_5 / Qwen3_5*）结构与 LMDeploy 当前模块映射不一致，本地改用 transformers。"""
+    root = Path(str(model_name))
+    if root.is_dir() and (root / "config.json").is_file():
+        try:
+            with open(root / "config.json", encoding="utf-8") as f:
+                cfg = json.load(f)
+            mt = str(cfg.get("model_type", "")).lower()
+            arch0 = str((cfg.get("architectures") or [""])[0])
+            if mt == "qwen3_5" or "Qwen3_5" in arch0:
+                return True
+        except (OSError, json.JSONDecodeError, TypeError):
+            pass
+    low = str(model_name).lower()
+    if "qwen3.5" in low or "qwen3_5" in low or "qwen3-5" in low:
+        return True
+    return False
+
+
+def _local_model_prefers_turbomind_impl(model_name: str) -> bool:
+    """判断本地/HF id 是否为 Qwen3.5 系：此类模型用 PyTorchEngine 常依赖 fla/triton，改用 TurboMind。"""
+    if _local_model_requires_transformers_backend_impl(model_name):
+        return False
+    root = Path(str(model_name))
+    if root.is_dir() and (root / "config.json").is_file():
+        try:
+            with open(root / "config.json", encoding="utf-8") as f:
+                cfg = json.load(f)
+            mt = str(cfg.get("model_type", "")).lower()
+            arch0 = str((cfg.get("architectures") or [""])[0])
+            if "qwen3_5" in mt or "Qwen3_5" in arch0:
+                return True
+            if "qwen3" in mt and ("vl" in mt or "vision" in mt):
+                return True
+        except (OSError, json.JSONDecodeError, TypeError):
+            pass
+    low = str(model_name).lower()
+    if "qwen3.5" in low or "qwen3_5" in low or "qwen3-5" in low:
+        return True
+    return False
+
+
 def _patch_embodiedbench_remote_model_qwen35_local() -> None:
-    """本地 Qwen3.5 走 LMDeploy PyTorch 引擎会拉 fla/triton，常与当前环境不兼容；改用 TurboMind pipeline。"""
+    """本地 Qwen3.5：qwen3_5 架构由 transformers 推理；其余 Qwen3 VL 仍优先 TurboMind pipeline。"""
     global _remote_model_local_patch_applied
     if _remote_model_local_patch_applied:
         return
     from embodiedbench.planner import remote_model as rm
+    from lmdeploy import TurbomindEngineConfig
+
+    if not hasattr(rm, "_local_model_prefers_turbomind"):
+        rm._local_model_prefers_turbomind = _local_model_prefers_turbomind_impl  # type: ignore[attr-defined]
+    if not hasattr(rm, "_local_model_requires_transformers_backend"):
+        rm._local_model_requires_transformers_backend = _local_model_requires_transformers_backend_impl  # type: ignore[attr-defined]
 
     if getattr(rm.RemoteModel, "_openttl_qwen35_turbomind_patched", False):
         _remote_model_local_patch_applied = True
@@ -53,12 +102,22 @@ def _patch_embodiedbench_remote_model_qwen35_local() -> None:
         tp: int = 1,
         task_type: Any = None,
     ) -> None:
+        if model_type == "local" and rm._local_model_requires_transformers_backend(model_name):
+            from openttl.eval.eb_qwen35_transformers_local import build_transformers_local_pipeline
+
+            self.model_name = model_name
+            self.model_type = model_type
+            self.language_only = language_only
+            self.task_type = task_type
+            self.model = build_transformers_local_pipeline(model_name, dtype="float16", tp=tp)
+            return
         if model_type == "local" and rm._local_model_prefers_turbomind(model_name):
             self.model_name = model_name
             self.model_type = model_type
             self.language_only = language_only
             self.task_type = task_type
-            self.model = rm.pipeline(self.model_name)
+            backend = TurbomindEngineConfig(session_len=12000, dtype="float16", tp=tp)
+            self.model = rm.pipeline(self.model_name, backend_config=backend)
             return
         _orig_init(self, model_name, model_type, language_only, tp, task_type)
 

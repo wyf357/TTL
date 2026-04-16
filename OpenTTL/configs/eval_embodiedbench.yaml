@@ -9,6 +9,7 @@
 #   3) bash scripts/verify_embodiedbench_readiness.sh   # 验证环境
 #
 # Hydra 覆盖示例：selected_indexes='[0]' n_shots=1 exp_name=smoke
+# 本地 Qwen3.5-9B（默认 autodl-tmp 路径）：--config-name=eval_embodiedbench_qwen35_9b
 defaults:
   - _self_
 
