@@ -17,7 +17,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 : "${EMBODIEDBENCH_SRC:="$ROOT/third_party/EmbodiedBench"}"
-: "${EMBENCH_VENV:=/root/autodl-tmp/conda-envs/embench}"
+: "${EMBENCH_VENV:=""}"
 : "${XVFB_DISPLAY_NUM:=99}"
 : "${TTA_GPU:=0}"
 : "${RENDER_GPU:=1}"
@@ -61,4 +61,10 @@ echo "显示设备: $DISPLAY" >&2
 echo "TTA/推理 GPU: $TTA_GPU" >&2
 echo "渲染 GPU: $RENDER_GPU" >&2
 
-exec "${EMBENCH_VENV}/bin/python" "$ROOT/evaluations/run_embodiedbench.py" "$@"
+if [ -n "$EMBENCH_VENV" ] && [ -f "${EMBENCH_VENV}/bin/python" ]; then
+  PYTHON_CMD="${EMBENCH_VENV}/bin/python"
+else
+  PYTHON_CMD="python"
+fi
+
+exec "$PYTHON_CMD" "$ROOT/evaluations/run_embodiedbench.py" "$@"

@@ -1,9 +1,0 @@
-# 多模态 MMMU 标准评测（lmms-eval），与 OpenTTL/TTA 无关
-# 安装: pip install -r requirements-mmmu-eval.txt
-# 完整环境也可按官方文档: git clone lmms-eval && uv pip install -e ".[all]"
-
-lmms-eval>=0.7.0
-accelerate>=0.34.0
-datasets>=3.0.0
-huggingface_hub>=0.26.0
-qwen-vl-utils>=0.0.8
