@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
-from typing import Any, Dict, List, Mapping, Sequence
+from typing import Any, Dict, List, Mapping, Sequence, Union
 
 import torch
 
@@ -46,11 +47,22 @@ class EmbodiedBenchTransformersLocalPipeline:
         torch_dtype = getattr(torch, dtype) if isinstance(dtype, str) else dtype
 
         self.processor = AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
-        # device_map 在多卡上自动切分；tp 仅作占位（与上游 RemoteModel 签名一致）
+        # 默认固定到「当前进程可见的第 N 张 CUDA 卡」（OPENTTL_INFERENCE_CUDA_DEVICE，与 TTA_GPU 对齐），
+        # 避免 device_map="auto" 在单卡能装下时仍只占用 cuda:0，却与「渲染用另一张卡」的预期混淆；
+        # 需要多卡自动切分时设 OPENTTL_DEVICE_MAP=auto。
+        _dm = os.environ.get("OPENTTL_DEVICE_MAP", "").strip().lower()
+        if _dm == "auto":
+            device_map: Union[str, Dict[str, Any]] = "auto"
+        else:
+            try:
+                _dev = int(os.environ.get("OPENTTL_INFERENCE_CUDA_DEVICE", "0"))
+            except ValueError:
+                _dev = 0
+            device_map = {"": _dev}
         self.model = AutoModelForImageTextToText.from_pretrained(
             model_path,
             torch_dtype=torch_dtype,
-            device_map="auto",
+            device_map=device_map,
             trust_remote_code=True,
         )
         self.model.eval()

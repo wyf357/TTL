@@ -1,0 +1,25 @@
+Error executing job with overrides: ['model_name=/root/autodl-tmp/Qwen3.5-9B']
+Traceback (most recent call last):
+  File "/root/TTL/OpenTTL/src/openttl/eval/embodiedbench_bridge.py", line 131, in _require_embodiedbench
+    import embodiedbench  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'embodiedbench'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/TTL/OpenTTL/evaluations/run_embodiedbench.py", line 20, in main
+    run_embodiedbench_from_omegaconf(cfg)
+  File "/root/TTL/OpenTTL/src/openttl/eval/embodiedbench_bridge.py", line 227, in run_embodiedbench_from_omegaconf
+    merged = build_embodiedbench_merged_config(env_name, container)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/TTL/OpenTTL/src/openttl/eval/embodiedbench_bridge.py", line 169, in build_embodiedbench_merged_config
+    yaml_path = embodiedbench_package_dir() / "configs" / f"{env_name}.yaml"
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/TTL/OpenTTL/src/openttl/eval/embodiedbench_bridge.py", line 141, in embodiedbench_package_dir
+    _require_embodiedbench()
+  File "/root/TTL/OpenTTL/src/openttl/eval/embodiedbench_bridge.py", line 133, in _require_embodiedbench
+    raise ImportError(
+ImportError: 未安装 EmbodiedBench。请在远程环境中执行 `pip install -e ".[embodiedbench]"` 或先 `pip install -e /path/to/EmbodiedBench`，并保证仿真与数据已按上游 README 配置。
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

@@ -5,31 +5,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 : "${EMBODIEDBENCH_SRC:="$ROOT/third_party/EmbodiedBench"}"
 : "${EMBENCH_VENV:=""}"
 : "${XVFB_DISPLAY_NUM:=99}"
-# 可见 CUDA 设备：若未设置且检测到 ≥2 张 NVIDIA GPU，默认同时暴露 0,1，便于推理用 cuda:0、CloudRendering Vulkan 用 gpu_device=1。
-# 也可手动：CUDA_VISIBLE_DEVICES=0,1 bash scripts/run_embodiedbench_with_xvfb.sh ...
-if [ -z "${CUDA_VISIBLE_DEVICES+x}" ] || [ -z "${CUDA_VISIBLE_DEVICES}" ]; then
-  if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L 2>/dev/null | grep -q "^GPU"; then
-    _ng=$(nvidia-smi -L 2>/dev/null | grep -c "^GPU" || true)
-    if [ "${_ng:-0}" -ge 2 ]; then
-      CUDA_VISIBLE_DEVICES=0,1
-    else
-      CUDA_VISIBLE_DEVICES=0
-    fi
-  else
-    CUDA_VISIBLE_DEVICES=0
-  fi
-fi
-export CUDA_VISIBLE_DEVICES
-
-# RENDER_GPU：与 ai2thor 的 gpu_device 一致（逻辑序号，在 CUDA_VISIBLE_DEVICES 内）。单卡时必须为 0，否则越界。
-if [ -z "${RENDER_GPU+x}" ]; then
-  if echo "$CUDA_VISIBLE_DEVICES" | grep -q ','; then
-    RENDER_GPU=1
-  else
-    RENDER_GPU=0
-  fi
-fi
 : "${TTA_GPU:=0}"
+: "${RENDER_GPU:=1}"
 
 DISP=":${XVFB_DISPLAY_NUM}"
 
@@ -75,22 +52,26 @@ fi
 export DISPLAY="$DISP"
 export EB_ALF_X_DISPLAY="${XVFB_DISPLAY_NUM}"
 
-# GPU 设置（注意：勿手写假的 cuda-vulkan-mapping.json；AI2THOR 首次会在 ~/.ai2thor/ 下用 vulkaninfo+nvidia-smi 生成正确映射，错误映射可导致 Unity 长时间无响应）
-export CUDA_VISIBLE_DEVICES
+# GPU 设置
+export CUDA_VISIBLE_DEVICES="$TTA_GPU"
 export TTA_CUDA_DEVICE="$TTA_GPU"
 export RENDER_CUDA_DEVICE="$RENDER_GPU"
-# 与 TTA_GPU 一致：Qwen3.5 transformers 本地管线固定把整模放在该「逻辑」CUDA 设备上（默认 0）
-export OPENTTL_INFERENCE_CUDA_DEVICE="${TTA_GPU}"
 export AI2THOR_USE_GPU=true
 
 export PYTHONPATH="${EMBODIEDBENCH_SRC}:${ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
 
+# CUDA-Vulkan 映射
+_map="${HOME}/.ai2thor/cuda-vulkan-mapping.json"
+if [ ! -f "$_map" ]; then
+  mkdir -p "${HOME}/.ai2thor"
+  printf '%s\n' "{\"${TTA_GPU}\": ${TTA_GPU}, \"${RENDER_GPU}\": ${RENDER_GPU}}" > "$_map"
+  echo "已写入 CUDA↔Vulkan 映射: ${_map}" >&2
+fi
+
 echo "开始运行 EmbodiedBench 评测..." >&2
-echo "提示: 首次使用 CloudRendering(Vulkan) 时，ai2thor 会下载约 800MB 的 thor-CloudRendering-*.zip，请保持网络畅通并耐心等待。" >&2
 echo "显示设备: $DISPLAY" >&2
-echo "CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES" >&2
-echo "TTA/推理(逻辑) GPU: $TTA_GPU  (OPENTTL_INFERENCE_CUDA_DEVICE=$OPENTTL_INFERENCE_CUDA_DEVICE)" >&2
-echo "渲染(逻辑) GPU: $RENDER_GPU  (RENDER_CUDA_DEVICE=$RENDER_CUDA_DEVICE)" >&2
+echo "TTA/推理 GPU: $TTA_GPU" >&2
+echo "渲染 GPU: $RENDER_GPU" >&2
 
 if [ -n "$EMBENCH_VENV" ] && [ -f "${EMBENCH_VENV}/bin/python" ]; then
   PYTHON_CMD="${EMBENCH_VENV}/bin/python"

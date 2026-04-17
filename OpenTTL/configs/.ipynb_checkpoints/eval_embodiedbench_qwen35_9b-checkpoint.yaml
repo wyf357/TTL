@@ -1,0 +1,10 @@
+# 本地 Qwen3.5-9B（多模态具身默认用 VL；纯文本 9B 请改目录名并视任务设 language_only）
+# 运行：bash scripts/run_embodiedbench_with_xvfb.sh --config-name=eval_embodiedbench_qwen35_9b
+# 或覆盖路径：bash scripts/run_embodiedbench_with_xvfb.sh --config-name=eval_embodiedbench_qwen35_9b model_name=/你的/模型目录
+defaults:
+  - eval_embodiedbench
+  - _self_
+
+model_name: /root/autodl-tmp/Qwen3.5-VL-9B-Instruct
+model_type: local
+tp: 1

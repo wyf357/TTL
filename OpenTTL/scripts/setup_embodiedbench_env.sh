@@ -37,7 +37,7 @@ mkdir -p "$TMPDIR"
   --index-url https://download.pytorch.org/whl/cu121
 "$PIP" install --no-cache-dir 'protobuf>=4.25.3,<5' 'lmdeploy==0.6.3'
 "$PIP" install --no-cache-dir \
-  'ai2thor==2.1.0' 'gym==0.23.0' 'hydra-core>=1.3' 'omegaconf>=2.3' \
+  'ai2thor==5.0.0' 'gym==0.23.0' 'hydra-core>=1.3' 'omegaconf>=2.3' \
   'scipy>=1.10,<2' \
   'opencv-python==4.10.0.84' 'h5py' 'vocab' 'revtok' \
   'anthropic' 'google-generativeai' 'google-api-python-client' \
