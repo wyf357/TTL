@@ -32,6 +32,50 @@ _EVAL_MODULE_NAMES: dict[str, str] = {
 }
 
 _remote_model_local_patch_applied: bool = False
+_planner_json_log_patch_applied: bool = False
+
+
+def _env_flag(name: str, default: bool = True) -> bool:
+    v = os.environ.get(name)
+    if v is None:
+        return default
+    return v.strip().lower() not in ("0", "false", "no", "off")
+
+
+def _patch_embodiedbench_planner_json_log() -> None:
+    """在 EmbodiedBench 解析 planner 输出前打印完整 JSON 文本（便于对照 decode 错误）。"""
+    global _planner_json_log_patch_applied
+    if _planner_json_log_patch_applied:
+        return
+    if not _env_flag("OPENTTL_PRINT_PLANNER_JSON", True):
+        _planner_json_log_patch_applied = True
+        return
+    from embodiedbench.planner.vlm_planner import VLMPlanner
+
+    if getattr(VLMPlanner, "_openttl_planner_json_log_patched", False):
+        _planner_json_log_patch_applied = True
+        return
+
+    _orig_json_to_action = VLMPlanner.json_to_action
+
+    def _json_to_action(self: Any, output_text: str, json_key: str = "executable_plan") -> Any:
+        max_chars_raw = os.environ.get("OPENTTL_PLANNER_JSON_LOG_MAX_CHARS", "").strip()
+        body = output_text
+        suffix = ""
+        if max_chars_raw.isdigit():
+            n = int(max_chars_raw)
+            if n > 0 and len(body) > n:
+                body = body[:n]
+                suffix = f"\n... [openttl: truncated, total {len(output_text)} chars, OPENTTL_PLANNER_JSON_LOG_MAX_CHARS={n}]"
+        print(
+            f"[openttl] planner JSON before json.loads ({len(output_text)} chars):\n{body}{suffix}",
+            flush=True,
+        )
+        return _orig_json_to_action(self, output_text, json_key)
+
+    VLMPlanner.json_to_action = _json_to_action  # type: ignore[method-assign]
+    setattr(VLMPlanner, "_openttl_planner_json_log_patched", True)
+    _planner_json_log_patch_applied = True
 
 
 def _local_model_requires_transformers_backend_impl(model_name: str) -> bool:
@@ -225,6 +269,7 @@ def run_embodiedbench_eval(
     _require_embodiedbench()
     _patch_ai2thor_skip_prune()
     _patch_embodiedbench_remote_model_qwen35_local()
+    _patch_embodiedbench_planner_json_log()
     ensure_embodiedbench_env_patches()
     ev_cfg = _strip_for_evaluator(dict(merged_config))
     cls = get_embodiedbench_evaluator_class(env_name)

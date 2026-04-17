@@ -1,0 +1,1 @@
+{"reward": -1.0, "num_invalid_actions": 10, "empty_plan": 0, "instruction": "Rinse off a ladle and move it to the table.", "task_success": 0, "task_progress": 0, "num_steps": 0, "planner_steps": 10, "planner_output_error": 10, "num_invalid_action_ratio": 0, "episode_elapsed_seconds": 104.86314296722412}
