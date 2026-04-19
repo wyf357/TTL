@@ -1,0 +1,43 @@
+# Qwen3.5-2B Model Configuration
+#
+# Configuration for Qwen3.5-2B model loaded from local path.
+# NOTE: This appears to be a text-only model (not VL).
+# ERQA is a multimodal benchmark, so this model will only process text questions.
+#
+# For multimodal ERQA evaluation, use a vision-language model like Qwen3.5-VL-2B.
+#
+# Usage:
+#   python evaluations/run_erqa.py model=qwen35_2b
+
+defaults:
+  - default
+  - _self_
+
+# Local model path on AutoDL
+pretrained_model_name_or_path: /root/autodl-tmp/Qwen3.5-2B
+
+# Qwen3.5 requires trust_remote_code for custom architecture
+trust_remote_code: true
+
+# Use sdpa attention implementation (compatible with most GPUs)
+attn_implementation: sdpa
+
+# Use float16 for faster inference and lower memory usage
+torch_dtype: float16
+
+# PEFT/LoRA configuration (optional, for TTA)
+peft:
+  enabled: false  # Set to true if using test-time adaptation
+  r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  bias: none
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+  task_type: CAUSAL_LM
