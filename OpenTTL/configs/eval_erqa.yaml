@@ -29,5 +29,8 @@ model_path: /root/autodl-tmp/Qwen3.5-2B
 # Maximum number of examples to evaluate (null for all 400 examples)
 max_examples: null
 
+# Start from a specific example index (0-based, for debugging specific questions)
+start_example: 0
+
 # Output configuration
 output_json: outputs/erqa_results.json

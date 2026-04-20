@@ -6,9 +6,16 @@ The dataset contains multimodal interleaved images and text as multiple-choice q
 
 from __future__ import annotations
 
+import os
+import tensorflow as tf
+# Force TF to CPU-only so it doesn't compete with PyTorch for GPU memory.
+# This must run after TF import; env-var approach (CUDA_VISIBLE_DEVICES) is
+# unreliable because the shell script may have already set it.
+tf.config.set_visible_devices([], 'GPU')
+# No need for set_memory_growth — TF can't see any GPUs now
+
 from typing import Iterator, Optional
 
-import tensorflow as tf
 from PIL import Image
 
 
@@ -104,12 +111,14 @@ def decode_example_to_dict(example: dict) -> dict:
 def load_erqa_dataset(
     tfrecord_path: str,
     num_examples: Optional[int] = None,
+    start_example: int = 0,
 ) -> Iterator[dict]:
     """Load ERQA dataset from TFRecord file.
     
     Args:
         tfrecord_path: Path to the ERQA TFRecord file
         num_examples: Maximum number of examples to load (None for all)
+        start_example: Index of the first example to yield (skip examples before this)
         
     Yields:
         Dictionary for each example with question, images, answer, etc.
@@ -119,6 +128,10 @@ def load_erqa_dataset(
     
     # Parse examples
     dataset = dataset.map(parse_erqa_example)
+    
+    # Skip examples before start_example
+    if start_example > 0:
+        dataset = dataset.skip(start_example)
     
     # Limit number of examples if specified
     if num_examples is not None:
