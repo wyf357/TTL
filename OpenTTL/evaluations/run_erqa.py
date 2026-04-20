@@ -56,18 +56,22 @@ def format_erqa_prompt(
     Returns:
         Tuple of (formatted prompt text, ordered list of images)
     """
-    # Build the prompt with explicit instruction to output a single letter
-    instruction = "\n\nPlease analyze the question above and respond with ONLY the letter of the correct answer (A, B, C, or D). Do not explain your reasoning."
+    # Build the prompt with explicit instruction to output a single letter.
+    # Use few-shot-style formatting to constrain the model's output format.
+    instruction = (
+        "\n\nYou must respond with ONLY a single letter: A, B, C, or D."
+        " Do NOT explain or reason. Output format example: B"
+    )
 
     if len(images) == 0:
         prompt = question + instruction
         return prompt, []
     elif len(images) == 1:
-        prompt = f"Please answer the following question based on the image:\n\n{question}{instruction}"
+        prompt = f"Answer the following question based on the image.\n\n{question}{instruction}"
         return prompt, images
     else:
         image_refs = "\n".join([f"Image {i+1}:" for i in range(len(images))])
-        prompt = f"Please answer the following question based on the provided images:\n\n{image_refs}\n\n{question}{instruction}"
+        prompt = f"Answer the following question based on the provided images.\n\n{image_refs}\n\n{question}{instruction}"
         return prompt, images
 
 
@@ -108,7 +112,16 @@ def extract_answer_letter(response: str) -> Optional[str]:
             return letter
 
     # Last resort: scan the ENTIRE response (including thinking)
-    for pattern in answer_patterns:
+    # Add patterns that commonly appear inside the thinking block itself,
+    # where the model states its conclusion before formatting the answer.
+    thinking_patterns = answer_patterns + [
+        r'[Tt]herefore[\s,]+(?:the answer is\s+)?([A-D])',
+        r'[Ss]o(?:\s+the answer is)?\s+([A-D])',
+        r'[Aa]ccordingly[\s,]+(?:the answer is\s+)?([A-D])',
+        r'[Tt]hus[\s,]+(?:the answer is\s+)?([A-D])',
+        r'[Ii] conclude(?:\s+that)?(?:\s+the answer is)?\s+([A-D])',
+    ]
+    for pattern in thinking_patterns:
         match = re.search(pattern, response, re.MULTILINE)
         if match:
             return match.group(1).upper()
@@ -171,9 +184,13 @@ def evaluate_erqa(
                 image_entries = [{"type": "image"} for _ in image_list]
                 messages = [
                     {
+                        "role": "system",
+                        "content": "You are a multiple-choice question answering assistant. You MUST respond with ONLY a single letter (A, B, C, or D). Never explain your reasoning.",
+                    },
+                    {
                         "role": "user",
                         "content": image_entries + [{"type": "text", "text": prompt}]
-                    }
+                    },
                 ]
 
                 # Apply chat template to insert image tokens
@@ -229,7 +246,7 @@ def evaluate_erqa(
             with torch.no_grad():
                 outputs = model.generate(
                     **model_inputs,
-                    max_new_tokens=1024,
+                    max_new_tokens=256,
                     do_sample=False,
                     temperature=1.0,
                     top_p=1.0,
@@ -254,17 +271,19 @@ def evaluate_erqa(
 
             # Decode response
             generated_tokens = output_sequences[0][input_ids.shape[1]:]
+            num_generated = generated_tokens.numel()
 
-            if generated_tokens.numel() == 0:
+            if num_generated == 0:
                 response = ""
+                response_clean = ""
                 print(f"  Warning: Empty generation for example {idx}")
             else:
                 # PRIMARY: decode with skip_special_tokens=True for clean text.
-                # This works for most cases and was the original working approach.
-                response = processor.decode(
+                response_clean = processor.decode(
                     generated_tokens,
                     skip_special_tokens=True
                 ).strip()
+                response = response_clean
 
                 # FALLBACK: if the clean response contains no A-D letter at all,
                 # try decoding with special tokens preserved to detect the
@@ -283,9 +302,27 @@ def evaluate_erqa(
             # Extract answer
             pred_letter = extract_answer_letter(response)
 
-            # Debug: print raw response when extraction fails
+            # Detailed debug output when extraction fails
             if pred_letter is None:
-                print(f"  Warning: Could not extract answer from response: {repr(response[:200])}")
+                print(f"\n  === DEBUG: Failed to extract answer for example {idx} ===")
+                print(f"  Generated tokens: {num_generated}")
+                print(f"  Clean decode (skip_special=True): {repr(response_clean[:500])}")
+                if num_generated > 0:
+                    response_raw = processor.decode(
+                        generated_tokens,
+                        skip_special_tokens=False
+                    ).strip()
+                    print(f"  Raw decode  (skip_special=False): {repr(response_raw[:500])}")
+                    has_think_close = '\u003c/think\u003e' in response_raw
+                    print(f"  Contains </think> tag: {has_think_close}")
+                    if has_think_close:
+                        after = response_raw.split('\u003c/think\u003e')[-1].strip()
+                        print(f"  Text after </think>: {repr(after[:300])}")
+                print(f"  Current response used for extraction: {repr(response[:500])}")
+                # Show which patterns were tested
+                answer_part = _strip_thinking_block(response)
+                print(f"  Answer part after strip_thinking: {repr(answer_part[:300])}")
+                print(f"  =============================={'='*40}\n")
 
             # ---- Explicit GPU memory cleanup ----
             del inputs, model_inputs, outputs, output_sequences, generated_tokens
