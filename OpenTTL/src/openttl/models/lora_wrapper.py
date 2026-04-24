@@ -19,6 +19,7 @@ def peft_lora_config_from_cfg(peft_cfg: Any) -> LoraConfig:
 
 
 def inject_lora(model: PreTrainedModel, peft_cfg: Any) -> PreTrainedModel:
+    """注入 LoRA。多模态模型请在配置里将 ``target_modules`` 限制在语言塔（如 ``q_proj`` 等）。"""
     if not bool(getattr(peft_cfg, "enabled", True)):
         return model
     lcfg = peft_lora_config_from_cfg(peft_cfg)

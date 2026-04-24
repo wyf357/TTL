@@ -48,3 +48,13 @@ python evaluations/run_adapteval.py
 ```
 
 （需按实际基准补全指标逻辑。）
+
+## SGLang 推理 + Online TTA（评测脚本）
+
+依赖：`pip install -e ".[sglang]"` 或 `requirements.txt` 中的 `sglang[all]`。
+
+- **ERQA**：`python evaluations/run_erqa.py`（默认 `inference=sglang`；`online.enabled=false` 仅推理；开启 TTA 时加 `online.enabled=true` 且需 `model.peft.enabled=true`）。
+- **MMLU**：`python evaluations/run_mmlu.py inference.backend=sglang`（可选 `online.enabled=true`）。
+- **EmbodiedBench**：配置 `tta.enabled=true`、`tta.backend=instruction_entropy`，并与 `model_name` 使用同一 checkpoint；默认走 SGLang 本地后端。若需旧版 transformers 管线，设置环境变量 `OPENTTL_LOCAL_BACKEND=transformers`。
+
+单卡双进程（HF LoRA 训练 + SGLang 推理）时请在 `configs/inference/sglang.yaml` 中调低 `mem_fraction_static`。

@@ -1,6 +1,8 @@
 
 from __future__ import annotations
 
+from typing import Any, Dict
+
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -9,6 +11,21 @@ try:
     from peft.tuners.lora.layer import LoraLayer
 except ImportError:  # pragma: no cover
     LoraLayer = None
+
+
+def tta_model_forward(model: nn.Module, inputs: Dict[str, Any]) -> Any:
+    """单次 TTA 前向：关闭 KV cache，避免物化 ``past_key_values``（长序列显存占用可降数量级）。
+
+    与 ``use_cache=True`` 相比，对整段 ``input_ids`` 一次前向得到的 ``logits`` 在数学上一致；
+    仅影响是否分配/返回增量解码用的 cache 张量。
+    """
+    kwargs = {k: v for k, v in inputs.items() if k != "labels"}
+    kwargs["use_cache"] = False
+    try:
+        return model(**kwargs)
+    except TypeError:
+        kwargs.pop("use_cache", None)
+        return model(**kwargs)
 
 
 def apply_backbone_eval_lora_train(model: nn.Module) -> None:

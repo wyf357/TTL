@@ -1,5 +1,9 @@
 defaults:
   - model: gemma_e2b
+  - strategy: tent
+  - inference: sglang
+  - online: tta
+  - train: eval_minimal
   - _self_
 
 adapter_path: null

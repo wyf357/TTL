@@ -7,7 +7,11 @@ import torch
 from torch import nn
 
 from openttl.strategies.base import Strategy
-from openttl.strategies.tta_shared import apply_backbone_eval_lora_train, masked_mean_sequence_entropy
+from openttl.strategies.tta_shared import (
+    apply_backbone_eval_lora_train,
+    masked_mean_sequence_entropy,
+    tta_model_forward,
+)
 
 
 class TentStrategy(Strategy):
@@ -21,8 +25,7 @@ class TentStrategy(Strategy):
     ) -> Union[torch.Tensor, Tuple[torch.Tensor, Any]]:
         apply_backbone_eval_lora_train(model)
         labels = inputs.get("labels")
-        fwd = {k: v for k, v in inputs.items() if k != "labels"}
-        out = model(**fwd)
+        out = tta_model_forward(model, inputs)
         logits = out.logits
         if labels is None:
             am = inputs.get("attention_mask")

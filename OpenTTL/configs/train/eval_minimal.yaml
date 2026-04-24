@@ -1,0 +1,8 @@
+# @package _global_
+# 评测脚本仅需 output_dir；完整训练请用 train/default
+
+# 运行时可覆盖：train.output_dir=/path 或依赖 Hydra 工作目录
+output_dir: ./outputs/online_tta
+seed: 0
+per_device_train_batch_size: 1
+learning_rate: 1.0e-4

@@ -1,35 +1,33 @@
 # ERQA Benchmark Evaluation Configuration
 #
-# This configuration is for evaluating vision-language models on the ERQA benchmark.
-# ERQA contains multimodal interleaved images and text as multiple-choice questions.
-#
 # Usage:
 #   python evaluations/run_erqa.py
+#   python evaluations/run_erqa.py model=qwen35_vl_2b online.enabled=false
 #
-# With custom paths:
-#   python evaluations/run_erqa.py \
-#     tfrecord_path=/path/to/erqa.tfrecord \
-#     model_path=/root/autodl-tmp/Qwen3.5-2B \
-#     max_examples=10
-#
-# Using Qwen3.5-2B config:
-#   python evaluations/run_erqa.py --config-name=eval_erqa model=qwen35_2b
-
 defaults:
+  - model: qwen35_2b
+  - strategy: tent
+  - inference: sglang
+  - online: tta
+  - train: eval_minimal
   - _self_
 
 # ERQA dataset configuration
 tfrecord_path: ./data/erqa.tfrecord
 
-# Model configuration
-# Path to local Qwen3.5 model (can be overridden)
-model_path: /root/autodl-tmp/Qwen3.5-2B
+# 兼容旧字段：未使用 model 组时可覆盖
+model_path: ${model.pretrained_model_name_or_path}
+
+# 生成参数（SGLang sampling）与 online TTA 协议
+erqa:
+  max_new_tokens: 16000
+  # Match SGLang/HF apply_chat_template for prompt + TTA batch (Qwen3.5 thinking).
+  enable_thinking: true
+  # If true, reading example['answer'] before the TTA update raises (audit-friendly).
+  strict_no_label_feedback: false
 
 # Evaluation settings
-# Maximum number of examples to evaluate (null for all 400 examples)
 max_examples: null
-
-# Start from a specific example index (0-based, for debugging specific questions)
 start_example: 0
 
 # Output configuration

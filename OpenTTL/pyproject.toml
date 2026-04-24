@@ -23,10 +23,11 @@ dependencies = [
   "protobuf>=3.20.0",
   "wandb>=0.18.0",
   "lm-eval>=0.4.0",
-  "flash-attn>=2.6.0",
 ]
 
 [project.optional-dependencies]
+sglang = ["sglang[all]>=0.4.9"]
+flash-attn = ["flash-attn>=2.6.0"]
 dev = ["pytest>=7.0", "ruff>=0.6"]
 tensorboard = ["tensorboard>=2.14"]
 # EmbodiedBench 依赖体量大，推荐用仓库内 scripts/setup_embodiedbench_env.sh 在独立 venv 安装；此处保留可选 Hub 安装入口。
