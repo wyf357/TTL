@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run ERQA Benchmark Evaluation with local Qwen3.5-VL model
+# Run ERQA Benchmark Evaluation with local Qwen3.5-9B model
 #
 # Usage:
 #   bash scripts/run_erqa.sh
@@ -8,7 +8,7 @@
 #
 # Prerequisites:
 #   1. Download ERQA dataset (erqa.tfrecord)
-#   2. Download Qwen3.5-2B model to autodl-tmp
+#   2. Download Qwen3.5-9B model to autodl-tmp
 #   3. Install dependencies: tensorflow, transformers, torch, PIL
 
 set -euo pipefail
@@ -17,9 +17,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Configuration with defaults
+# Configuration with defaults - 9B Model
 : "${ERQA_TFRECORD:="$ROOT/data/erqa.tfrecord"}"
-: "${ERQA_MODEL_PATH:="/root/autodl-tmp/Qwen3.5-2B"}"
+: "${ERQA_MODEL_PATH:="/root/autodl-tmp/Qwen3.5-9B"}"
 : "${ERQA_MAX_EXAMPLES:=""}"
 : "${ERQA_GPU:=0}"
 
@@ -43,9 +43,9 @@ fi
 # Check if model directory exists
 if [ ! -d "$ERQA_MODEL_PATH" ]; then
     echo "Warning: Model directory not found at $ERQA_MODEL_PATH" >&2
-    echo "Please download the Qwen3.5-2B model first:" >&2
+    echo "Please download the Qwen3.5-9B model first:" >&2
     echo "  # Download from ModelScope or HuggingFace" >&2
-    echo "  python download_qwen35_2b_modelscope.py" >&2
+    echo "  huggingface-cli download Qwen/Qwen3.5-9B --local-dir /root/autodl-tmp/Qwen3.5-9B" >&2
     exit 1
 fi
 
@@ -61,11 +61,10 @@ else
 fi
 echo "========================================" >&2
 
-# Build command
+# Build command - 使用 9B 模型配置
 CMD="python $ROOT/evaluations/run_erqa.py"
 CMD+=" tfrecord_path=$ERQA_TFRECORD"
-# CMD+=" model_path=$ERQA_MODEL_PATH"
-CMD+=" model=qwen35_2b"
+CMD+=" model=qwen35_9b"
 
 if [ -n "$ERQA_MAX_EXAMPLES" ]; then
     CMD+=" max_examples=$ERQA_MAX_EXAMPLES"

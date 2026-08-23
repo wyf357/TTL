@@ -1,0 +1,13 @@
+# @package _global_
+# 评测脚本中的 online TTA（HF+PEFT 反传 + SGLang 推理）
+
+# 评测脚本默认关闭 TTA；需要时命令行：online.enabled=true
+enabled: false
+lr: 1.0e-4
+weight_decay: 0.0
+sync_every_n_updates: 1
+# null 时使用 train.output_dir/online_tta_adapters
+adapter_root: null
+max_length: 4096
+max_instruction_chars: 2048
+gradient_checkpointing: true

@@ -17,10 +17,14 @@ if str(_ROOT / "src") not in sys.path:
 def main(cfg: DictConfig) -> None:
     from peft import PeftModel
 
-    from openttl.models.loader import load_causal_lm, load_tokenizer
+    from openttl.adapters.registry import extract_model_cfg
+    from openttl.models.loader import load_adapter
 
-    tokenizer = load_tokenizer(cfg.model)
-    model = load_causal_lm(cfg.model)
+    mc = extract_model_cfg(cfg)
+    adapter = load_adapter(cfg)
+    adapter.load_processor(mc)
+    tokenizer = adapter.tokenizer()
+    model = adapter.load_model(mc)
     ap = OmegaConf.select(cfg, "adapter_path")
     if ap:
         model = PeftModel.from_pretrained(model, ap)
@@ -43,4 +47,3 @@ def main(cfg: DictConfig) -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -8,10 +8,14 @@ import torch.nn.functional as F
 from torch import nn
 
 from openttl.strategies.base import Strategy
+from openttl.strategies.tta_shared import apply_backbone_eval_lora_train, tta_model_forward
 
 
-def _per_sample_mean_nll(logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
-    """Mean NLL (nats) per sequence over valid next-token positions (CLM shift)."""
+def _input_nll_per_sample(logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
+    """Input (self-supervised) NLL: mean over next-token CLM positions.
+
+    ``labels`` are full sequence ids (prompt-only) from ``clm_full``; no gold labels.
+    """
     B, T, V = logits.shape
     nll = F.cross_entropy(
         logits[:, :-1, :].reshape(-1, V),
@@ -26,19 +30,25 @@ def _per_sample_mean_nll(logits: torch.Tensor, labels: torch.Tensor) -> torch.Te
 
 
 class TLMStrategy(Strategy):
-    """Test-Time Learning (TLM): weighted input perplexity on LoRA-adapted model (see algorithms/TLM.md)."""
+    """Test-Time Learning (TLM): minimize S(x)·P(x) on unlabeled test input (see algorithms/TLM.md)."""
 
     def compute_loss(
         self,
         model: nn.Module,
-        inputs: Dict[str, torch.Tensor],
+        inputs: Dict[str, Any],
         return_outputs: bool = False,
     ) -> Union[torch.Tensor, Tuple[torch.Tensor, Any]]:
+        apply_backbone_eval_lora_train(model)
         labels = inputs["labels"]
-        out = model(**{k: v for k, v in inputs.items() if k != "labels"})
+        if labels is not None:
+            image_token_id = getattr(model.config, "image_token_id", None)
+            if image_token_id is not None:
+                labels = labels.clone()
+                labels[labels == int(image_token_id)] = -100
+        out = tta_model_forward(model, inputs)
         logits = out.logits
 
-        nll = _per_sample_mean_nll(logits, labels)
+        nll = _input_nll_per_sample(logits, labels)
         p_x = torch.exp(nll)
         lam = float(getattr(self.cfg, "lambda", 0.1))
         p0 = float(getattr(self.cfg, "p0", math.exp(3.0)))

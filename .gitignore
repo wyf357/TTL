@@ -10,3 +10,6 @@ dist/
 build/
 .DS_Store
 .cursor/
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+*-checkpoint.*

@@ -1,4 +1,7 @@
 
+# Optional: force adapter class (e.g. qwen3_5). Null = auto from config.json / architectures.
+adapter: null
+
 pretrained_model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
 revision: null
 trust_remote_code: true

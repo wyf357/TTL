@@ -1,0 +1,16 @@
+# ERQA with online TTA (HF PEFT updates + SGLang LoRA sync).
+#
+# Usage (from OpenTTL/):
+#   python evaluations/run_erqa.py --config-name=eval_erqa_online max_examples=10
+#   python evaluations/run_erqa.py --config-name=eval_erqa_online strategy=tlm
+#
+defaults:
+  - eval_erqa
+  - _self_
+
+online:
+  enabled: true
+  # TLM / 多模态：与 configs/online/tta.yaml 默认 max_length 一致（4096）
+  max_length: 4096
+  # 与默认 online/tta.yaml 一致；显式写出以免改 defaults 时遗漏（重算换显存，loss 不变）
+  gradient_checkpointing: true
