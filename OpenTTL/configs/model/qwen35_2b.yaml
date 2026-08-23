@@ -13,8 +13,8 @@ defaults:
   - default
   - _self_
 
-# Local model path on AutoDL
-pretrained_model_name_or_path: /root/autodl-tmp/Qwen3.5-2B
+# Local model path: workspace copy, with AutoDL data disk as fallback in scripts/run_bfcl.sh
+pretrained_model_name_or_path: /home/jxy/TTL/Qwen3.5-2B
 
 # Qwen3.5 requires trust_remote_code for custom architecture
 trust_remote_code: true

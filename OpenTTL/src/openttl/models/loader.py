@@ -67,7 +67,13 @@ def load_causal_lm(cfg: Any) -> PreTrainedModel:
     )
     if attn:
         kwargs["attn_implementation"] = attn
-    return AutoModelForCausalLM.from_pretrained(**kwargs)
+    try:
+        return AutoModelForCausalLM.from_pretrained(**kwargs)
+    except (ValueError, OSError, KeyError, TypeError):
+        # Qwen3.5 等为 Qwen3_5ForConditionalGeneration，需走 ImageTextToText。
+        from transformers import AutoModelForImageTextToText
+
+        return AutoModelForImageTextToText.from_pretrained(**kwargs)
 
 
 def load_causal_lm_eval(cfg: Any) -> PreTrainedModel:

@@ -57,8 +57,12 @@ python evaluations/run_adapteval.py
 # 可选：预下载数据到本地（离线环境）
 python scripts/download_bfcl_dataset.py --out /root/autodl-tmp/bfcl
 
-# 评测（默认 category=simple，模型用 configs/model/default.yaml，可用 model=qwen35 覆盖）
-python evaluations/run_bfcl.py category=multiple bfcl_local_root=/root/autodl-tmp/bfcl
+# 本地 Qwen3.5 评测（自动解析模型路径并下载数据）
+bash scripts/run_bfcl.sh
+bash scripts/run_bfcl.sh category=simple max_samples=20
+
+# 或手动指定
+python evaluations/run_bfcl.py model=qwen35_2b category=simple bfcl_local_root=/root/autodl-tmp/bfcl
 
 # 解析/评分逻辑冒烟测试（无需 GPU/依赖）
 python test_bfcl_eval.py

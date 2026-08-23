@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -20,14 +21,38 @@ _ROOT = Path(__file__).resolve().parents[1]
 if str(_ROOT / "src") not in sys.path:
     sys.path.insert(0, str(_ROOT / "src"))
 
+_THINK_OPEN = "<" + "think" + ">"
+_THINK_CLOSE = "</" + "think" + ">"
+
+
+def _strip_thinking(text: str) -> str:
+    """去掉 Qwen3.5 thinking 段，保留最终函数调用。"""
+    if not text:
+        return text
+    o, c = _THINK_OPEN, _THINK_CLOSE
+    prev = None
+    while prev != text:
+        prev = text
+        text = re.sub(re.escape(o) + r".*?" + re.escape(c), "", text, flags=re.DOTALL)
+    text = text.strip()
+    if c in text:
+        tail = text.split(c)[-1].strip()
+        if tail:
+            text = tail
+    return text.strip()
+
 
 def _build_prompt(tokenizer, row: dict, use_chat_template: bool) -> str:
     from openttl.data.bfcl import build_bfcl_messages, build_bfcl_plain_prompt
 
     if use_chat_template and getattr(tokenizer, "chat_template", None):
-        return tokenizer.apply_chat_template(
-            build_bfcl_messages(row), tokenize=False, add_generation_prompt=True
-        )
+        kwargs = dict(tokenize=False, add_generation_prompt=True)
+        try:
+            return tokenizer.apply_chat_template(
+                build_bfcl_messages(row), enable_thinking=False, **kwargs
+            )
+        except TypeError:
+            return tokenizer.apply_chat_template(build_bfcl_messages(row), **kwargs)
     return build_bfcl_plain_prompt(row)
 
 
@@ -55,8 +80,11 @@ def main(cfg: DictConfig) -> None:
         model = model.merge_and_unload()
     model.eval()
 
-    dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(dev)
+    if getattr(model, "hf_device_map", None) is None:
+        dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model.to(dev)
+    else:
+        dev = next(model.parameters()).device
 
     rows = load_bfcl_category(cfg)
     if max_s is not None:
@@ -64,21 +92,33 @@ def main(cfg: DictConfig) -> None:
 
     resp = Path(str(cfg.result_jsonl))
     resp.parent.mkdir(parents=True, exist_ok=True)
+    tok_cfg = getattr(cfg.model, "tokenizer", None)
+    max_length = int(getattr(tok_cfg, "model_max_length", 2048) or 2048)
 
     verdicts = []
     with open(resp, "w", encoding="utf-8") as rf:
         for i, row in enumerate(rows):
             prompt = _build_prompt(tokenizer, row, use_chat_template)
-            inputs = tokenizer(prompt, return_tensors="pt", truncation=True,
-                               max_length=int(getattr(cfg.model.tokenizer, "model_max_length", 2048) or 2048)).to(dev)
+            inputs = tokenizer(
+                prompt,
+                return_tensors="pt",
+                truncation=True,
+                max_length=max_length,
+            )
+            inputs = {k: v.to(dev) for k, v in inputs.items()}
             with torch.no_grad():
                 out = model.generate(
                     **inputs,
                     max_new_tokens=max_new_tokens,
                     do_sample=False,
                     pad_token_id=tokenizer.pad_token_id,
+                    eos_token_id=tokenizer.eos_token_id,
                 )
-            text = tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
+            text = tokenizer.decode(
+                out[0][inputs["input_ids"].shape[1] :],
+                skip_special_tokens=True,
+            )
+            text = _strip_thinking(text)
             rf.write(json.dumps({"id": row.get("id", i), "result": text}, ensure_ascii=False) + "\n")
             rf.flush()
             verdicts.append(evaluate_bfcl_sample(category, row, text))

@@ -37,21 +37,31 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
     cats = args.categories or list(BFCL_ALL_CATEGORIES)
 
-    for cat in cats:
-        fname = f"BFCL_v3_{cat}.json"
-        target = out / fname
-        if target.exists():
-            print(f"[skip] {target} 已存在")
-            continue
-        path = hf_hub_download(repo_id=BFCL_HF_PATH, filename=fname, repo_type="dataset")
-        # hf_hub_download 返回缓存路径，复制/软链到目标目录便于 bfcl_local_root 直接使用
+    def _link(src: str, dest: Path) -> None:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        if dest.exists():
+            print(f"[skip] {dest} 已存在")
+            return
         try:
-            os.symlink(path, target)
+            os.symlink(src, dest)
         except OSError:
             import shutil
 
-            shutil.copy(path, target)
-        print(f"[ok] {fname} -> {target}")
+            shutil.copy(src, dest)
+        print(f"[ok] {dest.name} -> {dest}")
+
+    for cat in cats:
+        fname = f"BFCL_v3_{cat}.json"
+        path = hf_hub_download(repo_id=BFCL_HF_PATH, filename=fname, repo_type="dataset")
+        _link(path, out / fname)
+        gt_rel = f"possible_answer/BFCL_v3_{cat}.json"
+        try:
+            gt_path = hf_hub_download(
+                repo_id=BFCL_HF_PATH, filename=gt_rel, repo_type="dataset"
+            )
+            _link(gt_path, out / gt_rel)
+        except Exception as e:
+            print(f"[warn] 无 possible_answer（{cat}）: {e}")
 
 
 if __name__ == "__main__":

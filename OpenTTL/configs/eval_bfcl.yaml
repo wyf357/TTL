@@ -1,5 +1,5 @@
 defaults:
-  - model: default
+  - model: qwen35_2b
   - _self_
 
 # BFCL (Berkeley Function Calling Leaderboard) 评测配置
