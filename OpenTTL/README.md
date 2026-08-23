@@ -48,3 +48,20 @@ python evaluations/run_adapteval.py
 ```
 
 （需按实际基准补全指标逻辑。）
+
+## BFCL（Berkeley Function Calling Leaderboard）评测
+
+预训练模型在 Gorilla BFCL v3 上做函数调用预测与 AST 评分（近似官方 AST eval；exec_*/multi_turn 仅生成预测）。
+
+```bash
+# 可选：预下载数据到本地（离线环境）
+python scripts/download_bfcl_dataset.py --out /root/autodl-tmp/bfcl
+
+# 评测（默认 category=simple，模型用 configs/model/default.yaml，可用 model=qwen35 覆盖）
+python evaluations/run_bfcl.py category=multiple bfcl_local_root=/root/autodl-tmp/bfcl
+
+# 解析/评分逻辑冒烟测试（无需 GPU/依赖）
+python test_bfcl_eval.py
+```
+
+产物：`outputs/bfcl_metrics.json`（指标）与 `outputs/bfcl_result.jsonl`（逐样本预测，兼容官方 answer 格式）。

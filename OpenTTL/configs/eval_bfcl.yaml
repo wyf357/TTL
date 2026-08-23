@@ -1,0 +1,20 @@
+defaults:
+  - model: default
+  - _self_
+
+# BFCL (Berkeley Function Calling Leaderboard) 评测配置
+# category 可选见 src/openttl/data/bfcl.py:BFCL_ALL_CATEGORIES，常用：
+#   simple / multiple / parallel / parallel_multiple / live_simple / live_multiple
+#   irrelevance / live_irrelevance / relevance / live_relevance / java / javascript
+#   exec_* 与 multi_turn_* 仅生成预测，内置评测不计分。
+category: simple
+# 本地已下载 BFCL_v3_*.json 的目录（可用 scripts/download_bfcl_dataset.py 预下载）；null 走 Hub
+bfcl_local_root: null
+hf_path: gorilla-llm/Berkeley-Function-Calling-Leaderboard
+adapter_path: null
+merge_lora: false
+max_samples: null
+max_new_tokens: 256
+use_chat_template: true
+output_json: outputs/bfcl_metrics.json
+result_jsonl: outputs/bfcl_result.jsonl

@@ -1,0 +1,58 @@
+"""下载 BFCL v3 数据集 json 文件到本地目录（离线环境评测用）。
+
+用法：
+  python scripts/download_bfcl_dataset.py --out /root/autodl-tmp/bfcl
+  python scripts/download_bfcl_dataset.py --out /root/autodl-tmp/bfcl --categories simple multiple
+国内无外网时可先 export HF_ENDPOINT=https://hf-mirror.com
+"""
+
+from __future__ import annotations
+
+import argparse
+import os
+import sys
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(_ROOT / "src"))
+
+
+def main() -> None:
+    from huggingface_hub import hf_hub_download
+
+    from openttl.data.bfcl import BFCL_ALL_CATEGORIES, BFCL_HF_PATH
+
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--out", required=True, help="本地输出目录")
+    ap.add_argument(
+        "--categories",
+        nargs="*",
+        default=None,
+        help=f"要下载的类别（默认全部）；可选: {sorted(BFCL_ALL_CATEGORIES)}",
+    )
+    args = ap.parse_args()
+
+    out = Path(os.path.expanduser(args.out))
+    out.mkdir(parents=True, exist_ok=True)
+    cats = args.categories or list(BFCL_ALL_CATEGORIES)
+
+    for cat in cats:
+        fname = f"BFCL_v3_{cat}.json"
+        target = out / fname
+        if target.exists():
+            print(f"[skip] {target} 已存在")
+            continue
+        path = hf_hub_download(repo_id=BFCL_HF_PATH, filename=fname, repo_type="dataset")
+        # hf_hub_download 返回缓存路径，复制/软链到目标目录便于 bfcl_local_root 直接使用
+        try:
+            os.symlink(path, target)
+        except OSError:
+            import shutil
+
+            shutil.copy(path, target)
+        print(f"[ok] {fname} -> {target}")
+
+
+if __name__ == "__main__":
+    main()
