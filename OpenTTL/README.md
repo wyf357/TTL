@@ -57,11 +57,25 @@ python evaluations/run_adapteval.py
 # 可选：预下载数据到本地（离线环境）
 python scripts/download_bfcl_dataset.py --out /root/autodl-tmp/bfcl
 
-# 评测（默认 category=simple，模型用 configs/model/default.yaml，可用 model=qwen35 覆盖）
-python evaluations/run_bfcl.py category=multiple bfcl_local_root=/root/autodl-tmp/bfcl
+# 本地 Qwen3.5 评测（自动解析模型路径并下载数据）
+bash scripts/run_bfcl.sh
+bash scripts/run_bfcl.sh category=simple max_samples=20
+
+# 或手动指定
+python evaluations/run_bfcl.py model=qwen35_2b category=simple bfcl_local_root=/root/autodl-tmp/bfcl
 
 # 解析/评分逻辑冒烟测试（无需 GPU/依赖）
 python test_bfcl_eval.py
 ```
 
 产物：`outputs/bfcl_metrics.json`（指标）与 `outputs/bfcl_result.jsonl`（逐样本预测，兼容官方 answer 格式）。
+
+## SGLang 推理 + Online TTA（评测脚本）
+
+依赖：`pip install -e ".[sglang]"` 或 `requirements.txt` 中的 `sglang[all]`。
+
+- **ERQA**：`python evaluations/run_erqa.py`（默认 `inference=sglang`；`online.enabled=false` 仅推理；开启 TTA 时加 `online.enabled=true` 且需 `model.peft.enabled=true`）。
+- **MMLU**：`python evaluations/run_mmlu.py inference.backend=sglang`（可选 `online.enabled=true`）。
+- **EmbodiedBench**：配置 `tta.enabled=true`、`tta.backend=instruction_entropy`，并与 `model_name` 使用同一 checkpoint；默认走 SGLang 本地后端。若需旧版 transformers 管线，设置环境变量 `OPENTTL_LOCAL_BACKEND=transformers`。
+
+单卡双进程（HF LoRA 训练 + SGLang 推理）时请在 `configs/inference/sglang.yaml` 中调低 `mem_fraction_static`。

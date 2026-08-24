@@ -1,0 +1,18 @@
+# SGLang Offline Engine
+
+backend: sglang
+mode: offline
+dtype: bfloat16
+tp_size: 1
+# Reduce from 0.45 to leave room for the HF training model + TTA activations
+# that live in the same GPU process.  0.30 ≈ 9.5 GiB on a 32 GiB card; the
+# remaining ~22 GiB is shared by the PEFT model, optimizer states, and forward
+# activations.  Increase back towards 0.45 only if the GPU is large enough.
+mem_fraction_static: 0.30
+disable_cuda_graph: true
+trust_remote_code: true
+context_length: null
+max_lora_rank: ${model.peft.r}
+lora_target_modules: ${model.peft.target_modules}
+initial_lora_name: null
+log_level: error

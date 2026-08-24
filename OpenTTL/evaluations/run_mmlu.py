@@ -1,10 +1,15 @@
-"""MMLU 评测：仅在推理阶段使用标准答案计算准确率（不参与 TTA 梯度）。"""
+"""MMLU 评测：SGLang（或 HF）上算 continuation logprob；可选每题后 online TTA（HF+PEFT）。"""
 
 from __future__ import annotations
+
+import os
+
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
 import json
 import sys
 from pathlib import Path
+from typing import Any, Optional
 
 import hydra
 import torch
@@ -16,14 +21,14 @@ if str(_ROOT / "src") not in sys.path:
     sys.path.insert(0, str(_ROOT / "src"))
 
 
-def _continuation_logprob(
+def _continuation_logprob_hf(
     model: torch.nn.Module,
-    tokenizer,
+    tokenizer: Any,
     prefix: str,
     continuation: str,
     device: torch.device,
 ) -> float:
-    """prefix + continuation 上，仅对 continuation 的 token 求和 log p。"""
+    """prefix + continuation 上，仅对 continuation 的 token 求和 log p（HF 回退）。"""
     full = prefix + continuation
     pref = tokenizer(prefix, return_tensors="pt", add_special_tokens=True)
     full_enc = tokenizer(full, return_tensors="pt", add_special_tokens=True)
@@ -46,12 +51,34 @@ def _continuation_logprob(
     return total
 
 
+def _score_choice(
+    inference: Any,
+    tokenizer: Any,
+    prefix: str,
+    continuation: str,
+    *,
+    hf_model: Optional[torch.nn.Module] = None,
+    device: Optional[torch.device] = None,
+) -> float:
+    full = prefix + continuation
+    pref = tokenizer(prefix, return_tensors="pt", add_special_tokens=True)
+    plen = int(pref["input_ids"].shape[1])
+    if hasattr(inference, "score_logprob_sum"):
+        return float(inference.score_logprob_sum(full_text=full, prefix_len_tokens=plen))
+    if hf_model is not None and device is not None:
+        return _continuation_logprob_hf(hf_model, tokenizer, prefix, continuation, device)
+    raise RuntimeError("无法计算 logprob：缺少 SGLang engine 或 HF 模型")
+
+
 @hydra.main(version_base=None, config_path=str(_ROOT / "configs"), config_name="eval_mmlu")
 def main(cfg: DictConfig) -> None:
     from peft import PeftModel
 
+    from openttl.adapters.registry import extract_model_cfg
     from openttl.data.mmlu import format_mmlu_prompt_no_answer, load_mmlu_source_dataset
-    from openttl.models.loader import load_causal_lm, load_tokenizer
+    from openttl.models.loader import load_adapter
+    from openttl.models.lora_wrapper import inject_lora
+    from openttl.online.batching import build_tta_batch, strategy_to_label_mode
 
     hf_path = str(cfg.hf_path)
     hf_name = str(cfg.hf_name)
@@ -59,19 +86,72 @@ def main(cfg: DictConfig) -> None:
     max_s = OmegaConf.select(cfg, "max_samples")
     suffix = str(cfg.answer_suffix)
 
-    tokenizer = load_tokenizer(cfg.model)
-    model = load_causal_lm(cfg.model)
-    ap = OmegaConf.select(cfg, "adapter_path")
-    if ap:
-        model = PeftModel.from_pretrained(model, ap)
-    if bool(OmegaConf.select(cfg, "merge_lora") or False) and hasattr(
-        model, "merge_and_unload"
-    ):
-        model = model.merge_and_unload()
-    model.eval()
+    mc = extract_model_cfg(cfg)
+    adapter = load_adapter(cfg)
+    adapter.load_processor(mc)
+    tokenizer = adapter.tokenizer()
 
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(dev)
+    backend = str(OmegaConf.select(cfg, "inference.backend") or "sglang").lower()
+    online_on = bool(OmegaConf.select(cfg, "online.enabled") or False)
+    peft_on = bool(OmegaConf.select(cfg, "model.peft.enabled") or False)
+    if online_on and bool(OmegaConf.select(cfg, "merge_lora") or False):
+        raise ValueError("online.enabled 与 merge_lora 不能同时启用（merge 后无 PEFT 适配器可同步）")
+
+    base = adapter.load_model(mc)
+    ap = OmegaConf.select(cfg, "adapter_path")
+    if ap:
+        train_model = PeftModel.from_pretrained(base, ap)
+    elif peft_on:
+        train_model = inject_lora(base, cfg.model.peft)
+    else:
+        train_model = base
+
+    if bool(OmegaConf.select(cfg, "merge_lora") or False) and hasattr(train_model, "merge_and_unload"):
+        train_model = train_model.merge_and_unload()
+
+    train_model.to(dev)
+
+    initial_lora_path = None
+    runner = None
+    if online_on:
+        if not peft_on and not ap:
+            raise ValueError("online.enabled=true 需要 PEFT（model.peft.enabled 或 adapter_path）")
+        from openttl.online.tta_runner import OnlineTTARunner
+
+        initial_lora_path = str(OnlineTTARunner.initial_adapter_path(cfg, train_model, cfg.inference))
+
+    infer = None
+    hf_for_score: Optional[torch.nn.Module] = None
+
+    if backend == "sglang":
+        from openttl.inference.sglang_engine import build_sglang_engine_from_omegaconf
+
+        infer = build_sglang_engine_from_omegaconf(
+            cfg.model,
+            cfg.inference,
+            tokenizer,
+            initial_lora_path if online_on else None,
+        )
+    elif backend == "hf":
+        from openttl.inference.hf_engine import HuggingFaceEngine
+
+        train_model.eval()
+        infer = HuggingFaceEngine(train_model, adapter, dev)
+        hf_for_score = train_model
+    else:
+        raise ValueError(f"未知 inference.backend: {backend}")
+
+    if online_on:
+        from openttl.online.tta_runner import OnlineTTARunner
+
+        runner = OnlineTTARunner(
+            cfg,
+            model=train_model,
+            adapter=adapter,
+            inference=infer,
+            device=dev,
+        )
 
     ds = load_mmlu_source_dataset(cfg)
     if max_s is not None:
@@ -80,12 +160,20 @@ def main(cfg: DictConfig) -> None:
     correct = 0
     n = 0
     for row in ds:
+        train_model.eval()
         prefix = format_mmlu_prompt_no_answer(row["question"], row["choices"])
         scores = []
         for letter in ("A", "B", "C", "D"):
             cont = f"{suffix}{letter}"
             scores.append(
-                _continuation_logprob(model, tokenizer, prefix, cont, dev)
+                _score_choice(
+                    infer,
+                    tokenizer,
+                    prefix,
+                    cont,
+                    hf_model=hf_for_score,
+                    device=dev,
+                )
             )
         pred = int(max(range(4), key=lambda i: scores[i]))
         gold = row["answer"]
@@ -96,6 +184,28 @@ def main(cfg: DictConfig) -> None:
         if pred == gold_i:
             correct += 1
         n += 1
+
+        if runner is not None and runner.enabled():
+            strat_name = str(OmegaConf.select(cfg, "strategy.name") or "tent").lower()
+            max_len = int(OmegaConf.select(cfg, "online.max_length") or 512)
+            lm = strategy_to_label_mode(strat_name, prompt_only_tta=True)
+            batch = build_tta_batch(
+                adapter,
+                chat_prompt_text=prefix,
+                prompt_plain=prefix,
+                images=None,
+                response=None,
+                max_length=max_len,
+                device=dev,
+                label_mode=lm,
+            )
+            try:
+                runner.update(batch)
+            except Exception as e:
+                print(f"Warning: TTA update failed: {e}")
+
+    if backend == "sglang" and infer is not None:
+        infer.shutdown()
 
     acc = correct / n if n else 0.0
     metrics = {

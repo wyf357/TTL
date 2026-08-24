@@ -1,10 +1,4 @@
-# Qwen3.5-2B Model Configuration
-#
-# Configuration for Qwen3.5-2B model loaded from local path.
-# NOTE: This appears to be a text-only model (not VL).
-# ERQA is a multimodal benchmark, so this model will only process text questions.
-#
-# For multimodal ERQA evaluation, use a vision-language model like Qwen3.5-VL-2B.
+# Qwen3.5-2B（本地路径）；原生多模态能力由 checkpoint 与 AutoProcessor 决定，无需单独 VL 开关。
 #
 # Usage:
 #   python evaluations/run_erqa.py model=qwen35_2b
@@ -13,8 +7,8 @@ defaults:
   - default
   - _self_
 
-# Local model path on AutoDL
-pretrained_model_name_or_path: /root/autodl-tmp/Qwen3.5-2B
+# Local model path: workspace copy, with AutoDL data disk as fallback in scripts/run_bfcl.sh
+pretrained_model_name_or_path: /home/jxy/TTL/Qwen3.5-2B
 
 # Qwen3.5 requires trust_remote_code for custom architecture
 trust_remote_code: true
@@ -28,16 +22,15 @@ torch_dtype: float16
 # PEFT/LoRA configuration (optional, for TTA)
 peft:
   enabled: false  # Set to true if using test-time adaptation
+  path: null
   r: 8
   lora_alpha: 16
   lora_dropout: 0.05
   bias: none
+  # TLM paper (Algorithm 1): LoRA only on Wq and Wv.
+  # Using all 7 modules (q/k/v/o/gate/up/down) multiplies optimizer-state memory
+  # by 7× and increases backward-pass memory significantly; use only when needed.
   target_modules:
     - q_proj
-    - k_proj
     - v_proj
-    - o_proj
-    - gate_proj
-    - up_proj
-    - down_proj
   task_type: CAUSAL_LM

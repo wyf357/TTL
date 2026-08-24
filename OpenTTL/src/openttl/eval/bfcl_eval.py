@@ -134,6 +134,14 @@ def _parse_py_call_expr(expr: ast.expr) -> Optional[Call]:
 
 
 _CALL_RE = re.compile(r"[A-Za-z_][\w]*(?:\.[A-Za-z_][\w]*)*\s*\(")
+_QWEN_TOOL_CALL_RE = re.compile(
+    r"<tool_call>\s*<function=([^>]+)>(.*?)</function>\s*</tool_call>",
+    re.DOTALL,
+)
+_QWEN_PARAM_RE = re.compile(
+    r"<parameter=([^>]+)>\s*(.*?)\s*</parameter>",
+    re.DOTALL,
+)
 
 
 def _parse_python_style_calls(text: str) -> List[Call]:
@@ -221,6 +229,19 @@ def _loose_literal(s: str) -> Any:
     return s
 
 
+def _parse_qwen_tool_calls(text: str) -> List[Call]:
+    """解析 Qwen3.5 原生 ``<tool_call><function=...><parameter=...>`` 格式。"""
+    calls: List[Call] = []
+    for m in _QWEN_TOOL_CALL_RE.finditer(text):
+        name = m.group(1).strip()
+        body = m.group(2)
+        args: Dict[str, Any] = {}
+        for pm in _QWEN_PARAM_RE.finditer(body):
+            args[pm.group(1).strip()] = _loose_literal(pm.group(2).strip())
+        calls.append({"name": name, "arguments": args, "positional": []})
+    return calls
+
+
 def parse_model_calls(text: str) -> List[Call]:
     """从模型自由文本中尽力提取函数调用列表；无法提取返回 []。"""
     if not text or not text.strip():
@@ -247,7 +268,11 @@ def parse_model_calls(text: str) -> List[Call]:
                 c = _coerce_call_object(obj)
                 if c:
                     return [c]
-        # 2) Python/Java/JS 风格调用
+        # 2) Qwen 原生 XML tool_call
+        calls = _parse_qwen_tool_calls(cand)
+        if calls:
+            return calls
+        # 3) Python/Java/JS 风格调用
         calls = _parse_python_style_calls(cand)
         if calls:
             return calls
@@ -287,6 +312,94 @@ def parse_ground_truth(gt: Any, language: str = "python") -> List[List[Call]]:
         if calls:
             out.append(calls)
     return out
+
+
+def _is_official_gt(gt: Any) -> bool:
+    """官方 possible_answer：[{func_name: {param: [允许值...]}}]。"""
+    if not isinstance(gt, list) or not gt:
+        return False
+    first = gt[0]
+    if not isinstance(first, dict):
+        return False
+    if "name" in first and ("arguments" in first or "parameters" in first):
+        return False
+    return all(isinstance(v, dict) for v in first.values())
+
+
+def _names_match(pred_name: str, gold_name: str) -> bool:
+    p, g = pred_name.strip(), gold_name.strip()
+    if p == g:
+        return True
+    return p.split(".")[-1] == g.split(".")[-1]
+
+
+def _official_params_match(pred_args: Any, gold_params: Any) -> bool:
+    if not isinstance(pred_args, dict) or not isinstance(gold_params, dict):
+        return False
+    pk = {str(k).strip(): v for k, v in pred_args.items()}
+    gk = {str(k).strip(): v for k, v in gold_params.items()}
+    if set(pk) - set(gk):
+        return False
+    for k, allowed in gk.items():
+        allowed_list = allowed if isinstance(allowed, list) else [allowed]
+        optional = any(a == "" or a is None for a in allowed_list)
+        if k not in pk:
+            if not optional:
+                return False
+            continue
+        if not _value_in_allowed(pk[k], allowed_list):
+            return False
+    return True
+
+
+def _value_in_allowed(pred: Any, allowed: List[Any]) -> bool:
+    for a in allowed:
+        if a == "" or a is None:
+            continue
+        if _values_equal(pred, a):
+            return True
+        if isinstance(a, dict) and isinstance(pred, dict):
+            if _official_params_match(pred, a):
+                return True
+        if isinstance(a, list) and a and isinstance(a[0], dict):
+            if isinstance(pred, dict) and any(
+                _official_params_match(pred, x) for x in a if isinstance(x, dict)
+            ):
+                return True
+            if isinstance(pred, list) and pred and isinstance(pred[0], dict):
+                if any(_official_params_match(pred[0], x) for x in a if isinstance(x, dict)):
+                    return True
+        if isinstance(pred, list) and pred and isinstance(pred[0], dict) and isinstance(a, dict):
+            if _official_params_match(pred[0], a):
+                return True
+    return False
+
+
+def _match_one_official_call(pred: Call, gold_item: Any) -> bool:
+    if not isinstance(gold_item, dict) or len(gold_item) != 1:
+        return False
+    (gname, gparams), = gold_item.items()
+    if not isinstance(gparams, dict):
+        return False
+    if not _names_match(pred["name"], str(gname)):
+        return False
+    return _official_params_match(pred["arguments"], gparams)
+
+
+def match_official_gt(pred_calls: List[Call], gold_list: List[Any]) -> bool:
+    """官方 possible_answer 匹配：参数值为允许列表，空字符串表示可选。"""
+    if len(pred_calls) != len(gold_list):
+        return False
+    if all(_match_one_official_call(p, g) for p, g in zip(pred_calls, gold_list)):
+        return True
+    if len(pred_calls) > 6:
+        return False
+    from itertools import permutations
+
+    for perm in permutations(pred_calls):
+        if all(_match_one_official_call(p, g) for p, g in zip(perm, gold_list)):
+            return True
+    return False
 
 
 # ---------------------------------------------------------------- 匹配
@@ -347,7 +460,10 @@ def evaluate_bfcl_sample(
             language = "java"
         elif category == "javascript":
             language = "javascript"
-        gold = parse_ground_truth(row.get("ground_truth"), language=language)
+        gt = row.get("ground_truth")
+        if _is_official_gt(gt):
+            return match_official_gt(pred_calls, gt)
+        gold = parse_ground_truth(gt, language=language)
         if not gold:
             return None
         return match_ast(pred_calls, gold)

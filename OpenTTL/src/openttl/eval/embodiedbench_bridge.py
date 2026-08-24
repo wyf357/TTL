@@ -148,13 +148,29 @@ def _patch_embodiedbench_remote_model_qwen35_local() -> None:
         task_type: Any = None,
     ) -> None:
         if model_type == "local" and rm._local_model_requires_transformers_backend(model_name):
-            from openttl.eval.eb_qwen35_transformers_local import build_transformers_local_pipeline
+            if os.environ.get("OPENTTL_LOCAL_BACKEND", "").lower() == "transformers":
+                from openttl.eval.eb_qwen35_transformers_local import build_transformers_local_pipeline
+
+                self.model_name = model_name
+                self.model_type = model_type
+                self.language_only = language_only
+                self.task_type = task_type
+                self.model = build_transformers_local_pipeline(model_name, dtype="float16", tp=tp)
+                return
+            from openttl.eval.eb_shared_runtime import get_shared_inference
+            from openttl.eval.eb_sglang_local import build_sglang_local_pipeline
 
             self.model_name = model_name
             self.model_type = model_type
             self.language_only = language_only
             self.task_type = task_type
-            self.model = build_transformers_local_pipeline(model_name, dtype="float16", tp=tp)
+            shared = get_shared_inference()
+            self.model = build_sglang_local_pipeline(
+                model_name,
+                dtype="float16",
+                tp=tp,
+                inference_engine=shared,
+            )
             return
         if model_type == "local" and rm._local_model_prefers_turbomind(model_name):
             self.model_name = model_name
@@ -283,6 +299,8 @@ def run_embodiedbench_eval(
 
 def run_embodiedbench_from_omegaconf(cfg: DictConfig) -> None:
     """从 OpenTTL Hydra 配置运行（顶层 ``eb_env`` + 与官方一致的字段）。"""
+    from openttl.eval.eb_shared_runtime import clear_shared_inference
+
     container = OmegaConf.to_container(cfg, resolve=True)
     if not isinstance(container, dict):
         raise TypeError("eval_embodiedbench 配置应为字典结构")
@@ -292,22 +310,87 @@ def run_embodiedbench_from_omegaconf(cfg: DictConfig) -> None:
     env_name = str(env_name)
     merged = build_embodiedbench_merged_config(env_name, container)
     hooks = build_hooks_from_cfg(cfg)
-    run_embodiedbench_eval(env_name, merged, hooks=hooks)
+    try:
+        run_embodiedbench_eval(env_name, merged, hooks=hooks)
+    finally:
+        clear_shared_inference()
 
 
 def build_hooks_from_cfg(cfg: DictConfig) -> Optional[Any]:
     """根据 ``tta.enabled`` / ``tta.backend`` 构造钩子；未启用则返回 None。"""
+    import torch
+
     tta = OmegaConf.select(cfg, "tta")
     if not tta or not bool(OmegaConf.select(tta, "enabled") or False):
         return None
     backend = str(OmegaConf.select(tta, "backend") or "none")
     if backend in ("", "none"):
         return None
-    if backend == "instruction_entropy":
-        from openttl.eval.eb_instruction_tta_hook import InstructionEntropyTTAHook
+    if backend != "instruction_entropy":
+        raise ValueError(f"未知 tta.backend: {backend!r}")
 
-        model_cfg = OmegaConf.select(cfg, "model")
-        if model_cfg is None:
-            raise ValueError("tta.backend=instruction_entropy 需要同时提供 OpenTTL 的 model: 配置组")
-        return InstructionEntropyTTAHook(model_cfg=model_cfg, tta_cfg=tta)
-    raise ValueError(f"未知 tta.backend: {backend!r}")
+    model_cfg = OmegaConf.select(cfg, "model")
+    if model_cfg is None:
+        raise ValueError("tta.backend=instruction_entropy 需要同时提供 OpenTTL 的 model: 配置组")
+
+    if os.environ.get("OPENTTL_LOCAL_BACKEND", "").lower() == "transformers":
+        from openttl.eval.eb_instruction_tta_hook import LegacyInstructionEntropyTTAHook
+
+        return LegacyInstructionEntropyTTAHook(model_cfg=model_cfg, tta_cfg=tta)
+
+    from peft import PeftModel
+
+    from openttl.eval.eb_instruction_tta_hook import InstructionEntropyTTAHook
+    from openttl.eval.eb_shared_runtime import set_shared_inference
+    from openttl.inference.sglang_engine import build_sglang_engine_from_omegaconf
+    from openttl.models.loader import load_adapter
+    from openttl.models.lora_wrapper import inject_lora
+    from openttl.online.tta_runner import OnlineTTARunner
+
+    runner_cfg = OmegaConf.create(OmegaConf.to_container(cfg, resolve=True))
+    if OmegaConf.select(tta, "lr") is not None:
+        runner_cfg.online.lr = float(tta.lr)
+    if OmegaConf.select(tta, "max_length") is not None:
+        runner_cfg.online.max_length = int(tta.max_length)
+    if OmegaConf.select(tta, "max_instruction_chars") is not None:
+        runner_cfg.online.max_instruction_chars = int(tta.max_instruction_chars)
+    runner_cfg.online.enabled = True
+    if OmegaConf.select(runner_cfg, "strategy.name") is None:
+        runner_cfg.strategy = OmegaConf.merge(
+            OmegaConf.create({"name": "tent"}),
+            OmegaConf.select(runner_cfg, "strategy") or OmegaConf.create(),
+        )
+
+    infer_backend = str(OmegaConf.select(runner_cfg, "inference.backend") or "sglang").lower()
+    if infer_backend != "sglang":
+        raise ValueError(
+            "instruction_entropy（SGLang 对齐）需要 inference.backend=sglang；"
+            "或设 OPENTTL_LOCAL_BACKEND=transformers 使用旧版钩子"
+        )
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    adapter = load_adapter(runner_cfg)
+    adapter.load_processor(model_cfg)
+    tokenizer = adapter.tokenizer()
+    base = adapter.load_model(model_cfg)
+    ap = OmegaConf.select(model_cfg, "adapter_path")
+    if ap:
+        train_model = PeftModel.from_pretrained(base, str(ap))
+    else:
+        if not bool(OmegaConf.select(model_cfg, "peft.enabled") or False):
+            raise ValueError("EmbodiedBench TTA + SGLang 需要 model.peft.enabled 或 adapter_path")
+        train_model = inject_lora(base, model_cfg.peft)
+    train_model.to(device)
+
+    initial_path = str(OnlineTTARunner.initial_adapter_path(runner_cfg, train_model, runner_cfg.inference))
+    infer = build_sglang_engine_from_omegaconf(model_cfg, runner_cfg.inference, tokenizer, initial_path)
+    set_shared_inference(infer)
+
+    runner = OnlineTTARunner(
+        runner_cfg,
+        model=train_model,
+        adapter=adapter,
+        inference=infer,
+        device=device,
+    )
+    return InstructionEntropyTTAHook(runner)

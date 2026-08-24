@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from torch import nn
 
 from openttl.strategies.base import Strategy
-from openttl.strategies.tta_shared import apply_backbone_eval_lora_train
+from openttl.strategies.tta_shared import apply_backbone_eval_lora_train, tta_model_forward
 
 
 def _apply_top_k_top_p(logits: torch.Tensor, top_k: int, top_p: float) -> torch.Tensor:
@@ -111,13 +111,24 @@ class COMEStrategy(Strategy):
         vocab_size = int(model.config.vocab_size)
         ids, am = _pad_prompt_batch(input_ids, attention_mask, pad_token_id)
 
+        # Multimodal tensors (e.g. pixel_values): only needed on the first forward; later steps
+        # extend ids/am only (KV cache carries image context).
+        extra_mm: Dict[str, Any] = {}
+        for k, v in inputs.items():
+            if k in ("input_ids", "attention_mask", "labels"):
+                continue
+            if isinstance(v, torch.Tensor):
+                extra_mm[k] = v
+
         total_h: torch.Tensor | None = None
         last_out = None
         ord_: float | int = float("inf") if math.isinf(p_norm) else p_norm
 
-        for _ in range(t_steps):
-            fwd = {"input_ids": ids, "attention_mask": am}
-            last_out = model(**fwd)
+        for step in range(t_steps):
+            fwd: Dict[str, Any] = {"input_ids": ids, "attention_mask": am}
+            if step == 0 and extra_mm:
+                fwd.update(extra_mm)
+            last_out = tta_model_forward(model, fwd)
             logits_z = last_out.logits[:, -1, :]
 
             norm_z = torch.linalg.vector_norm(logits_z, ord=ord_, dim=-1, keepdim=True)

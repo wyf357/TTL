@@ -7,6 +7,9 @@ from typing import Any, Optional
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizerBase
 
+# 注意：不要在此处 from openttl.adapters.registry 导入。registry 在导入时会
+# _ensure_registered() → auto → 回到本模块，若顶层已依赖 registry 会形成循环导入。
+
 
 @dataclass
 class ModelLoadConfig:
@@ -17,6 +20,13 @@ class ModelLoadConfig:
     attn_implementation: Optional[str] = "sdpa"
     device_map: Optional[Any] = None
     use_flash_attention_2: bool = False
+
+
+def extract_model_cfg(cfg: Any) -> Any:
+    """自 Hydra / 训练配置中取出 ``model`` 子配置（实现位于 registry，延迟导入避免循环）。"""
+    from openttl.adapters.registry import extract_model_cfg as _impl
+
+    return _impl(cfg)
 
 
 def _dtype_from_string(name: str) -> torch.dtype:
@@ -67,11 +77,38 @@ def load_causal_lm(cfg: Any) -> PreTrainedModel:
     )
     if attn:
         kwargs["attn_implementation"] = attn
-    return AutoModelForCausalLM.from_pretrained(**kwargs)
+    try:
+        return AutoModelForCausalLM.from_pretrained(**kwargs)
+    except (ValueError, OSError, KeyError, TypeError):
+        # Qwen3.5 等为 Qwen3_5ForConditionalGeneration，需走 ImageTextToText。
+        from transformers import AutoModelForImageTextToText
+
+        return AutoModelForImageTextToText.from_pretrained(**kwargs)
+
+
+def load_adapter(cfg: Any):
+    """Resolve :class:`~openttl.adapters.base.ModelAdapter` from Hydra ``model`` config."""
+    from openttl.adapters.registry import resolve_adapter
+
+    return resolve_adapter(cfg)
+
+
+def load_model_for_tta(cfg: Any) -> PreTrainedModel:
+    """Load trainable model for TTA (native multimodal or causal LM via adapter)."""
+    mc = extract_model_cfg(cfg)
+    return load_adapter(cfg).load_model(mc)
 
 
 def load_causal_lm_eval(cfg: Any) -> PreTrainedModel:
     model = load_causal_lm(cfg)
+    model.eval()
+    for p in model.parameters():
+        p.requires_grad = False
+    return model
+
+
+def load_model_for_tta_eval(cfg: Any) -> PreTrainedModel:
+    model = load_model_for_tta(cfg)
     model.eval()
     for p in model.parameters():
         p.requires_grad = False

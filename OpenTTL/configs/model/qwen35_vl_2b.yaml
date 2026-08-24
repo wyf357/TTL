@@ -1,0 +1,25 @@
+# Qwen3.5 原生多模态预设（与 qwen35_2b 同路径时常用作别名）；adapter 由 config.json 自动解析
+defaults:
+  - default
+  - _self_
+
+pretrained_model_name_or_path: /root/autodl-tmp/Qwen3.5-2B
+trust_remote_code: true
+attn_implementation: sdpa
+torch_dtype: bfloat16
+
+peft:
+  enabled: true
+  r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  bias: none
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+  task_type: CAUSAL_LM
