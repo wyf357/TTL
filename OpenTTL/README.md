@@ -64,11 +64,15 @@ bash scripts/run_bfcl.sh category=simple max_samples=20
 # 或手动指定
 python evaluations/run_bfcl.py model=qwen35_2b category=simple bfcl_local_root=/root/autodl-tmp/bfcl
 
+# Online TTA（先推理评分，再对 prompt 做无监督 LoRA 更新；需 PEFT）
+bash scripts/run_bfcl.sh --config-name=eval_bfcl_online category=simple max_samples=20
+python evaluations/run_bfcl.py --config-name=eval_bfcl_online strategy=tlm category=simple bfcl_local_root=/path/to/bfcl
+
 # 解析/评分逻辑冒烟测试（无需 GPU/依赖）
 python test_bfcl_eval.py
 ```
 
-产物：`outputs/bfcl_metrics.json`（指标）与 `outputs/bfcl_result.jsonl`（逐样本预测，兼容官方 answer 格式）。
+产物：`outputs/bfcl_metrics.json`（指标）与 `outputs/bfcl_result.jsonl`（逐样本预测，兼容官方 answer 格式）。Online TTA 时 metrics 额外含 `strategy`、`tta_loss_mean`。
 
 ## SGLang 推理 + Online TTA（评测脚本）
 
@@ -76,6 +80,7 @@ python test_bfcl_eval.py
 
 - **ERQA**：`python evaluations/run_erqa.py`（默认 `inference=sglang`；`online.enabled=false` 仅推理；开启 TTA 时加 `online.enabled=true` 且需 `model.peft.enabled=true`）。
 - **MMLU**：`python evaluations/run_mmlu.py inference.backend=sglang`（可选 `online.enabled=true`）。
+- **BFCL**：默认 HF 纯推理；Online TTA 用 `--config-name=eval_bfcl_online`（或 `online.enabled=true model.peft.enabled=true`），同进程 LoRA 更新，无需 SGLang。
 - **EmbodiedBench**：配置 `tta.enabled=true`、`tta.backend=instruction_entropy`，并与 `model_name` 使用同一 checkpoint；默认走 SGLang 本地后端。若需旧版 transformers 管线，设置环境变量 `OPENTTL_LOCAL_BACKEND=transformers`。
 
 单卡双进程（HF LoRA 训练 + SGLang 推理）时请在 `configs/inference/sglang.yaml` 中调低 `mem_fraction_static`。

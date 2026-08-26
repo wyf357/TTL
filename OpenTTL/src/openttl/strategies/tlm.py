@@ -52,7 +52,10 @@ class TLMStrategy(Strategy):
         p_x = torch.exp(nll)
         lam = float(getattr(self.cfg, "lambda", 0.1))
         p0 = float(getattr(self.cfg, "p0", math.exp(3.0)))
-        s_x = torch.where(p_x > p0, lam * (p_x / p0), torch.zeros_like(p_x))
+        s_x = lam * (p_x / p0)
+        # 论文：P(x)≤P0 则 S(x)=0。use_threshold=false 时对所有样本更新。
+        if bool(getattr(self.cfg, "use_threshold", True)):
+            s_x = torch.where(p_x > p0, s_x, torch.zeros_like(s_x))
         weighted = s_x * p_x
         batch_loss = weighted.sum()
         b = labels.size(0)

@@ -1,0 +1,7 @@
+# EATA：在 Tent 基础上做 token 级熵过滤
+defaults:
+  - tent
+
+name: eata
+e_margin: 0.4
+d_margin: 0.05

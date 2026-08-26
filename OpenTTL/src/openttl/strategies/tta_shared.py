@@ -43,14 +43,18 @@ def masked_mean_sequence_entropy(
     mask: torch.Tensor,
     eps: float,
 ) -> torch.Tensor:
-    """序列内掩码均值熵，再对 batch 均值（tent.md 公式；EATA 复用聚合方式）。"""
-    probs = F.softmax(logits, dim=-1)
+    """序列内掩码均值熵，再对 batch 均值（tent.md 公式；EATA 复用聚合方式）。
+
+    Softmax/log 在 fp16 上易溢出为 NaN，故始终在 float32 上计算。
+    """
+    logits_f = logits.float()
+    probs = F.softmax(logits_f, dim=-1)
     logp = torch.log(probs + eps)
     token_ent = -(probs * logp).sum(dim=-1)
-    m = mask.bool().to(dtype=logits.dtype, device=logits.device)
+    m = mask.bool().to(dtype=token_ent.dtype, device=token_ent.device)
     num = (token_ent * m).sum(dim=1)
     den = m.sum(dim=1).clamp_min(1.0)
     per_seq = num / den
     if per_seq.numel() == 0:
-        return logits.float().sum() * 0.0
+        return logits_f.sum() * 0.0
     return per_seq.mean()

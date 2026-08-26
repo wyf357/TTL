@@ -1,6 +1,8 @@
 # TLM (Test-Time Learning): 原文 Algorithm 1 / 第 4 节
 # - λ: 样本选择缩放系数 (DomainBench/InstructionBench/ReasoningBench 常用 0.1)
 # - p0: 困惑度阈值 = exp(3) ≈ 20.0855；P(x) ≤ p0 的样本 S(x)=0
+# - use_threshold: false 时去掉 I{P>P0}，所有样本都按 S(x)=λ·P(x)/P0 更新
 name: tlm
 lambda: 0.1
 p0: 20.085536923187668
+use_threshold: true

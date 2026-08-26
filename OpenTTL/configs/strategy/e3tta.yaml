@@ -1,0 +1,34 @@
+# E3-TTA (Embodied Entropy-Gated Test-Time Adaptation)
+# 针对具身场景的测试时适应算法
+# 核心特点：只更新门控参数（每层1个向量），不更新LoRA，模型主干完全冻结
+# 参考: E3TTA.md
+
+name: e3tta
+
+# 门控学习率
+lr_gate: 1.0e-3
+
+# 门控正则化系数 λ
+lambda_reg: 0.01
+
+# 场景缓存EMA系数 α
+scene_ema_alpha: 0.9
+
+# 实例缓存窗口大小
+inst_window_size: 10
+
+# 数值稳定项
+epsilon: 1.0e-8
+
+# 低熵阈值因子 (τ_low = tau_low_factor * H^*)
+tau_low_factor: 0.5
+
+# 高熵阈值因子 (τ_high = tau_high_factor * H^*)
+tau_high_factor: 2.0
+
+# 是否使用熵门控
+use_entropy_gate: true
+
+# 注意：E3-TTA不使用序列熵损失，损失函数只包含：
+# 1. 熵稳定损失: (H_l - H_l^*)^2
+# 2. 门控正则化: λ||g_l||_2^2

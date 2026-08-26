@@ -1,0 +1,21 @@
+# ERQA with E3-TTA (Embodied Entropy-Gated Test-Time Adaptation)
+#
+# Usage (from OpenTTL/):
+#   python evaluations/run_erqa.py --config-name=eval_erqa_e3tta max_examples=10
+#
+defaults:
+  - eval_erqa
+  - override strategy: e3tta
+  - _self_
+
+online:
+  enabled: true
+  # E3TTA / 多模态：与 configs/online/tta.yaml 默认 max_length 一致（4096）
+  max_length: 4096
+  # 与默认 online/tta.yaml 一致；显式写出以免改 defaults 时遗漏（重算换显存，loss 不变）
+  gradient_checkpointing: true
+  # 单基座交替模式：PEFT 常驻 CPU，训练时 SGLang 让权，训练后 SGLang 恢复
+  enable_memory_saver: false
+  # true 时 LoRA 写入 /dev/shm/（tmpfs，无磁盘 I/O）
+  use_shm: false
+  shm_dir: /dev/shm/online_tta

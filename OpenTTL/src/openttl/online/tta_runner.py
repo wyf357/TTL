@@ -127,7 +127,29 @@ class OnlineTTARunner:
         self._optimizer.zero_grad(set_to_none=True)
         batch = _batch_to_device(batch, self.device)
         loss = self.strategy.compute_loss(self.model, batch)
+        if not torch.isfinite(loss).all():
+            LOG.warning("TTA skip update: non-finite loss=%s", loss.detach())
+            self._optimizer.zero_grad(set_to_none=True)
+            del loss, batch
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            return float("nan")
         loss.backward()
+        grads_ok = all(
+            p.grad is None or torch.isfinite(p.grad).all()
+            for p in self.model.parameters()
+            if p.requires_grad
+        )
+        if not grads_ok:
+            LOG.warning("TTA skip update: non-finite gradients (loss=%s)", float(loss.detach()))
+            self._optimizer.zero_grad(set_to_none=True)
+            loss_val = float(loss.detach().cpu())
+            del loss, batch
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            return float("nan")
         self._optimizer.step()
         loss_val = float(loss.detach().cpu())
 

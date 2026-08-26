@@ -1,0 +1,24 @@
+# MANTA-Uni (Modality-Aware Normalization Tuning with Unified Entropy)
+# Minimal parameter adaptation: 2K scalars for last K layers
+# Architecture-agnostic IADE loss for cross-modal alignment
+# Reference: MANTA.md
+
+name: manta
+
+# Number of last layers to adapt (K)
+# Total learnable parameters: 2 * K (e.g., K=4 -> 8 parameters)
+num_adapt_layers: 4
+
+# Global diversity weight (lambda) in IADE loss
+# Higher values encourage more diverse visual token usage
+lambda_global: 1.0
+
+# Learning rate for gamma parameters
+lr: 1.0e-2
+
+# Numerical stability epsilon for log operations
+epsilon: 1.0e-9
+
+# Optimization steps per batch
+# Increase for online TTA to perform more updates per example
+adapt_steps: 1

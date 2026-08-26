@@ -1,0 +1,6 @@
+# AdaptEval 全部子集（10 个 *_random_5k.json）
+
+defaults:
+  - adapteval_subset
+
+subset: all

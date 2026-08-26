@@ -1,0 +1,23 @@
+# BFCL with online TTA（HF 同模推理 + PEFT LoRA 更新；默认 TENT）。
+#
+# Usage (from OpenTTL/):
+#   python evaluations/run_bfcl.py --config-name=eval_bfcl_online \
+#     category=simple max_samples=5 bfcl_local_root=/path/to/bfcl
+#   python evaluations/run_bfcl.py --config-name=eval_bfcl_online strategy=tlm
+#
+defaults:
+  - eval_bfcl
+  - _self_
+
+model:
+  peft:
+    enabled: true
+  # fp16 下 TENT 熵反传易出 NaN 梯度；online TTA 用 bf16
+  torch_dtype: bfloat16
+
+online:
+  enabled: true
+  # BFCL tool schema 较长；与 online/tta 默认接近，可按显存下调
+  max_length: 2048
+  gradient_checkpointing: true
+  lr: 1.0e-4

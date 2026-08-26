@@ -1,5 +1,9 @@
 defaults:
   - model: qwen35_2b
+  - strategy: tent
+  - inference: hf
+  - online: tta
+  - train: eval_minimal
   - _self_
 
 # BFCL (Berkeley Function Calling Leaderboard) 评测配置
@@ -7,6 +11,9 @@ defaults:
 #   simple / multiple / parallel / parallel_multiple / live_simple / live_multiple
 #   irrelevance / live_irrelevance / relevance / live_relevance / java / javascript
 #   exec_* 与 multi_turn_* 仅生成预测，内置评测不计分。
+#
+# Online TTA（默认关闭）：见 eval_bfcl_online.yaml，或
+#   online.enabled=true model.peft.enabled=true strategy=tent|tlm
 category: simple
 # 本地已下载 BFCL_v3_*.json 的目录（可用 scripts/download_bfcl_dataset.py 预下载）；null 走 Hub
 bfcl_local_root: null
