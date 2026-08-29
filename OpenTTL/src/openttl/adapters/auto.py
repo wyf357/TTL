@@ -331,6 +331,21 @@ class AutoMultimodalAdapter(ModelAdapter):
             if key in prompt_enc and prompt_enc[key] is not None:
                 batch[key] = prompt_enc[key]
 
+        # processor 返回的 mm_token_type_ids 只覆盖 prompt；拼入 response 或截断后
+        # 必须与 full_ids 对齐（response 为文本，补 0），否则 Qwen3.5 的
+        # get_rope_index 会因掩码形状不匹配而报错。
+        mtt = batch.get("mm_token_type_ids")
+        if mtt is not None:
+            T = full_ids.shape[1]
+            if mtt.shape[1] < T:
+                pad = torch.zeros(
+                    mtt.shape[0], T - mtt.shape[1], dtype=mtt.dtype, device=mtt.device
+                )
+                mtt = torch.cat([mtt, pad], dim=1)
+            elif mtt.shape[1] > T:
+                mtt = mtt[:, :T]
+            batch["mm_token_type_ids"] = mtt
+
         if label_mode == "none":
             batch["labels"] = None
         elif label_mode == "clm_response":

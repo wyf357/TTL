@@ -1,0 +1,38 @@
+# MMStar Benchmark Evaluation Configuration
+#
+# Usage:
+#   python evaluations/run_mmstar.py                                  # baseline（无 TTA）
+#   python evaluations/run_mmstar.py --config-name=eval_mmstar_online # online TTA
+#
+defaults:
+  - model: qwen35_2b
+  - strategy: tent
+  - inference: hf
+  - online: tta
+  - train: eval_minimal
+  - _self_
+
+# Qwen3.5 线性注意力 torch 回退路径在 fp16 下反传会产生 NaN 梯度，
+# TTA 更新会被全部跳过；bfloat16 下梯度有限（已实测验证）。
+model:
+  torch_dtype: bfloat16
+
+# MMStar 数据：优先本地目录（含 mmstar.parquet），缺失时走 Hub（配合 HF_ENDPOINT 镜像）
+mmstar_local_root: null
+mmstar_hf_path: Lin-Chen/MMStar
+
+# 兼容旧字段：未使用 model 组时可覆盖
+model_path: ${model.pretrained_model_name_or_path}
+
+# 生成参数与 online TTA 协议
+mmstar:
+  max_new_tokens: 16000
+  # Match apply_chat_template for prompt + TTA batch (Qwen3.5 thinking).
+  enable_thinking: true
+
+# Evaluation settings
+max_examples: null
+start_example: 0
+
+# Output configuration
+output_json: outputs/mmstar_results.json

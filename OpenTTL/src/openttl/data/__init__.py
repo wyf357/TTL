@@ -1,4 +1,5 @@
 from openttl.data.adapt_eval import build_train_dataset, load_raw_dataset
+from openttl.data.mmstar import load_mmstar_dataset, load_mmstar_table
 from openttl.data.stream import batched_stream, iter_hf_dataset
 
 # ERQA 依赖 tensorflow；BFCL 等文本评测不应被该依赖挡住。

@@ -13,3 +13,8 @@ build/
 .ipynb_checkpoints/
 */.ipynb_checkpoints/
 *-checkpoint.*
+
+# local model weights and eval datasets
+Qwen3.5-2B/
+Qwen3.5-4B/
+data/

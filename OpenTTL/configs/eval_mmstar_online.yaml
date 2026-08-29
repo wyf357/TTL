@@ -1,0 +1,20 @@
+# MMStar with online TTA (HF PEFT updates on the same model object).
+#
+# Usage (from OpenTTL/):
+#   python evaluations/run_mmstar.py --config-name=eval_mmstar_online max_examples=10
+#   python evaluations/run_mmstar.py --config-name=eval_mmstar_online strategy=tlm
+#
+defaults:
+  - eval_mmstar
+  - _self_
+
+model:
+  peft:
+    enabled: true
+
+online:
+  enabled: true
+  # 与 configs/online/tta.yaml 默认 max_length 一致（4096）
+  max_length: 4096
+  # 与默认 online/tta.yaml 一致；显式写出以免改 defaults 时遗漏（重算换显存，loss 不变）
+  gradient_checkpointing: true

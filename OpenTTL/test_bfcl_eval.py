@@ -118,7 +118,23 @@ def main() -> None:
     calls = parse_model_calls('[{"name": "convert", "arguments": {"amount": 100, "from": "USD", "to": "EUR"}}]')
     check("positional multiset match", len(calls) == 1)
 
-    # 12. 提示构造包含函数文档与问题
+    # 12. Qwen3.5 原生 XML tool_call
+    out = (
+        "<tool_call>\n<function=get_weather>\n"
+        "<parameter=city>\nSan Francisco\n</parameter>\n"
+        "</function>\n</tool_call>"
+    )
+    check(
+        "qwen xml tool_call",
+        evaluate_bfcl_sample(
+            "simple",
+            {"ground_truth": ["get_weather(city='San Francisco')"]},
+            out,
+        )
+        is True,
+    )
+
+    # 13. 提示构造包含函数文档与问题
     row = {
         "function": [{"name": "f", "description": "d", "parameters": {"type": "object", "properties": {}}}],
         "question": "do it",
@@ -126,6 +142,32 @@ def main() -> None:
     msgs = build_bfcl_messages(row)
     check("messages structure", msgs[0]["role"] == "system" and "do it" in msgs[1]["content"])
     check("plain prompt", "do it" in build_bfcl_plain_prompt(row))
+
+    # 14. 官方 possible_answer 格式（参数允许值列表，"" 表示可选）
+    row = {
+        "ground_truth": [
+            {
+                "calculate_triangle_area": {
+                    "base": [10],
+                    "height": [5],
+                    "unit": ["units", ""],
+                }
+            }
+        ]
+    }
+    out = '[{"name": "calculate_triangle_area", "arguments": {"base": 10, "height": 5}}]'
+    check("official gt optional omitted", evaluate_bfcl_sample("simple", row, out) is True)
+    out = '[{"name": "calculate_triangle_area", "arguments": {"base": 10, "height": 5, "unit": "units"}}]'
+    check("official gt optional present", evaluate_bfcl_sample("simple", row, out) is True)
+    out = '[{"name": "calculate_triangle_area", "arguments": {"base": 11, "height": 5}}]'
+    check("official gt wrong value", evaluate_bfcl_sample("simple", row, out) is False)
+
+    # 15. 嵌套 question 抽文本
+    row = {
+        "function": [{"name": "f", "description": "d", "parameters": {}}],
+        "question": [[{"role": "user", "content": "nested q"}]],
+    }
+    check("nested question extracted", "nested q" in build_bfcl_messages(row)[1]["content"])
 
     print("All BFCL smoke tests passed.")
 

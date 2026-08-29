@@ -7,6 +7,11 @@
 #   bash scripts/run_bfcl.sh category=multiple model=qwen35
 #   BFCL_MODEL_PATH=/path/to/Qwen3.5-2B bash scripts/run_bfcl.sh
 #
+# Online TTA（边测边适应；默认 config 关闭，需显式开启）:
+#   bash scripts/run_bfcl.sh --config-name=eval_bfcl_online category=simple max_samples=20
+#   bash scripts/run_bfcl.sh --config-name=eval_bfcl_online strategy=tlm category=simple
+#   bash scripts/run_bfcl.sh online.enabled=true model.peft.enabled=true strategy=tent
+#
 # 产物：outputs/bfcl_metrics.json、outputs/bfcl_result.jsonl
 
 set -euo pipefail
@@ -18,10 +23,15 @@ TTL_ROOT="$(cd "$ROOT/.." && pwd)"
 : "${BFCL_GPU:=0}"
 : "${BFCL_DATA:="$TTL_ROOT/data/bfcl"}"
 : "${BFCL_MODEL_PATH:=""}"
+: "${PY_TT:=/home/jxy/miniconda3/envs/openttl/bin/python}"
 
 export CUDA_VISIBLE_DEVICES="$BFCL_GPU"
 export PYTHONPATH="$ROOT/src${PYTHONPATH:+:${PYTHONPATH}}"
 export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
+
+if [ ! -x "$PY_TT" ]; then
+    PY_TT="$(command -v python3)"
+fi
 
 resolve_model_path() {
     local candidates=()
@@ -59,20 +69,21 @@ fi
 
 if [ ! -d "$BFCL_DATA" ] || [ -z "$(ls -A "$BFCL_DATA"/BFCL_v3_*.json 2>/dev/null || true)" ]; then
     echo "BFCL 数据未找到，正在下载到 $BFCL_DATA ..." >&2
-    python "$ROOT/scripts/download_bfcl_dataset.py" --out "$BFCL_DATA" \
+    "$PY_TT" "$ROOT/scripts/download_bfcl_dataset.py" --out "$BFCL_DATA" \
         --categories simple multiple parallel parallel_multiple live_simple live_multiple irrelevance
 fi
 
 echo "========================================" >&2
 echo "BFCL Benchmark Evaluation" >&2
 echo "========================================" >&2
-echo "Model: $MODEL_PATH" >&2
-echo "Data:  $BFCL_DATA" >&2
-echo "GPU:   $BFCL_GPU" >&2
+echo "Model:  $MODEL_PATH" >&2
+echo "Data:   $BFCL_DATA" >&2
+echo "GPU:    $BFCL_GPU" >&2
+echo "Python: $PY_TT" >&2
 echo "========================================" >&2
 
 cd "$ROOT"
-CMD=(python evaluations/run_bfcl.py)
+CMD=("$PY_TT" evaluations/run_bfcl.py)
 CMD+=("model=qwen35_2b")
 CMD+=("model.pretrained_model_name_or_path=$MODEL_PATH")
 CMD+=("bfcl_local_root=$BFCL_DATA")
