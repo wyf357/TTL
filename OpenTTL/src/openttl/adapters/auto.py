@@ -327,9 +327,28 @@ class AutoMultimodalAdapter(ModelAdapter):
             "input_ids": full_ids,
             "attention_mask": attn,
         }
-        for key in ("pixel_values", "image_grid_thw", "mm_token_type_ids"):
+        for key in ("pixel_values", "image_grid_thw"):
             if key in prompt_enc and prompt_enc[key] is not None:
                 batch[key] = prompt_enc[key]
+
+        # mm_token_type_ids（0=text, 1=image）必须与 full_ids 等长：
+        # 拼接 response 后补 text 类型(0)，截断时同步截断，
+        # 否则 Qwen3.5 get_rope_index 里 mask 与 token_type 长度不一致报错。
+        mtt = prompt_enc.get("mm_token_type_ids")
+        if mtt is not None:
+            if mtt.shape[1] < full_ids.shape[1]:
+                mtt = torch.cat(
+                    [
+                        mtt,
+                        torch.zeros(
+                            (mtt.shape[0], full_ids.shape[1] - mtt.shape[1]),
+                            dtype=mtt.dtype,
+                            device=mtt.device,
+                        ),
+                    ],
+                    dim=1,
+                )
+            batch["mm_token_type_ids"] = mtt[:, : full_ids.shape[1]]
 
         if label_mode == "none":
             batch["labels"] = None

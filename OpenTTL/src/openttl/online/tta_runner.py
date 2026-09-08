@@ -64,7 +64,9 @@ class OnlineTTARunner:
         oc = OmegaConf.select(cfg, "online") or OmegaConf.create({})
         self._lr = float(OmegaConf.select(oc, "lr") or 1e-4)
         self._wd = float(OmegaConf.select(oc, "weight_decay") or 0.0)
-        self._sync_every = int(OmegaConf.select(oc, "sync_every_n_updates") or 1)
+        # 注意不能用 `or 1`：显式配置 0（HF 后端无需同步）会被吞掉
+        _se = OmegaConf.select(oc, "sync_every_n_updates")
+        self._sync_every = int(_se) if _se is not None else 1
         self._adapter_root = OmegaConf.select(oc, "adapter_root")
         train_out = OmegaConf.select(cfg, "train.output_dir") or "./outputs/online_tta"
         self._adapter_root = Path(str(self._adapter_root or Path(train_out) / "online_tta_adapters"))
@@ -127,9 +129,14 @@ class OnlineTTARunner:
         self._optimizer.zero_grad(set_to_none=True)
         batch = _batch_to_device(batch, self.device)
         loss = self.strategy.compute_loss(self.model, batch)
-        loss.backward()
+        if getattr(self.strategy, "handles_own_backward", False):
+            # 策略（如 COME 多步 rollout）已在内部逐步 backward（梯度累积），
+            # 返回的是 detached 标量，这里直接取数值。
+            loss_val = float(loss)
+        else:
+            loss.backward()
+            loss_val = float(loss.detach().cpu())
         self._optimizer.step()
-        loss_val = float(loss.detach().cpu())
 
         # Explicitly release the computation graph and batch tensors so that the
         # CUDA allocator can reuse the memory in the next iteration.

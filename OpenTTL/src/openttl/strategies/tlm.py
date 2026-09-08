@@ -17,13 +17,13 @@ def _input_nll_per_sample(logits: torch.Tensor, labels: torch.Tensor) -> torch.T
     ``labels`` are full sequence ids (prompt-only) from ``clm_full``; no gold labels.
     """
     B, T, V = logits.shape
-    nll = F.cross_entropy(
-        logits[:, :-1, :].reshape(-1, V),
-        labels[:, 1:].reshape(-1),
-        reduction="none",
-        ignore_index=-100,
-    )
-    nll = nll.view(B, T - 1)
+    # CE = logsumexp(logits) - logit_of_label；恒等式写法避免 fp32 的 [B,T,V]
+    # 物化（长序列下数 GB），bf16/fp16 均数值安全
+    prev = logits[:, :-1, :]
+    tgt = labels[:, 1:].clamp_min(0)  # -100 位置先用 0 占位，随后被 valid 掩掉
+    lse = torch.logsumexp(prev, dim=-1)
+    tok_logit = prev.gather(-1, tgt.unsqueeze(-1)).squeeze(-1)
+    nll = lse - tok_logit
     valid = labels[:, 1:].ne(-100).float()
     denom = valid.sum(dim=1).clamp_min(1.0)
     return (nll * valid).sum(dim=1) / denom

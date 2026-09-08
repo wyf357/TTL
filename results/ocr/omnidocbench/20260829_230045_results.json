@@ -1,0 +1,272 @@
+{
+  "results": {
+    "omnidocbench": {
+      "alias": "omnidocbench",
+      "omnidocbench_overall,none": 46.058009250492624,
+      "omnidocbench_overall_stderr,none": "N/A",
+      "omnidocbench_overall_stderr_clt,none": "N/A",
+      "omnidocbench_overall_stderr_clustered,none": "N/A",
+      "omnidocbench_text_edit,none": 0.5911912689867928,
+      "omnidocbench_text_edit_stderr,none": "N/A",
+      "omnidocbench_text_edit_stderr_clt,none": "N/A",
+      "omnidocbench_text_edit_stderr_clustered,none": "N/A",
+      "omnidocbench_table_teds,none": 0.6102927816680893,
+      "omnidocbench_table_teds_stderr,none": "N/A",
+      "omnidocbench_table_teds_stderr_clt,none": "N/A",
+      "omnidocbench_table_teds_stderr_clustered,none": "N/A",
+      "omnidocbench_formula_edit,none": 0.6373612351665178,
+      "omnidocbench_formula_edit_stderr,none": "N/A",
+      "omnidocbench_formula_edit_stderr_clt,none": "N/A",
+      "omnidocbench_formula_edit_stderr_clustered,none": "N/A",
+      "omnidocbench_text_edit_en,none": 0.3988289976219644,
+      "omnidocbench_text_edit_en_stderr,none": "N/A",
+      "omnidocbench_text_edit_en_stderr_clt,none": "N/A",
+      "omnidocbench_text_edit_en_stderr_clustered,none": "N/A",
+      "omnidocbench_text_edit_cn,none": 0.779533438696507,
+      "omnidocbench_text_edit_cn_stderr,none": "N/A",
+      "omnidocbench_text_edit_cn_stderr_clt,none": "N/A",
+      "omnidocbench_text_edit_cn_stderr_clustered,none": "N/A",
+      "omnidocbench_table_teds_en,none": 0.5883269357096298,
+      "omnidocbench_table_teds_en_stderr,none": "N/A",
+      "omnidocbench_table_teds_en_stderr_clt,none": "N/A",
+      "omnidocbench_table_teds_en_stderr_clustered,none": "N/A",
+      "omnidocbench_table_teds_cn,none": 0.6199814207945479,
+      "omnidocbench_table_teds_cn_stderr,none": "N/A",
+      "omnidocbench_table_teds_cn_stderr_clt,none": "N/A",
+      "omnidocbench_table_teds_cn_stderr_clustered,none": "N/A",
+      "omnidocbench_formula_edit_en,none": 0.5710466382810179,
+      "omnidocbench_formula_edit_en_stderr,none": "N/A",
+      "omnidocbench_formula_edit_en_stderr_clt,none": "N/A",
+      "omnidocbench_formula_edit_en_stderr_clustered,none": "N/A",
+      "omnidocbench_formula_edit_cn,none": 0.7574887892376682,
+      "omnidocbench_formula_edit_cn_stderr,none": "N/A",
+      "omnidocbench_formula_edit_cn_stderr_clt,none": "N/A",
+      "omnidocbench_formula_edit_cn_stderr_clustered,none": "N/A"
+    }
+  },
+  "group_subtasks": {
+    "omnidocbench": []
+  },
+  "configs": {
+    "omnidocbench": {
+      "task": "omnidocbench",
+      "tag": [
+        "public_eval_qwen3_5_family",
+        "public_eval_seed2_family",
+        "public_eval_gemini3_family"
+      ],
+      "dataset_path": "ouyanglinke/OmniDocBench_tsv",
+      "test_split": "train",
+      "full_docs": false,
+      "process_results_use_image": false,
+      "doc_to_visual": "<function omnidocbench_doc_to_visual at 0x7f5b9d7ef7e0>",
+      "doc_to_text": "<function omnidocbench_doc_to_text at 0x7f5b9c9dff60>",
+      "doc_to_target": "<function omnidocbench_doc_to_target at 0x7f5b9c295b20>",
+      "process_results": "<function omnidocbench_process_results at 0x7f5b9c2b0040>",
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "omnidocbench_overall",
+          "aggregation": "<function omnidocbench_aggregate_overall at 0x7f5b9c2b1e40>",
+          "higher_is_better": true
+        },
+        {
+          "metric": "omnidocbench_text_edit",
+          "aggregation": "<function omnidocbench_aggregate_text_edit at 0x7f5b9c2b39c0>",
+          "higher_is_better": false
+        },
+        {
+          "metric": "omnidocbench_table_teds",
+          "aggregation": "<function omnidocbench_aggregate_table_teds at 0x7f5b9c2d5580>",
+          "higher_is_better": true
+        },
+        {
+          "metric": "omnidocbench_formula_edit",
+          "aggregation": "<function omnidocbench_aggregate_formula_edit at 0x7f5b9c2d7100>",
+          "higher_is_better": false
+        },
+        {
+          "metric": "omnidocbench_text_edit_en",
+          "aggregation": "<function omnidocbench_aggregate_text_edit_en at 0x7f5b9c2f4cc0>",
+          "higher_is_better": false
+        },
+        {
+          "metric": "omnidocbench_text_edit_cn",
+          "aggregation": "<function omnidocbench_aggregate_text_edit_cn at 0x7f5b9c2f6840>",
+          "higher_is_better": false
+        },
+        {
+          "metric": "omnidocbench_table_teds_en",
+          "aggregation": "<function omnidocbench_aggregate_table_teds_en at 0x7f5b9c308400>",
+          "higher_is_better": true
+        },
+        {
+          "metric": "omnidocbench_table_teds_cn",
+          "aggregation": "<function omnidocbench_aggregate_table_teds_cn at 0x7f5b9c309f80>",
+          "higher_is_better": true
+        },
+        {
+          "metric": "omnidocbench_formula_edit_en",
+          "aggregation": "<function omnidocbench_aggregate_formula_edit_en at 0x7f5b9c30bb00>",
+          "higher_is_better": false
+        },
+        {
+          "metric": "omnidocbench_formula_edit_cn",
+          "aggregation": "<function omnidocbench_aggregate_formula_edit_cn at 0x7f5b9c3256c0>",
+          "higher_is_better": false
+        }
+      ],
+      "output_type": "generate_until",
+      "generation_kwargs": {
+        "max_new_tokens": 4096,
+        "temperature": 0.0,
+        "do_sample": false,
+        "until": [
+          "\n\n"
+        ]
+      },
+      "repeats": 1,
+      "should_decontaminate": false,
+      "score_key": "score",
+      "metadata": [
+        {
+          "version": 1.0
+        }
+      ],
+      "lmms_eval_specific_kwargs": {
+        "default": {
+          "pre_prompt": "",
+          "post_prompt": ""
+        },
+        "pre_prompt": "",
+        "post_prompt": ""
+      },
+      "auto_strip_thinking": false
+    }
+  },
+  "versions": {
+    "omnidocbench": "Yaml"
+  },
+  "n-shot": {
+    "omnidocbench": 0
+  },
+  "higher_is_better": {
+    "omnidocbench": {
+      "omnidocbench_overall": true,
+      "omnidocbench_text_edit": false,
+      "omnidocbench_table_teds": true,
+      "omnidocbench_formula_edit": false,
+      "omnidocbench_text_edit_en": false,
+      "omnidocbench_text_edit_cn": false,
+      "omnidocbench_table_teds_en": true,
+      "omnidocbench_table_teds_cn": true,
+      "omnidocbench_formula_edit_en": false,
+      "omnidocbench_formula_edit_cn": false
+    }
+  },
+  "n-samples": {
+    "omnidocbench": {
+      "original": 981,
+      "effective": 981
+    }
+  },
+  "config": {
+    "model": "qwen3_5",
+    "model_args": "pretrained=/home/jxy/TTL/Qwen3.5-2B,max_pixels=12845056,attn_implementation=sdpa,interleave_visuals=False,enable_thinking=False",
+    "model_backend": "lmms_eval.models.chat.qwen3_5.Qwen3_5 (chat)",
+    "batch_size": "1",
+    "batch_sizes": [],
+    "device": null,
+    "use_cache": null,
+    "limit": null,
+    "offset": 0,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": "",
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234,
+    "resolved_cli_args": {
+      "config": "",
+      "model": "qwen3_5",
+      "tasks": "omnidocbench",
+      "model_args": "pretrained=/home/jxy/TTL/Qwen3.5-2B,max_pixels=12845056,attn_implementation=sdpa,interleave_visuals=False,enable_thinking=False",
+      "launcher_args": null,
+      "num_fewshot": null,
+      "batch_size": "1",
+      "max_batch_size": null,
+      "device": null,
+      "output_path": "/home/jxy/ocr_results/omnidocbench/Qwen3.5-2B",
+      "limit": null,
+      "offset": 0,
+      "use_cache": null,
+      "cache_requests": null,
+      "check_integrity": false,
+      "write_out": false,
+      "log_samples": false,
+      "wandb_log_samples": false,
+      "swanlab_log_samples": false,
+      "log_samples_suffix": "model_outputs",
+      "system_instruction": null,
+      "apply_chat_template": false,
+      "fewshot_as_multiturn": false,
+      "show_config": false,
+      "include_path": null,
+      "gen_kwargs": "",
+      "reasoning_tags": "[[\"<think>\", \"</think>\"], [\"<analysis>\", \"</analysis>\"]]",
+      "verbosity": "INFO",
+      "wandb_args": "",
+      "swanlab_args": "",
+      "timezone": "Asia/Singapore",
+      "hf_hub_log_args": ",output_path=/home/jxy/ocr_results/omnidocbench/Qwen3.5-2B",
+      "predict_only": false,
+      "seed": [
+        0,
+        1234,
+        1234,
+        1234
+      ],
+      "trust_remote_code": false,
+      "process_with_media": false,
+      "agentic_trace_mode": "basic",
+      "force_simple": false,
+      "tui": false,
+      "repeats": 1,
+      "baseline": null,
+      "max_tokens": null,
+      "power_analysis": false,
+      "effect_size": 0.03,
+      "alpha": 0.05,
+      "power": 0.8,
+      "correlation": 0.5,
+      "std_a": null,
+      "std_b": null
+    }
+  },
+  "git_hash": "7e71cb9",
+  "git_branch": "main",
+  "lmms_eval_version": "main@7e71cb9",
+  "date": "20260829_230045",
+  "throughput": {
+    "total_gen_tokens": 1213648,
+    "total_elapsed_time": 56951.14081907272,
+    "avg_speed": 21.310336940494683,
+    "avg_rank": 0.0
+  },
+  "usage": {},
+  "task_hashes": {},
+  "model_source": "qwen3_5",
+  "model_name": "/home/jxy/TTL/Qwen3.5-2B",
+  "model_name_sanitized": "TTL__Qwen3.5-2B",
+  "system_instruction": null,
+  "system_instruction_sha": null,
+  "fewshot_as_multiturn": false,
+  "chat_template": null,
+  "chat_template_sha": null,
+  "start_time": 18014435.279264674,
+  "end_time": 18072018.2764652,
+  "total_evaluation_time_seconds": "57582.9972005263"
+}

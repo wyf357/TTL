@@ -1,0 +1,76 @@
+{
+  "metrics": {
+    "overall_acc": 0.774,
+    "total_score": 774,
+    "total": 1000,
+    "question_type_acc": {
+      "Artistic Text Recognition": 0.94,
+      "Digit String Recognition": 0.8,
+      "Doc-oriented VQA": 0.84,
+      "Handwriting Recognition": 0.64,
+      "Handwritten Mathematical Expression Recognition": 0.77,
+      "Irregular Text Recognition": 0.94,
+      "Key Information Extraction": 0.44,
+      "Non-Semantic Text Recognition": 0.98,
+      "Regular Text Recognition": 1.0,
+      "Scene Text-centric VQA": 0.88
+    },
+    "benchmark": "ocrbench",
+    "strategy": "tent",
+    "online_enabled": true,
+    "model": "/home/jxy/TTL/Qwen3.5-2B",
+    "gen_max_new_tokens": 128,
+    "elapsed_sec": 4853.5
+  },
+  "config": {
+    "model": {
+      "adapter": null,
+      "pretrained_model_name_or_path": "/home/jxy/TTL/Qwen3.5-2B",
+      "revision": null,
+      "trust_remote_code": true,
+      "torch_dtype": "bfloat16",
+      "attn_implementation": "sdpa",
+      "device_map": null,
+      "use_flash_attention_2": false,
+      "tokenizer": {
+        "padding_side": "right",
+        "model_max_length": 2048
+      },
+      "peft": {
+        "enabled": true,
+        "r": 8,
+        "lora_alpha": 16,
+        "lora_dropout": 0.05,
+        "bias": "none",
+        "target_modules": [
+          "q_proj",
+          "v_proj"
+        ],
+        "task_type": "CAUSAL_LM",
+        "path": null
+      }
+    },
+    "strategy": {
+      "name": "tent",
+      "epsilon": 1e-08
+    },
+    "backend": "hf",
+    "benchmark": "ocrbench",
+    "max_samples": null,
+    "gen_max_new_tokens": null,
+    "online": {
+      "enabled": true,
+      "lr": 1e-05,
+      "weight_decay": 0.0,
+      "sync_every_n_updates": 0,
+      "adapter_root": null,
+      "max_length": 4096,
+      "gradient_checkpointing": true
+    },
+    "train": {
+      "output_dir": "./outputs/online_tta",
+      "seed": 0
+    },
+    "output_json": "/home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/tent.json"
+  }
+}

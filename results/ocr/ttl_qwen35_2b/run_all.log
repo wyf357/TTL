@@ -1,0 +1,812 @@
+===== [2026年 08月 30日 星期日 16:56:21 CST] ocrbench/baseline 开始 =====
+[2026-08-30 16:56:27,746][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-08-30 16:56:27,746][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  38%|███▊      | 232/617 [00:00<00:00, 2305.96it/s]Loading weights:  75%|███████▌  | 463/617 [00:00<00:00, 1941.14it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2476.53it/s]
+[2026-08-30 16:56:34,624][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-08-30 16:56:34,727][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/echo840/OCRBench/92a54bd1384387c178d5a07140a2d85e0a3d12e1/README.md "HTTP/1.1 200 OK"
+[2026-08-30 16:56:35,001][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/OCRBench.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-30 16:56:35,002][huggingface_hub.utils._http][WARNING] - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-30 16:56:35,935][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/echo840/OCRBench/echo840/OCRBench.py "HTTP/1.1 404 Not Found"
+[2026-08-30 16:56:36,210][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/revision/92a54bd1384387c178d5a07140a2d85e0a3d12e1 "HTTP/1.1 200 OK"
+[2026-08-30 16:56:36,526][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-08-30 16:56:38,846][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1/data?recursive=true&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 16:56:38,984][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 16:56:39,276][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: ocrbench, n=1000, gen_max=128
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: none (online.enabled=False)
+[1/1000] acc=1.0000 loss=None (2.3s/sample)
+[20/1000] acc=1.0000 loss=None (0.6s/sample)
+[40/1000] acc=1.0000 loss=None (0.6s/sample)
+[60/1000] acc=1.0000 loss=None (0.6s/sample)
+[80/1000] acc=1.0000 loss=None (0.5s/sample)
+[100/1000] acc=0.9700 loss=None (0.5s/sample)
+[120/1000] acc=0.9583 loss=None (0.5s/sample)
+[140/1000] acc=0.9571 loss=None (0.5s/sample)
+[160/1000] acc=0.9500 loss=None (0.5s/sample)
+[180/1000] acc=0.9056 loss=None (0.5s/sample)
+[200/1000] acc=0.8800 loss=None (0.4s/sample)
+[220/1000] acc=0.8727 loss=None (0.5s/sample)
+[240/1000] acc=0.8667 loss=None (0.5s/sample)
+[260/1000] acc=0.8692 loss=None (0.5s/sample)
+[280/1000] acc=0.8750 loss=None (0.5s/sample)
+[300/1000] acc=0.8833 loss=None (0.5s/sample)
+[320/1000] acc=0.8750 loss=None (0.7s/sample)
+[340/1000] acc=0.8676 loss=None (0.8s/sample)
+[360/1000] acc=0.8722 loss=None (1.0s/sample)
+[380/1000] acc=0.8763 loss=None (1.2s/sample)
+[400/1000] acc=0.8750 loss=None (1.4s/sample)
+[420/1000] acc=0.8714 loss=None (1.4s/sample)
+[440/1000] acc=0.8750 loss=None (1.5s/sample)
+[460/1000] acc=0.8804 loss=None (1.5s/sample)
+[480/1000] acc=0.8833 loss=None (1.5s/sample)
+[500/1000] acc=0.8860 loss=None (1.5s/sample)
+[520/1000] acc=0.8827 loss=None (1.6s/sample)
+[540/1000] acc=0.8815 loss=None (1.6s/sample)
+[560/1000] acc=0.8804 loss=None (1.7s/sample)
+[580/1000] acc=0.8828 loss=None (1.9s/sample)
+[600/1000] acc=0.8850 loss=None (2.0s/sample)
+[620/1000] acc=0.8806 loss=None (2.2s/sample)
+[640/1000] acc=0.8734 loss=None (2.3s/sample)
+[660/1000] acc=0.8758 loss=None (2.5s/sample)
+[680/1000] acc=0.8721 loss=None (2.6s/sample)
+[700/1000] acc=0.8729 loss=None (2.7s/sample)
+[720/1000] acc=0.8750 loss=None (2.7s/sample)
+[740/1000] acc=0.8703 loss=None (2.7s/sample)
+[760/1000] acc=0.8711 loss=None (2.7s/sample)
+[780/1000] acc=0.8692 loss=None (2.6s/sample)
+[800/1000] acc=0.8688 loss=None (2.6s/sample)
+[820/1000] acc=0.8695 loss=None (2.5s/sample)
+[840/1000] acc=0.8667 loss=None (2.5s/sample)
+[860/1000] acc=0.8663 loss=None (2.5s/sample)
+[880/1000] acc=0.8636 loss=None (2.4s/sample)
+[900/1000] acc=0.8644 loss=None (2.4s/sample)
+[920/1000] acc=0.8630 loss=None (2.4s/sample)
+[940/1000] acc=0.8628 loss=None (2.4s/sample)
+[960/1000] acc=0.8604 loss=None (2.3s/sample)
+[980/1000] acc=0.8571 loss=None (2.3s/sample)
+[1000/1000] acc=0.8560 loss=None (2.3s/sample)
+{
+  "overall_acc": 0.856,
+  "total_score": 856,
+  "total": 1000,
+  "question_type_acc": {
+    "Artistic Text Recognition": 0.94,
+    "Digit String Recognition": 0.8,
+    "Doc-oriented VQA": 0.84,
+    "Handwriting Recognition": 0.64,
+    "Handwritten Mathematical Expression Recognition": 0.78,
+    "Irregular Text Recognition": 0.94,
+    "Key Information Extraction": 0.835,
+    "Non-Semantic Text Recognition": 0.98,
+    "Regular Text Recognition": 1.0,
+    "Scene Text-centric VQA": 0.89
+  },
+  "benchmark": "ocrbench",
+  "strategy": "none",
+  "online_enabled": false,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 128,
+  "elapsed_sec": 2315.2
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/baseline.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/baseline.jsonl)
+===== [2026年 08月 30日 星期日 17:35:16 CST] ocrbench/baseline 结束，退出码 0 =====
+===== [2026年 08月 30日 星期日 17:35:16 CST] ocrbench/tent 开始 =====
+[2026-08-30 17:35:22,879][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-08-30 17:35:22,879][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  47%|████▋     | 287/617 [00:00<00:00, 2866.99it/s]Loading weights:  93%|█████████▎| 574/617 [00:00<00:00, 2782.31it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2863.34it/s]
+trainable params: 417,792 || all params: 2,213,659,456 || trainable%: 0.0189
+[2026-08-30 17:35:30,314][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-08-30 17:35:30,843][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/echo840/OCRBench/92a54bd1384387c178d5a07140a2d85e0a3d12e1/README.md "HTTP/1.1 200 OK"
+[2026-08-30 17:35:31,556][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/OCRBench.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-30 17:35:31,586][huggingface_hub.utils._http][WARNING] - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-30 17:35:32,586][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/echo840/OCRBench/echo840/OCRBench.py "HTTP/1.1 404 Not Found"
+[2026-08-30 17:35:32,925][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/revision/92a54bd1384387c178d5a07140a2d85e0a3d12e1 "HTTP/1.1 200 OK"
+[2026-08-30 17:35:33,192][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-08-30 17:35:33,661][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1/data?recursive=true&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 17:35:33,867][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 17:35:34,143][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: ocrbench, n=1000, gen_max=128
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: tent (online.enabled=True)
+[1/1000] acc=1.0000 loss=1.4375 (4.1s/sample)
+[20/1000] acc=1.0000 loss=1.328125 (2.3s/sample)
+[40/1000] acc=1.0000 loss=1.4453125 (2.1s/sample)
+[60/1000] acc=1.0000 loss=1.3046875 (2.1s/sample)
+[80/1000] acc=1.0000 loss=1.2265625 (2.1s/sample)
+[100/1000] acc=0.9700 loss=0.92578125 (2.1s/sample)
+[120/1000] acc=0.9583 loss=1.171875 (2.1s/sample)
+[140/1000] acc=0.9571 loss=0.9375 (2.1s/sample)
+[160/1000] acc=0.9500 loss=1.2109375 (2.1s/sample)
+[180/1000] acc=0.9056 loss=0.5078125 (2.1s/sample)
+[200/1000] acc=0.8800 loss=0.296875 (2.1s/sample)
+[220/1000] acc=0.8727 loss=0.2099609375 (2.1s/sample)
+[240/1000] acc=0.8667 loss=0.24609375 (2.1s/sample)
+[260/1000] acc=0.8692 loss=0.375 (2.1s/sample)
+[280/1000] acc=0.8750 loss=0.2353515625 (2.0s/sample)
+[300/1000] acc=0.8833 loss=0.1962890625 (2.0s/sample)
+[320/1000] acc=0.8750 loss=0.5234375 (2.2s/sample)
+[340/1000] acc=0.8647 loss=0.5390625 (2.4s/sample)
+[360/1000] acc=0.8667 loss=0.28125 (2.7s/sample)
+[380/1000] acc=0.8711 loss=0.068359375 (2.9s/sample)
+[400/1000] acc=0.8700 loss=0.1904296875 (3.2s/sample)
+[420/1000] acc=0.8667 loss=0.1669921875 (3.2s/sample)
+[440/1000] acc=0.8705 loss=0.05224609375 (3.3s/sample)
+[460/1000] acc=0.8761 loss=0.043701171875 (3.3s/sample)
+[480/1000] acc=0.8792 loss=0.05029296875 (3.3s/sample)
+[500/1000] acc=0.8820 loss=0.283203125 (3.4s/sample)
+[520/1000] acc=0.8788 loss=0.052001953125 (3.6s/sample)
+[540/1000] acc=0.8778 loss=0.06982421875 (3.9s/sample)
+[560/1000] acc=0.8768 loss=0.154296875 (4.1s/sample)
+[580/1000] acc=0.8793 loss=0.1123046875 (4.3s/sample)
+[600/1000] acc=0.8833 loss=0.1162109375 (4.4s/sample)
+[620/1000] acc=0.8790 loss=0.1015625 (4.6s/sample)
+[640/1000] acc=0.8703 loss=0.07470703125 (4.6s/sample)
+Warning: TTA update failed at sample 653 (rid=653): CUDA out of memory. Tried to allocate 6.11 GiB. GPU 0 has a total capacity of 23.69 GiB of which 5.22 GiB is free. Including non-PyTorch memory, this process has 18.46 GiB memory in use. Of the allocated memory 18.03 GiB is allocated by PyTorch, and 112.68 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 658 (rid=658): CUDA out of memory. Tried to allocate 7.48 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.07 GiB is free. Including non-PyTorch memory, this process has 21.60 GiB memory in use. Of the allocated memory 21.14 GiB is allocated by PyTorch, and 145.33 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[660/1000] acc=0.8727 loss=0.04345703125 (4.8s/sample)
+Warning: TTA update failed at sample 667 (rid=667): CUDA out of memory. Tried to allocate 6.74 GiB. GPU 0 has a total capacity of 23.69 GiB of which 3.75 GiB is free. Including non-PyTorch memory, this process has 19.92 GiB memory in use. Of the allocated memory 19.47 GiB is allocated by PyTorch, and 140.11 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[680/1000] acc=0.8706 loss=0.026123046875 (5.1s/sample)
+Warning: TTA update failed at sample 681 (rid=681): CUDA out of memory. Tried to allocate 6.11 GiB. GPU 0 has a total capacity of 23.69 GiB of which 5.22 GiB is free. Including non-PyTorch memory, this process has 18.46 GiB memory in use. Of the allocated memory 18.03 GiB is allocated by PyTorch, and 112.68 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[700/1000] acc=0.8700 loss=0.0361328125 (5.3s/sample)
+Warning: TTA update failed at sample 700 (rid=700): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 702 (rid=702): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 704 (rid=704): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 708 (rid=708): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 715 (rid=715): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[720/1000] acc=0.8653 loss=0.03076171875 (5.4s/sample)
+Warning: TTA update failed at sample 722 (rid=722): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 724 (rid=724): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 725 (rid=725): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 121.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 738 (rid=738): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[740/1000] acc=0.8581 loss=0.034912109375 (5.5s/sample)
+Warning: TTA update failed at sample 743 (rid=743): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.97 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 141.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[760/1000] acc=0.8539 loss=0.026611328125 (5.4s/sample)
+[780/1000] acc=0.8436 loss=0.023681640625 (5.4s/sample)
+[800/1000] acc=0.8325 loss=0.018798828125 (5.3s/sample)
+[820/1000] acc=0.8195 loss=0.01708984375 (5.3s/sample)
+[840/1000] acc=0.8119 loss=0.08935546875 (5.2s/sample)
+[860/1000] acc=0.7988 loss=0.0306396484375 (5.1s/sample)
+[880/1000] acc=0.7864 loss=0.10302734375 (5.1s/sample)
+[900/1000] acc=0.7744 loss=0.048828125 (5.0s/sample)
+[920/1000] acc=0.7761 loss=0.05908203125 (5.0s/sample)
+[940/1000] acc=0.7766 loss=0.06787109375 (4.9s/sample)
+[960/1000] acc=0.7750 loss=0.049072265625 (4.9s/sample)
+[980/1000] acc=0.7735 loss=0.0556640625 (4.9s/sample)
+[1000/1000] acc=0.7740 loss=0.050537109375 (4.9s/sample)
+{
+  "overall_acc": 0.774,
+  "total_score": 774,
+  "total": 1000,
+  "question_type_acc": {
+    "Artistic Text Recognition": 0.94,
+    "Digit String Recognition": 0.8,
+    "Doc-oriented VQA": 0.84,
+    "Handwriting Recognition": 0.64,
+    "Handwritten Mathematical Expression Recognition": 0.77,
+    "Irregular Text Recognition": 0.94,
+    "Key Information Extraction": 0.44,
+    "Non-Semantic Text Recognition": 0.98,
+    "Regular Text Recognition": 1.0,
+    "Scene Text-centric VQA": 0.88
+  },
+  "benchmark": "ocrbench",
+  "strategy": "tent",
+  "online_enabled": true,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 128,
+  "elapsed_sec": 4853.5
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/tent.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/tent.jsonl)
+===== [2026年 08月 30日 星期日 18:56:29 CST] ocrbench/tent 结束，退出码 0 =====
+===== [2026年 08月 30日 星期日 18:56:29 CST] ocrbench/tlm 开始 =====
+[2026-08-30 18:56:35,860][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-08-30 18:56:35,860][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  45%|████▍     | 275/617 [00:00<00:00, 2737.17it/s]Loading weights:  89%|████████▉ | 549/617 [00:00<00:00, 2671.46it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2709.04it/s]
+trainable params: 417,792 || all params: 2,213,659,456 || trainable%: 0.0189
+[2026-08-30 18:56:42,449][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-08-30 18:56:42,560][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/echo840/OCRBench/92a54bd1384387c178d5a07140a2d85e0a3d12e1/README.md "HTTP/1.1 200 OK"
+[2026-08-30 18:56:42,868][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/OCRBench.py "HTTP/1.1 404 Not Found"
+[2026-08-30 18:56:44,950][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/echo840/OCRBench/echo840/OCRBench.py "HTTP/1.1 404 Not Found"
+[2026-08-30 18:56:45,094][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/revision/92a54bd1384387c178d5a07140a2d85e0a3d12e1 "HTTP/1.1 200 OK"
+[2026-08-30 18:56:45,416][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-08-30 18:56:45,772][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1/data?recursive=true&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 18:56:45,909][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 18:56:46,266][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: ocrbench, n=1000, gen_max=128
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: tlm (online.enabled=True)
+[1/1000] acc=1.0000 loss=55.835777282714844 (4.1s/sample)
+[20/1000] acc=1.0000 loss=43.75758743286133 (2.2s/sample)
+[40/1000] acc=1.0000 loss=22.279451370239258 (2.2s/sample)
+[60/1000] acc=1.0000 loss=10.264227867126465 (2.2s/sample)
+[80/1000] acc=1.0000 loss=9.00171184539795 (2.1s/sample)
+[100/1000] acc=0.9700 loss=3.729093074798584 (2.1s/sample)
+[120/1000] acc=0.9583 loss=5.494045257568359 (2.1s/sample)
+[140/1000] acc=0.9571 loss=5.996433734893799 (2.0s/sample)
+[160/1000] acc=0.9500 loss=7.796419143676758 (2.0s/sample)
+[180/1000] acc=0.9056 loss=11.63089370727539 (2.0s/sample)
+[200/1000] acc=0.8800 loss=5.959074020385742 (2.0s/sample)
+[220/1000] acc=0.8727 loss=2.3728253841400146 (2.0s/sample)
+[240/1000] acc=0.8708 loss=-0.0 (2.0s/sample)
+[260/1000] acc=0.8731 loss=-0.0 (2.0s/sample)
+[280/1000] acc=0.8786 loss=2.3777737617492676 (2.0s/sample)
+[300/1000] acc=0.8867 loss=2.8148670196533203 (2.0s/sample)
+[320/1000] acc=0.8781 loss=-0.0 (2.3s/sample)
+[340/1000] acc=0.8706 loss=2.0415704250335693 (2.5s/sample)
+[360/1000] acc=0.8694 loss=2.2319676876068115 (2.7s/sample)
+[380/1000] acc=0.8737 loss=3.243267774581909 (2.9s/sample)
+[400/1000] acc=0.8725 loss=-0.0 (3.1s/sample)
+[420/1000] acc=0.8690 loss=-0.0 (3.2s/sample)
+[440/1000] acc=0.8727 loss=2.672806739807129 (3.3s/sample)
+[460/1000] acc=0.8783 loss=-0.0 (3.4s/sample)
+[480/1000] acc=0.8812 loss=-0.0 (3.4s/sample)
+[500/1000] acc=0.8840 loss=-0.0 (3.4s/sample)
+[520/1000] acc=0.8788 loss=-0.0 (3.7s/sample)
+[540/1000] acc=0.8778 loss=2.6516778469085693 (3.9s/sample)
+[560/1000] acc=0.8786 loss=-0.0 (4.2s/sample)
+[580/1000] acc=0.8810 loss=-0.0 (4.3s/sample)
+[600/1000] acc=0.8833 loss=5.2152228355407715 (4.4s/sample)
+[620/1000] acc=0.8790 loss=-0.0 (4.5s/sample)
+[640/1000] acc=0.8719 loss=-0.0 (4.6s/sample)
+Warning: TTA update failed at sample 653 (rid=653): CUDA out of memory. Tried to allocate 6.11 GiB. GPU 0 has a total capacity of 23.69 GiB of which 5.24 GiB is free. Including non-PyTorch memory, this process has 18.44 GiB memory in use. Of the allocated memory 18.03 GiB is allocated by PyTorch, and 93.03 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 654 (rid=654): CUDA out of memory. Tried to allocate 3.94 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.29 GiB is free. Including non-PyTorch memory, this process has 21.39 GiB memory in use. Of the allocated memory 20.95 GiB is allocated by PyTorch, and 121.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 658 (rid=658): CUDA out of memory. Tried to allocate 7.48 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.09 GiB is free. Including non-PyTorch memory, this process has 21.58 GiB memory in use. Of the allocated memory 21.14 GiB is allocated by PyTorch, and 125.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[660/1000] acc=0.8727 loss=35.60246658325195 (4.8s/sample)
+Warning: TTA update failed at sample 667 (rid=667): CUDA out of memory. Tried to allocate 6.74 GiB. GPU 0 has a total capacity of 23.69 GiB of which 3.79 GiB is free. Including non-PyTorch memory, this process has 19.88 GiB memory in use. Of the allocated memory 19.47 GiB is allocated by PyTorch, and 100.44 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 674 (rid=674): CUDA out of memory. Tried to allocate 3.81 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.83 GiB is free. Including non-PyTorch memory, this process has 20.84 GiB memory in use. Of the allocated memory 20.42 GiB is allocated by PyTorch, and 107.66 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 676 (rid=676): CUDA out of memory. Tried to allocate 3.89 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.50 GiB is free. Including non-PyTorch memory, this process has 21.17 GiB memory in use. Of the allocated memory 20.75 GiB is allocated by PyTorch, and 107.68 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[680/1000] acc=0.8706 loss=-0.0 (5.0s/sample)
+Warning: TTA update failed at sample 681 (rid=681): CUDA out of memory. Tried to allocate 6.11 GiB. GPU 0 has a total capacity of 23.69 GiB of which 5.24 GiB is free. Including non-PyTorch memory, this process has 18.44 GiB memory in use. Of the allocated memory 18.03 GiB is allocated by PyTorch, and 93.03 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 690 (rid=690): CUDA out of memory. Tried to allocate 3.94 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.33 GiB is free. Including non-PyTorch memory, this process has 21.35 GiB memory in use. Of the allocated memory 20.95 GiB is allocated by PyTorch, and 81.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[700/1000] acc=0.8714 loss=-0.0 (5.1s/sample)
+Warning: TTA update failed at sample 700 (rid=700): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 702 (rid=702): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 704 (rid=704): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 708 (rid=708): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 124.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 715 (rid=715): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[720/1000] acc=0.8736 loss=5.911859512329102 (5.3s/sample)
+Warning: TTA update failed at sample 722 (rid=722): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 724 (rid=724): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 725 (rid=725): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.01 GiB is free. Including non-PyTorch memory, this process has 21.66 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 102.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 738 (rid=738): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[740/1000] acc=0.8730 loss=6.50398588180542 (5.4s/sample)
+Warning: TTA update failed at sample 743 (rid=743): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.99 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 122.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[760/1000] acc=0.8737 loss=2.2932980060577393 (5.3s/sample)
+[780/1000] acc=0.8718 loss=4.887595176696777 (5.3s/sample)
+[800/1000] acc=0.8712 loss=-0.0 (5.2s/sample)
+[820/1000] acc=0.8720 loss=2.6560144424438477 (5.2s/sample)
+[840/1000] acc=0.8690 loss=-0.0 (5.1s/sample)
+[860/1000] acc=0.8686 loss=3.6303412914276123 (5.1s/sample)
+[880/1000] acc=0.8659 loss=2.87712025642395 (5.0s/sample)
+[900/1000] acc=0.8667 loss=-0.0 (4.9s/sample)
+[920/1000] acc=0.8663 loss=-0.0 (4.9s/sample)
+[940/1000] acc=0.8660 loss=-0.0 (4.8s/sample)
+[960/1000] acc=0.8635 loss=-0.0 (4.8s/sample)
+[980/1000] acc=0.8602 loss=2.0265679359436035 (4.8s/sample)
+[1000/1000] acc=0.8590 loss=-0.0 (4.7s/sample)
+{
+  "overall_acc": 0.859,
+  "total_score": 859,
+  "total": 1000,
+  "question_type_acc": {
+    "Artistic Text Recognition": 0.94,
+    "Digit String Recognition": 0.82,
+    "Doc-oriented VQA": 0.84,
+    "Handwriting Recognition": 0.64,
+    "Handwritten Mathematical Expression Recognition": 0.79,
+    "Irregular Text Recognition": 0.94,
+    "Key Information Extraction": 0.85,
+    "Non-Semantic Text Recognition": 0.98,
+    "Regular Text Recognition": 1.0,
+    "Scene Text-centric VQA": 0.88
+  },
+  "benchmark": "ocrbench",
+  "strategy": "tlm",
+  "online_enabled": true,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 128,
+  "elapsed_sec": 4739.6
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/tlm.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/tlm.jsonl)
+===== [2026年 08月 30日 星期日 20:15:47 CST] ocrbench/tlm 结束，退出码 0 =====
+===== [2026年 08月 30日 星期日 20:15:47 CST] ocrbench/come 开始 =====
+[2026-08-30 20:15:53,898][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-08-30 20:15:53,898][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  45%|████▌     | 279/617 [00:00<00:00, 2778.84it/s]Loading weights:  90%|█████████ | 557/617 [00:00<00:00, 2645.91it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2692.73it/s]
+trainable params: 417,792 || all params: 2,213,659,456 || trainable%: 0.0189
+[2026-08-30 20:16:00,630][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-08-30 20:16:00,816][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/echo840/OCRBench/92a54bd1384387c178d5a07140a2d85e0a3d12e1/README.md "HTTP/1.1 200 OK"
+[2026-08-30 20:16:01,122][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/OCRBench.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-30 20:16:01,123][huggingface_hub.utils._http][WARNING] - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-30 20:16:01,891][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/echo840/OCRBench/echo840/OCRBench.py "HTTP/1.1 404 Not Found"
+[2026-08-30 20:16:02,074][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/revision/92a54bd1384387c178d5a07140a2d85e0a3d12e1 "HTTP/1.1 200 OK"
+[2026-08-30 20:16:02,532][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-08-30 20:16:02,929][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1/data?recursive=true&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 20:16:03,089][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/echo840/OCRBench/tree/92a54bd1384387c178d5a07140a2d85e0a3d12e1?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-08-30 20:16:03,388][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/echo840/OCRBench/resolve/92a54bd1384387c178d5a07140a2d85e0a3d12e1/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: ocrbench, n=1000, gen_max=128
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: come (online.enabled=True)
+[1/1000] acc=1.0000 loss=0.42303958535194397 (22.7s/sample)
+[20/1000] acc=1.0000 loss=0.37196195125579834 (20.7s/sample)
+[40/1000] acc=1.0000 loss=0.15841761231422424 (20.6s/sample)
+[60/1000] acc=1.0000 loss=0.08454794436693192 (20.5s/sample)
+[80/1000] acc=1.0000 loss=0.03209338337182999 (20.3s/sample)
+[100/1000] acc=0.9700 loss=0.010132991708815098 (20.3s/sample)
+[120/1000] acc=0.9583 loss=0.0112009197473526 (20.5s/sample)
+[140/1000] acc=0.9571 loss=0.004749066662043333 (20.8s/sample)
+[160/1000] acc=0.9500 loss=0.025640953332185745 (20.8s/sample)
+[180/1000] acc=0.9056 loss=0.006398410070687532 (20.8s/sample)
+[200/1000] acc=0.8800 loss=0.026859242469072342 (20.8s/sample)
+[220/1000] acc=0.8727 loss=0.004520540125668049 (20.8s/sample)
+[240/1000] acc=0.8708 loss=0.003311493434011936 (20.8s/sample)
+[260/1000] acc=0.8731 loss=0.0014019326772540808 (20.7s/sample)
+[280/1000] acc=0.8786 loss=0.0013807654613628983 (20.8s/sample)
+[300/1000] acc=0.8867 loss=0.0010101369116455317 (20.7s/sample)
+[320/1000] acc=0.8781 loss=0.017993072047829628 (21.3s/sample)
+[340/1000] acc=0.8706 loss=0.03352533280849457 (21.8s/sample)
+[360/1000] acc=0.8722 loss=1.9432495832443237 (22.6s/sample)
+[380/1000] acc=0.8763 loss=0.0019053964642807841 (23.7s/sample)
+[400/1000] acc=0.8750 loss=1.9597864151000977 (24.7s/sample)
+[420/1000] acc=0.8714 loss=0.05186332389712334 (25.0s/sample)
+[440/1000] acc=0.8750 loss=0.001137148472480476 (25.2s/sample)
+[460/1000] acc=0.8804 loss=0.012894117273390293 (25.7s/sample)
+[480/1000] acc=0.8833 loss=0.0019966638647019863 (25.7s/sample)
+[500/1000] acc=0.8860 loss=0.0017521616537123919 (25.7s/sample)
+[520/1000] acc=0.8827 loss=0.0030262209475040436 (28.6s/sample)
+[540/1000] acc=0.8815 loss=0.003605736419558525 (31.2s/sample)
+[560/1000] acc=0.8839 loss=0.0015431115170940757 (32.5s/sample)
+[580/1000] acc=0.8862 loss=0.03262253478169441 (32.6s/sample)
+[600/1000] acc=0.8900 loss=0.07341845333576202 (32.6s/sample)
+[620/1000] acc=0.8855 loss=0.03457990661263466 (32.6s/sample)
+[640/1000] acc=0.8812 loss=0.002348977141082287 (32.6s/sample)
+[660/1000] acc=0.8833 loss=0.5940518975257874 (36.1s/sample)
+[680/1000] acc=0.8779 loss=0.002775296801701188 (39.1s/sample)
+[700/1000] acc=0.8771 loss=0.0005952076753601432 (40.9s/sample)
+[720/1000] acc=0.8792 loss=0.0014026365242898464 (47.0s/sample)
+[740/1000] acc=0.8784 loss=0.000638787925709039 (51.6s/sample)
+[760/1000] acc=0.8789 loss=0.00033890732447616756 (52.5s/sample)
+[780/1000] acc=0.8769 loss=0.0006617695325985551 (52.2s/sample)
+[800/1000] acc=0.8750 loss=0.0001551934255985543 (51.8s/sample)
+[820/1000] acc=0.8744 loss=0.0002581267908681184 (51.4s/sample)
+[840/1000] acc=0.8726 loss=0.0002326117391930893 (50.8s/sample)
+[860/1000] acc=0.8709 loss=0.0007299548597075045 (50.2s/sample)
+[880/1000] acc=0.8682 loss=0.00016395372222177684 (49.6s/sample)
+[900/1000] acc=0.8644 loss=0.00029443801031447947 (48.9s/sample)
+[920/1000] acc=0.8630 loss=0.00038433203008025885 (48.4s/sample)
+[940/1000] acc=0.8628 loss=0.0005825074622407556 (47.8s/sample)
+[960/1000] acc=0.8604 loss=0.00043984639341942966 (47.3s/sample)
+[980/1000] acc=0.8571 loss=0.00033113392419181764 (46.8s/sample)
+[1000/1000] acc=0.8560 loss=0.00031531346030533314 (46.4s/sample)
+{
+  "overall_acc": 0.856,
+  "total_score": 856,
+  "total": 1000,
+  "question_type_acc": {
+    "Artistic Text Recognition": 0.94,
+    "Digit String Recognition": 0.82,
+    "Doc-oriented VQA": 0.855,
+    "Handwriting Recognition": 0.64,
+    "Handwritten Mathematical Expression Recognition": 0.78,
+    "Irregular Text Recognition": 0.94,
+    "Key Information Extraction": 0.82,
+    "Non-Semantic Text Recognition": 0.98,
+    "Regular Text Recognition": 1.0,
+    "Scene Text-centric VQA": 0.885
+  },
+  "benchmark": "ocrbench",
+  "strategy": "come",
+  "online_enabled": true,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 128,
+  "elapsed_sec": 46362.3
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/come.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/ocrbench/come.jsonl)
+===== [2026年 08月 31日 星期一 09:08:47 CST] ocrbench/come 结束，退出码 0 =====
+===== [2026年 08月 31日 星期一 09:08:47 CST] omnidocbench/baseline 开始 =====
+[2026-08-31 09:08:54,243][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-08-31 09:08:54,243][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  49%|████▉     | 303/617 [00:00<00:00, 2991.31it/s]Loading weights:  98%|█████████▊| 603/617 [00:00<00:00, 2946.75it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2984.62it/s]
+[2026-08-31 09:09:00,758][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/agent-harnesses "HTTP/1.1 200 OK"
+[2026-08-31 09:09:01,254][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-08-31 09:09:01,362][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/ouyanglinke/OmniDocBench_tsv/6d905c44009cc4f922c27e635c6ed484a2bc205c/README.md "HTTP/1.1 200 OK"
+[2026-08-31 09:09:01,621][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-31 09:09:01,622][huggingface_hub.utils._http][WARNING] - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-08-31 09:09:02,616][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/ouyanglinke/OmniDocBench_tsv/ouyanglinke/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+Repo card metadata block was not found. Setting CardData to empty.
+[2026-08-31 09:09:02,619][huggingface_hub.repocard][WARNING] - Repo card metadata block was not found. Setting CardData to empty.
+[2026-08-31 09:09:02,987][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/revision/6d905c44009cc4f922c27e635c6ed484a2bc205c "HTTP/1.1 200 OK"
+[2026-08-31 09:09:03,325][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-08-31 09:09:03,835][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c/data?recursive=true&expand=false "HTTP/1.1 404 Not Found"
+[2026-08-31 09:09:04,467][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-08-31 09:09:05,096][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: omnidocbench, n=981, gen_max=4096
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: none (online.enabled=False)
+[1/981] overall=97.27 loss=None (42.0s/sample)
+[20/981] overall=70.03 loss=None (18.0s/sample)
+[40/981] overall=69.68 loss=None (12.4s/sample)
+[60/981] overall=70.20 loss=None (10.4s/sample)
+[80/981] overall=70.60 loss=None (11.4s/sample)
+[100/981] overall=73.82 loss=None (9.8s/sample)
+[120/981] overall=73.55 loss=None (9.1s/sample)
+[140/981] overall=71.85 loss=None (14.4s/sample)
+[160/981] overall=69.22 loss=None (24.0s/sample)
+[180/981] overall=66.22 loss=None (29.0s/sample)
+[200/981] overall=64.59 loss=None (32.5s/sample)
+[220/981] overall=63.94 loss=None (34.5s/sample)
+[240/981] overall=64.26 loss=None (34.0s/sample)
+[260/981] overall=63.57 loss=None (36.8s/sample)
+[280/981] overall=65.24 loss=None (36.3s/sample)
+[300/981] overall=66.16 loss=None (36.0s/sample)
+[320/981] overall=66.07 loss=None (36.3s/sample)
+[340/981] overall=66.15 loss=None (37.6s/sample)
+[360/981] overall=65.94 loss=None (38.7s/sample)
+[380/981] overall=65.85 loss=None (38.8s/sample)
+[400/981] overall=65.38 loss=None (38.8s/sample)
+[420/981] overall=64.40 loss=None (38.6s/sample)
+[440/981] overall=63.79 loss=None (38.7s/sample)
+[460/981] overall=63.47 loss=None (39.2s/sample)
+[480/981] overall=62.73 loss=None (39.1s/sample)
+[500/981] overall=62.60 loss=None (39.2s/sample)
+[520/981] overall=61.59 loss=None (40.3s/sample)
+[540/981] overall=61.95 loss=None (40.9s/sample)
+[560/981] overall=61.82 loss=None (40.5s/sample)
+[580/981] overall=62.26 loss=None (40.3s/sample)
+[600/981] overall=62.95 loss=None (40.2s/sample)
+[620/981] overall=62.09 loss=None (39.7s/sample)
+[640/981] overall=61.17 loss=None (40.0s/sample)
+[660/981] overall=60.06 loss=None (39.6s/sample)
+[680/981] overall=59.26 loss=None (38.8s/sample)
+[700/981] overall=58.25 loss=None (39.1s/sample)
+[720/981] overall=57.19 loss=None (40.1s/sample)
+[740/981] overall=56.09 loss=None (43.9s/sample)
+[760/981] overall=54.90 loss=None (47.6s/sample)
+[780/981] overall=53.82 loss=None (50.9s/sample)
+[800/981] overall=52.74 loss=None (54.3s/sample)
+[820/981] overall=51.61 loss=None (57.3s/sample)
+[840/981] overall=51.90 loss=None (58.1s/sample)
+[860/981] overall=52.41 loss=None (58.0s/sample)
+[880/981] overall=52.94 loss=None (57.7s/sample)
+[900/981] overall=53.26 loss=None (57.4s/sample)
+[920/981] overall=53.80 loss=None (57.5s/sample)
+[940/981] overall=54.55 loss=None (57.6s/sample)
+[960/981] overall=54.99 loss=None (56.9s/sample)
+[980/981] overall=55.09 loss=None (57.0s/sample)
+{
+  "overall": 42.11323211266198,
+  "text_edit": 0.6092109357001542,
+  "table_teds": 0.6164518276766411,
+  "formula_edit": 0.7438439285966274,
+  "total": 981,
+  "benchmark": "omnidocbench",
+  "strategy": "none",
+  "online_enabled": false,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 4096,
+  "elapsed_sec": 56099.1
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/baseline.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/baseline.jsonl)
+===== [2026年 09月 01日 星期二 00:44:06 CST] omnidocbench/baseline 结束，退出码 0 =====
+===== [2026年 09月 01日 星期二 00:44:06 CST] omnidocbench/tent 开始 =====
+[2026-09-01 00:44:12,281][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-09-01 00:44:12,281][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  44%|████▍     | 271/617 [00:00<00:00, 2666.43it/s]Loading weights:  87%|████████▋ | 538/617 [00:00<00:00, 2363.90it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2688.99it/s]
+trainable params: 417,792 || all params: 2,213,659,456 || trainable%: 0.0189
+[2026-09-01 00:44:19,119][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-09-01 00:44:19,216][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/ouyanglinke/OmniDocBench_tsv/6d905c44009cc4f922c27e635c6ed484a2bc205c/README.md "HTTP/1.1 200 OK"
+[2026-09-01 00:44:19,700][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-09-01 00:44:19,701][huggingface_hub.utils._http][WARNING] - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-09-01 00:44:20,745][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/ouyanglinke/OmniDocBench_tsv/ouyanglinke/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+Repo card metadata block was not found. Setting CardData to empty.
+[2026-09-01 00:44:20,748][huggingface_hub.repocard][WARNING] - Repo card metadata block was not found. Setting CardData to empty.
+[2026-09-01 00:44:21,089][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/revision/6d905c44009cc4f922c27e635c6ed484a2bc205c "HTTP/1.1 200 OK"
+[2026-09-01 00:44:21,397][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-09-01 00:44:25,318][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c/data?recursive=true&expand=false "HTTP/1.1 404 Not Found"
+[2026-09-01 00:44:25,624][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-09-01 00:44:26,031][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: omnidocbench, n=981, gen_max=4096
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: tent (online.enabled=True)
+[1/981] overall=97.27 loss=1.0234375 (40.6s/sample)
+[20/981] overall=70.72 loss=1.3359375 (20.5s/sample)
+[40/981] overall=70.14 loss=1.4765625 (16.2s/sample)
+[60/981] overall=70.44 loss=1.0546875 (15.2s/sample)
+[80/981] overall=71.28 loss=1.359375 (16.9s/sample)
+[100/981] overall=73.47 loss=1.0234375 (15.4s/sample)
+[120/981] overall=73.26 loss=1.0859375 (14.9s/sample)
+[140/981] overall=72.21 loss=0.8203125 (19.5s/sample)
+[160/981] overall=69.64 loss=0.70703125 (29.3s/sample)
+[180/981] overall=66.76 loss=0.416015625 (34.8s/sample)
+[200/981] overall=64.85 loss=0.4375 (37.3s/sample)
+[220/981] overall=63.94 loss=0.5390625 (39.8s/sample)
+[240/981] overall=64.03 loss=0.3671875 (40.4s/sample)
+[260/981] overall=63.59 loss=0.478515625 (42.9s/sample)
+[280/981] overall=65.12 loss=0.42578125 (43.4s/sample)
+[300/981] overall=65.74 loss=0.3359375 (45.0s/sample)
+[320/981] overall=66.08 loss=0.515625 (45.0s/sample)
+[340/981] overall=65.40 loss=0.259765625 (48.5s/sample)
+[360/981] overall=64.95 loss=0.349609375 (49.7s/sample)
+[380/981] overall=64.34 loss=0.322265625 (51.1s/sample)
+[400/981] overall=63.73 loss=0.23046875 (50.3s/sample)
+Warning: TTA update failed at sample 415 (rid=415): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.00 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 117.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[420/981] overall=62.58 loss=0.1953125 (50.9s/sample)
+Warning: TTA update failed at sample 431 (rid=431): CUDA out of memory. Tried to allocate 7.55 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.92 GiB is free. Including non-PyTorch memory, this process has 21.76 GiB memory in use. Of the allocated memory 21.31 GiB is allocated by PyTorch, and 133.40 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 434 (rid=434): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 177.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[440/981] overall=61.63 loss=0.08154296875 (51.2s/sample)
+Warning: TTA update failed at sample 442 (rid=442): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 177.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 449 (rid=449): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.96 GiB is free. Including non-PyTorch memory, this process has 21.72 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 140.77 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 456 (rid=456): CUDA out of memory. Tried to allocate 7.50 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.02 GiB is free. Including non-PyTorch memory, this process has 21.66 GiB memory in use. Of the allocated memory 21.20 GiB is allocated by PyTorch, and 147.50 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 458 (rid=458): CUDA out of memory. Tried to allocate 5.15 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.19 GiB is free. Including non-PyTorch memory, this process has 21.48 GiB memory in use. Of the allocated memory 20.99 GiB is allocated by PyTorch, and 178.78 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[460/981] overall=60.72 loss=0.140625 (52.5s/sample)
+Warning: TTA update failed at sample 465 (rid=465): CUDA out of memory. Tried to allocate 7.54 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.92 GiB is free. Including non-PyTorch memory, this process has 21.76 GiB memory in use. Of the allocated memory 21.29 GiB is allocated by PyTorch, and 150.63 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 468 (rid=468): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 177.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 469 (rid=469): CUDA out of memory. Tried to allocate 7.54 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.29 GiB is allocated by PyTorch, and 130.63 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 470 (rid=470): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.96 GiB is free. Including non-PyTorch memory, this process has 21.72 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 146.15 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 472 (rid=472): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 126.15 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[480/981] overall=59.16 loss=0.109375 (56.5s/sample)
+Warning: TTA update failed at sample 496 (rid=496): CUDA out of memory. Tried to allocate 7.55 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.92 GiB is free. Including non-PyTorch memory, this process has 21.76 GiB memory in use. Of the allocated memory 21.31 GiB is allocated by PyTorch, and 133.40 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[500/981] overall=58.23 loss=0.0966796875 (57.9s/sample)
+Warning: TTA update failed at sample 506 (rid=506): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 177.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 510 (rid=510): CUDA out of memory. Tried to allocate 7.54 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.92 GiB is free. Including non-PyTorch memory, this process has 21.76 GiB memory in use. Of the allocated memory 21.29 GiB is allocated by PyTorch, and 150.63 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 514 (rid=514): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.96 GiB is free. Including non-PyTorch memory, this process has 21.72 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 146.15 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[520/981] overall=57.12 loss=0.052978515625 (60.0s/sample)
+Warning: TTA update failed at sample 520 (rid=520): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.25 GiB is allocated by PyTorch, and 167.22 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 529 (rid=529): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.25 GiB is allocated by PyTorch, and 167.22 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 537 (rid=537): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 177.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[540/981] overall=55.91 loss=0.06396484375 (62.6s/sample)
+Warning: TTA update failed at sample 541 (rid=541): CUDA out of memory. Tried to allocate 4.74 GiB. GPU 0 has a total capacity of 23.69 GiB of which 3.58 GiB is free. Including non-PyTorch memory, this process has 20.10 GiB memory in use. Of the allocated memory 19.64 GiB is allocated by PyTorch, and 139.90 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[560/981] overall=54.90 loss=0.0162353515625 (64.4s/sample)
+Warning: TTA update failed at sample 565 (rid=565): CUDA out of memory. Tried to allocate 7.48 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.06 GiB is free. Including non-PyTorch memory, this process has 21.62 GiB memory in use. Of the allocated memory 21.15 GiB is allocated by PyTorch, and 159.17 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[580/981] overall=54.44 loss=0.0234375 (65.9s/sample)
+[600/981] overall=53.89 loss=0.30859375 (66.1s/sample)
+[620/981] overall=52.32 loss=0.01123046875 (67.4s/sample)
+[640/981] overall=50.82 loss=0.0810546875 (70.5s/sample)
+[660/981] overall=49.49 loss=0.087890625 (72.5s/sample)
+[680/981] overall=48.44 loss=0.0810546875 (73.9s/sample)
+[700/981] overall=47.35 loss=0.07861328125 (75.5s/sample)
+[720/981] overall=46.27 loss=0.083984375 (77.7s/sample)
+[740/981] overall=45.08 loss=0.1357421875 (80.3s/sample)
+[760/981] overall=43.91 loss=0.046630859375 (82.7s/sample)
+[780/981] overall=42.85 loss=0.0218505859375 (85.2s/sample)
+[800/981] overall=41.82 loss=0.026123046875 (88.3s/sample)
+[820/981] overall=40.87 loss=0.0216064453125 (91.1s/sample)
+[840/981] overall=40.26 loss=0.019775390625 (93.3s/sample)
+[860/981] overall=39.89 loss=0.00653076171875 (94.7s/sample)
+[880/981] overall=39.47 loss=0.00958251953125 (96.2s/sample)
+[900/981] overall=39.03 loss=0.01068115234375 (98.2s/sample)
+[920/981] overall=38.64 loss=0.0089111328125 (100.8s/sample)
+[940/981] overall=38.41 loss=0.005828857421875 (102.4s/sample)
+[960/981] overall=37.90 loss=0.00360107421875 (104.1s/sample)
+Warning: TTA update failed at sample 968 (rid=968): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 4.06 GiB is free. Including non-PyTorch memory, this process has 14.37 GiB memory in use. Process 1253987 has 5.24 GiB memory in use. Of the allocated memory 13.90 GiB is allocated by PyTorch, and 155.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 969 (rid=969): CUDA out of memory. Tried to allocate 3.48 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.46 GiB is free. Including non-PyTorch memory, this process has 15.98 GiB memory in use. Process 1253987 has 5.24 GiB memory in use. Of the allocated memory 15.53 GiB is allocated by PyTorch, and 130.37 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 971 (rid=971): CUDA out of memory. Tried to allocate 3.48 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.48 GiB is free. Including non-PyTorch memory, this process has 15.96 GiB memory in use. Process 1253987 has 5.24 GiB memory in use. Of the allocated memory 15.53 GiB is allocated by PyTorch, and 110.37 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[980/981] overall=37.71 loss=0.0068359375 (105.2s/sample)
+{
+  "overall": 22.715569761288588,
+  "text_edit": 0.7465922898881844,
+  "table_teds": 0.281179599166271,
+  "formula_edit": 0.853120216439429,
+  "total": 981,
+  "benchmark": "omnidocbench",
+  "strategy": "tent",
+  "online_enabled": true,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 4096,
+  "elapsed_sec": 103296.2
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/tent.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/tent.jsonl)
+===== [2026年 09月 02日 星期三 05:26:03 CST] omnidocbench/tent 结束，退出码 0 =====
+===== [2026年 09月 02日 星期三 05:26:03 CST] omnidocbench/tlm 开始 =====
+[2026-09-02 05:26:10,601][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-09-02 05:26:10,601][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  46%|████▋     | 286/617 [00:00<00:00, 2818.22it/s]Loading weights:  94%|█████████▍| 583/617 [00:00<00:00, 2906.37it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2920.08it/s]
+trainable params: 417,792 || all params: 2,213,659,456 || trainable%: 0.0189
+[2026-09-02 05:26:16,947][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/agent-harnesses "HTTP/1.1 200 OK"
+[2026-09-02 05:26:17,247][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-09-02 05:26:17,325][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/ouyanglinke/OmniDocBench_tsv/6d905c44009cc4f922c27e635c6ed484a2bc205c/README.md "HTTP/1.1 200 OK"
+[2026-09-02 05:26:17,564][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+[2026-09-02 05:26:18,311][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/ouyanglinke/OmniDocBench_tsv/ouyanglinke/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+Repo card metadata block was not found. Setting CardData to empty.
+[2026-09-02 05:26:18,313][huggingface_hub.repocard][WARNING] - Repo card metadata block was not found. Setting CardData to empty.
+[2026-09-02 05:26:18,675][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/revision/6d905c44009cc4f922c27e635c6ed484a2bc205c "HTTP/1.1 200 OK"
+[2026-09-02 05:26:18,977][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-09-02 05:26:19,582][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c/data?recursive=true&expand=false "HTTP/1.1 404 Not Found"
+[2026-09-02 05:26:19,872][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-09-02 05:26:20,141][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: omnidocbench, n=981, gen_max=4096
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: tlm (online.enabled=True)
+[1/981] overall=97.27 loss=7.697327136993408 (43.6s/sample)
+[20/981] overall=70.73 loss=4.6090521812438965 (30.3s/sample)
+[40/981] overall=70.52 loss=5.498219966888428 (21.3s/sample)
+[60/981] overall=70.57 loss=3.657258987426758 (18.9s/sample)
+Warning: TTA update failed at sample 62 (rid=62): CUDA out of memory. Tried to allocate 3.05 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.48 GiB is free. Process 1253987 has 6.67 GiB memory in use. Including non-PyTorch memory, this process has 14.53 GiB memory in use. Of the allocated memory 14.13 GiB is allocated by PyTorch, and 88.17 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[80/981] overall=70.97 loss=3.0873751640319824 (19.7s/sample)
+[100/981] overall=74.12 loss=-0.0 (17.8s/sample)
+[120/981] overall=74.23 loss=-0.0 (17.1s/sample)
+[140/981] overall=72.45 loss=2.048841953277588 (22.4s/sample)
+[160/981] overall=70.67 loss=-0.0 (30.6s/sample)
+[180/981] overall=68.01 loss=2.02978253364563 (36.3s/sample)
+[200/981] overall=66.12 loss=-0.0 (38.8s/sample)
+Warning: TTA update failed at sample 206 (rid=206): CUDA out of memory. Tried to allocate 2.47 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.42 GiB is free. Process 1253987 has 7.16 GiB memory in use. Including non-PyTorch memory, this process has 15.10 GiB memory in use. Of the allocated memory 14.69 GiB is allocated by PyTorch, and 92.45 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[220/981] overall=65.32 loss=-0.0 (41.9s/sample)
+[240/981] overall=65.51 loss=-0.0 (41.9s/sample)
+[260/981] overall=65.06 loss=-0.0 (44.4s/sample)
+[280/981] overall=66.78 loss=-0.0 (43.7s/sample)
+Warning: TTA update failed at sample 299 (rid=299): CUDA out of memory. Tried to allocate 3.48 GiB. GPU 0 has a total capacity of 23.69 GiB of which 3.29 GiB is free. Process 1253987 has 7.92 GiB memory in use. Including non-PyTorch memory, this process has 12.46 GiB memory in use. Of the allocated memory 12.05 GiB is allocated by PyTorch, and 93.91 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[300/981] overall=67.59 loss=None (43.4s/sample)
+[320/981] overall=67.59 loss=-0.0 (43.6s/sample)
+[340/981] overall=67.51 loss=-0.0 (45.7s/sample)
+[360/981] overall=67.22 loss=-0.0 (46.9s/sample)
+[380/981] overall=67.09 loss=-0.0 (47.6s/sample)
+[400/981] overall=66.58 loss=-0.0 (47.5s/sample)
+Warning: TTA update failed at sample 415 (rid=415): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.02 GiB is free. Including non-PyTorch memory, this process has 21.66 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 98.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[420/981] overall=65.59 loss=-0.0 (47.2s/sample)
+Warning: TTA update failed at sample 431 (rid=431): CUDA out of memory. Tried to allocate 7.55 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.92 GiB is free. Including non-PyTorch memory, this process has 21.76 GiB memory in use. Of the allocated memory 21.31 GiB is allocated by PyTorch, and 133.72 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 434 (rid=434): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 138.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[440/981] overall=64.83 loss=-0.0 (47.2s/sample)
+Warning: TTA update failed at sample 442 (rid=442): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 138.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 449 (rid=449): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.00 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 101.08 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 456 (rid=456): CUDA out of memory. Tried to allocate 7.50 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.04 GiB is free. Including non-PyTorch memory, this process has 21.64 GiB memory in use. Of the allocated memory 21.20 GiB is allocated by PyTorch, and 127.82 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 458 (rid=458): CUDA out of memory. Tried to allocate 5.15 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.23 GiB is free. Including non-PyTorch memory, this process has 21.44 GiB memory in use. Of the allocated memory 20.99 GiB is allocated by PyTorch, and 139.62 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[460/981] overall=64.54 loss=-0.0 (47.7s/sample)
+Warning: TTA update failed at sample 465 (rid=465): CUDA out of memory. Tried to allocate 7.54 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.29 GiB is allocated by PyTorch, and 130.94 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 468 (rid=468): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 138.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 469 (rid=469): CUDA out of memory. Tried to allocate 7.54 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.96 GiB is free. Including non-PyTorch memory, this process has 21.72 GiB memory in use. Of the allocated memory 21.29 GiB is allocated by PyTorch, and 110.94 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 470 (rid=470): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.00 GiB is free. Including non-PyTorch memory, this process has 21.68 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 106.47 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 472 (rid=472): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.02 GiB is free. Including non-PyTorch memory, this process has 21.66 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 86.47 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[480/981] overall=63.81 loss=-0.0 (47.7s/sample)
+Warning: TTA update failed at sample 496 (rid=496): CUDA out of memory. Tried to allocate 7.55 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.92 GiB is free. Including non-PyTorch memory, this process has 21.76 GiB memory in use. Of the allocated memory 21.31 GiB is allocated by PyTorch, and 133.72 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[500/981] overall=63.67 loss=-0.0 (47.8s/sample)
+Warning: TTA update failed at sample 506 (rid=506): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 138.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 510 (rid=510): CUDA out of memory. Tried to allocate 7.54 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.94 GiB is free. Including non-PyTorch memory, this process has 21.74 GiB memory in use. Of the allocated memory 21.29 GiB is allocated by PyTorch, and 130.94 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 514 (rid=514): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.26 GiB is allocated by PyTorch, and 126.47 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[520/981] overall=63.12 loss=-0.0 (48.3s/sample)
+Warning: TTA update failed at sample 520 (rid=520): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.25 GiB is allocated by PyTorch, and 127.54 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 523 (rid=523): CUDA out of memory. Tried to allocate 3.64 GiB. GPU 0 has a total capacity of 23.69 GiB of which 3.58 GiB is free. Including non-PyTorch memory, this process has 20.10 GiB memory in use. Of the allocated memory 19.71 GiB is allocated by PyTorch, and 68.13 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 529 (rid=529): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.25 GiB is allocated by PyTorch, and 127.54 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 537 (rid=537): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 138.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[540/981] overall=63.25 loss=16.13108253479004 (49.0s/sample)
+Warning: TTA update failed at sample 541 (rid=541): CUDA out of memory. Tried to allocate 4.74 GiB. GPU 0 has a total capacity of 23.69 GiB of which 3.62 GiB is free. Including non-PyTorch memory, this process has 20.06 GiB memory in use. Of the allocated memory 19.64 GiB is allocated by PyTorch, and 100.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[560/981] overall=63.12 loss=-0.0 (48.6s/sample)
+Warning: TTA update failed at sample 565 (rid=565): CUDA out of memory. Tried to allocate 7.48 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.08 GiB is free. Including non-PyTorch memory, this process has 21.60 GiB memory in use. Of the allocated memory 21.15 GiB is allocated by PyTorch, and 139.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Warning: TTA update failed at sample 568 (rid=568): CUDA out of memory. Tried to allocate 3.80 GiB. GPU 0 has a total capacity of 23.69 GiB of which 2.88 GiB is free. Including non-PyTorch memory, this process has 20.80 GiB memory in use. Of the allocated memory 20.37 GiB is allocated by PyTorch, and 112.23 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[580/981] overall=63.58 loss=-0.0 (48.9s/sample)
+[600/981] overall=64.23 loss=-0.0 (48.6s/sample)
+[620/981] overall=63.34 loss=-0.0 (48.3s/sample)
+[640/981] overall=62.49 loss=-0.0 (48.1s/sample)
+[660/981] overall=61.43 loss=-0.0 (48.5s/sample)
+[680/981] overall=60.62 loss=-0.0 (48.0s/sample)
+[700/981] overall=59.53 loss=-0.0 (48.3s/sample)
+[720/981] overall=58.52 loss=-0.0 (49.2s/sample)
+[740/981] overall=57.39 loss=-0.0 (53.1s/sample)
+[760/981] overall=56.19 loss=-0.0 (56.8s/sample)
+[780/981] overall=55.10 loss=-0.0 (60.1s/sample)
+[800/981] overall=54.00 loss=-0.0 (63.1s/sample)
+[820/981] overall=52.83 loss=-0.0 (66.2s/sample)
+[840/981] overall=52.94 loss=-0.0 (67.2s/sample)
+[860/981] overall=53.42 loss=-0.0 (67.2s/sample)
+[880/981] overall=53.94 loss=-0.0 (66.9s/sample)
+[900/981] overall=54.29 loss=-0.0 (66.7s/sample)
+[920/981] overall=54.81 loss=-0.0 (66.8s/sample)
+[940/981] overall=55.54 loss=-0.0 (67.1s/sample)
+[960/981] overall=55.95 loss=9.384705543518066 (66.7s/sample)
+Warning: TTA update failed at sample 968 (rid=968): CUDA out of memory. Tried to allocate 7.53 GiB. GPU 0 has a total capacity of 23.69 GiB of which 1.98 GiB is free. Including non-PyTorch memory, this process has 21.70 GiB memory in use. Of the allocated memory 21.24 GiB is allocated by PyTorch, and 138.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[980/981] overall=56.32 loss=-0.0 (66.6s/sample)
+{
+  "overall": 43.436227714924335,
+  "text_edit": 0.5985430476149791,
+  "table_teds": 0.6270304975614441,
+  "formula_edit": 0.7254006184987349,
+  "total": 981,
+  "benchmark": "omnidocbench",
+  "strategy": "tlm",
+  "online_enabled": true,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 4096,
+  "elapsed_sec": 65468.0
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/tlm.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/tlm.jsonl)
+===== [2026年 09月 02日 星期三 23:37:29 CST] omnidocbench/tlm 结束，退出码 0 =====
+===== [2026年 09月 02日 星期三 23:37:29 CST] omnidocbench/come 开始 =====
+[2026-09-02 23:37:36,254][numexpr.utils][INFO] - Note: NumExpr detected 48 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[2026-09-02 23:37:36,255][numexpr.utils][INFO] - NumExpr defaulting to 16 threads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/617 [00:00<?, ?it/s]Loading weights:  41%|████      | 254/617 [00:00<00:00, 2539.37it/s]Loading weights:  83%|████████▎ | 515/617 [00:00<00:00, 2578.16it/s]Loading weights: 100%|██████████| 617/617 [00:00<00:00, 2797.51it/s]
+trainable params: 417,792 || all params: 2,213,659,456 || trainable%: 0.0189
+[2026-09-02 23:37:44,515][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+[2026-09-02 23:37:45,298][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/ouyanglinke/OmniDocBench_tsv/6d905c44009cc4f922c27e635c6ed484a2bc205c/README.md "HTTP/1.1 200 OK"
+[2026-09-02 23:37:46,009][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-09-02 23:37:46,010][huggingface_hub.utils._http][WARNING] - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[2026-09-02 23:37:48,431][httpx][INFO] - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/ouyanglinke/OmniDocBench_tsv/ouyanglinke/OmniDocBench_tsv.py "HTTP/1.1 404 Not Found"
+Repo card metadata block was not found. Setting CardData to empty.
+[2026-09-02 23:37:48,434][huggingface_hub.repocard][WARNING] - Repo card metadata block was not found. Setting CardData to empty.
+[2026-09-02 23:37:49,271][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/revision/6d905c44009cc4f922c27e635c6ed484a2bc205c "HTTP/1.1 200 OK"
+[2026-09-02 23:37:49,589][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+[2026-09-02 23:37:50,569][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c/data?recursive=true&expand=false "HTTP/1.1 404 Not Found"
+[2026-09-02 23:37:52,061][httpx][INFO] - HTTP Request: GET https://hf-mirror.com/api/datasets/ouyanglinke/OmniDocBench_tsv/tree/6d905c44009cc4f922c27e635c6ed484a2bc205c?recursive=false&expand=false "HTTP/1.1 200 OK"
+[2026-09-02 23:37:52,859][httpx][INFO] - HTTP Request: HEAD https://hf-mirror.com/datasets/ouyanglinke/OmniDocBench_tsv/resolve/6d905c44009cc4f922c27e635c6ed484a2bc205c/dataset_infos.json "HTTP/1.1 404 Not Found"
+Benchmark: omnidocbench, n=981, gen_max=4096
+Model: /home/jxy/TTL/Qwen3.5-2B
+Strategy: come (online.enabled=True)
+[1/981] overall=97.27 loss=0.12572024762630463 (138.6s/sample)
+[20/981] overall=69.87 loss=0.079398512840271 (102.1s/sample)
+[40/981] overall=70.03 loss=0.22017526626586914 (94.8s/sample)
+[60/981] overall=70.18 loss=0.28356337547302246 (96.0s/sample)
+[80/981] overall=70.94 loss=0.3600461483001709 (99.8s/sample)
+[100/981] overall=73.57 loss=0.2109157145023346 (97.0s/sample)
+[120/981] overall=72.98 loss=0.1261129528284073 (95.5s/sample)
+[140/981] overall=71.36 loss=0.0027240056078881025 (101.5s/sample)
+[160/981] overall=68.60 loss=0.024907400831580162 (111.3s/sample)
+[180/981] overall=65.85 loss=0.005110376980155706 (118.5s/sample)
+[200/981] overall=63.82 loss=0.001199463033117354 (122.2s/sample)
+[220/981] overall=62.91 loss=0.08126548677682877 (125.2s/sample)
+[240/981] overall=63.26 loss=0.046285420656204224 (124.0s/sample)
+[260/981] overall=62.50 loss=0.00047024633386172354 (127.8s/sample)
+[280/981] overall=64.10 loss=0.01248216163367033 (128.1s/sample)
+[300/981] overall=64.92 loss=0.623703122138977 (129.4s/sample)
+[320/981] overall=65.06 loss=0.027559682726860046 (128.5s/sample)
+[340/981] overall=65.05 loss=0.00026601945864968 (130.6s/sample)
+[360/981] overall=64.99 loss=0.03933725133538246 (133.2s/sample)
+[380/981] overall=64.84 loss=0.023776013404130936 (135.7s/sample)
+[400/981] overall=64.46 loss=0.2217443883419037 (135.8s/sample)
+[420/981] overall=63.55 loss=0.8254779577255249 (138.0s/sample)
+[440/981] overall=62.84 loss=0.002545697847381234 (142.0s/sample)
+[460/981] overall=62.47 loss=0.053188178688287735 (147.9s/sample)
+[480/981] overall=61.74 loss=0.001523585175164044 (155.3s/sample)
+[500/981] overall=61.40 loss=0.010097699239850044 (156.1s/sample)
+[520/981] overall=60.71 loss=0.007904031313955784 (161.2s/sample)
+[540/981] overall=60.86 loss=0.2699100375175476 (165.8s/sample)
+[560/981] overall=60.75 loss=0.0006852277438156307 (165.5s/sample)
+[580/981] overall=61.04 loss=0.0066214571706950665 (165.9s/sample)
+[600/981] overall=61.71 loss=0.0015766503056511283 (164.1s/sample)
+[620/981] overall=60.74 loss=0.0007699712878093123 (160.7s/sample)
+[640/981] overall=59.94 loss=0.001263207639567554 (158.1s/sample)
+[660/981] overall=58.95 loss=0.0013396483846008778 (155.5s/sample)
+[680/981] overall=58.02 loss=0.0010364585323259234 (152.4s/sample)
+[700/981] overall=57.01 loss=0.00012993831478524953 (149.9s/sample)
+[720/981] overall=56.04 loss=0.000318133708788082 (150.0s/sample)
+[740/981] overall=54.93 loss=0.0006264775292947888 (153.0s/sample)
+[760/981] overall=53.76 loss=0.0352722629904747 (156.0s/sample)
+[780/981] overall=52.65 loss=0.0009459092398174107 (159.4s/sample)
+[800/981] overall=51.66 loss=0.0009672081796452403 (162.1s/sample)
+[820/981] overall=50.58 loss=0.0006481324089691043 (165.4s/sample)
+[840/981] overall=50.89 loss=0.008718297816812992 (165.9s/sample)
+[860/981] overall=51.44 loss=0.3296176493167877 (165.9s/sample)
+[880/981] overall=51.98 loss=0.0012858470436185598 (165.5s/sample)
+[900/981] overall=52.26 loss=0.1486911177635193 (165.4s/sample)
+[920/981] overall=52.68 loss=0.15227268636226654 (165.7s/sample)
+[940/981] overall=53.37 loss=0.0050916788168251514 (165.9s/sample)
+[960/981] overall=53.71 loss=0.35697996616363525 (165.4s/sample)
+[980/981] overall=53.83 loss=0.003424427006393671 (166.2s/sample)
+{
+  "overall": 45.13778040757574,
+  "text_edit": 0.6264399341744378,
+  "table_teds": 0.6507437107627554,
+  "formula_edit": 0.6701703643610455,
+  "total": 981,
+  "benchmark": "omnidocbench",
+  "strategy": "come",
+  "online_enabled": true,
+  "model": "/home/jxy/TTL/Qwen3.5-2B",
+  "gen_max_new_tokens": 4096,
+  "elapsed_sec": 163139.2
+}
+Results saved to: /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/come.json (+ /home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/come.jsonl)
+===== [2026年 09月 04日 星期五 20:56:53 CST] omnidocbench/come 结束，退出码 0 =====
+===== [2026年 09月 04日 星期五 20:56:53 CST] 全部完成 =====

@@ -1,0 +1,8 @@
+# EATA：Tent 熵最小化 + 按 token 级熵分位数过滤不可靠位置
+name: eata
+# 可靠 token 的熵分位数阈值（仅保留熵 ≤ 该分位数的位置）
+reliable_entropy_quantile: 0.6
+# 可靠 token 数不足时回退到全部位置
+min_batch_tokens: 8
+entropy_coeff: 1.0
+epsilon: 1.0e-8

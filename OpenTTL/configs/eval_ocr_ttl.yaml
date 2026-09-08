@@ -1,0 +1,32 @@
+# OCRBench / OmniDocBench 评测配置：HF 后端 + 可选 online TTA
+#
+# Usage:
+#   python evaluations/run_ocr_ttl.py benchmark=ocrbench online.enabled=false model.peft.enabled=false
+#   python evaluations/run_ocr_ttl.py benchmark=omnidocbench strategy=tent online.enabled=true \
+#     model.peft.enabled=true output_json=.../tent.json
+
+defaults:
+  - model: qwen35_2b
+  - strategy: tent
+  - inference: hf
+  - _self_
+
+benchmark: ocrbench          # ocrbench | omnidocbench
+max_samples: null
+gen_max_new_tokens: null     # null 时用任务默认值（ocrbench=128, omnidocbench=4096）
+
+# online TTA（HF+PEFT 反传；HF 后端推理与 TTA 共用同一模型，权重即时生效）
+online:
+  enabled: false
+  lr: 1.0e-5                 # algorithms/*.md 推荐 1e-5~1e-6；1e-4 已实测熵崩塌
+  weight_decay: 0.0
+  sync_every_n_updates: 0    # HF 后端无需导出/同步 LoRA
+  adapter_root: null
+  max_length: 4096
+  gradient_checkpointing: true
+
+train:
+  output_dir: ./outputs/online_tta
+  seed: 0
+
+output_json: outputs/ocr_ttl/ocrbench_tent.json
