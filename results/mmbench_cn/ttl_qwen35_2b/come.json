@@ -1,0 +1,106 @@
+{
+  "metrics": {
+    "overall_acc": 0.8207438207438208,
+    "correct": 3553,
+    "total": 4329,
+    "strategy": "come",
+    "online_enabled": true,
+    "model": "/home/jxy/TTL/Qwen3.5-2B",
+    "dataset": "lmms-lab-encoder/MMBench/cn/dev",
+    "enable_thinking": false,
+    "max_new_tokens": 256,
+    "elapsed_sec": 68732.5,
+    "category_acc": {
+      "action_recognition": 0.9534883720930233,
+      "attribute_comparison": 0.851063829787234,
+      "attribute_recognition": 0.8863636363636364,
+      "celebrity_recognition": 0.9242424242424242,
+      "function_reasoning": 0.8651315789473685,
+      "future_prediction": 0.6307692307692307,
+      "identity_reasoning": 0.9772727272727273,
+      "image_emotion": 0.89,
+      "image_quality": 0.62,
+      "image_scene": 0.972972972972973,
+      "image_style": 0.9245283018867925,
+      "image_topic": 0.9357142857142857,
+      "nature_relation": 0.6703910614525139,
+      "object_localization": 0.692063492063492,
+      "ocr": 0.9230769230769231,
+      "physical_property_reasoning": 0.6027397260273972,
+      "physical_relation": 0.6914893617021277,
+      "social_relation": 0.9302325581395349,
+      "spatial_relationship": 0.4971751412429379,
+      "structuralized_imagetext_understanding": 0.6737588652482269
+    },
+    "l2_category_acc": {
+      "attribute_reasoning": 0.8111587982832618,
+      "coarse_perception": 0.8963029756537421,
+      "finegrained_perception (cross-instance)": 0.774859287054409,
+      "finegrained_perception (instance-level)": 0.8505747126436781,
+      "logic_reasoning": 0.6601941747572816,
+      "relation_reasoning": 0.7752808988764045
+    }
+  },
+  "config": {
+    "model": {
+      "adapter": null,
+      "pretrained_model_name_or_path": "/home/jxy/TTL/Qwen3.5-2B",
+      "revision": null,
+      "trust_remote_code": true,
+      "torch_dtype": "bfloat16",
+      "attn_implementation": "sdpa",
+      "device_map": null,
+      "use_flash_attention_2": false,
+      "tokenizer": {
+        "padding_side": "right",
+        "model_max_length": 2048
+      },
+      "peft": {
+        "enabled": true,
+        "r": 8,
+        "lora_alpha": 16,
+        "lora_dropout": 0.05,
+        "bias": "none",
+        "target_modules": [
+          "q_proj",
+          "v_proj"
+        ],
+        "task_type": "CAUSAL_LM",
+        "path": null
+      }
+    },
+    "strategy": {
+      "name": "come",
+      "rollout_steps": 16,
+      "norm_p": 2.0,
+      "tau": 1.0,
+      "epsilon": 1e-08,
+      "temperature": 1.0,
+      "top_k": 0,
+      "top_p": 1.0
+    },
+    "backend": "hf",
+    "dataset_path": "lmms-lab-encoder/MMBench",
+    "dataset_name": "cn",
+    "split": "dev",
+    "max_samples": null,
+    "mmbench": {
+      "max_new_tokens": 256,
+      "enable_thinking": false
+    },
+    "online": {
+      "enabled": true,
+      "lr": 1e-05,
+      "weight_decay": 0.0,
+      "sync_every_n_updates": 0,
+      "adapter_root": null,
+      "max_length": 4096,
+      "gradient_checkpointing": true
+    },
+    "train": {
+      "output_dir": "./outputs/online_tta",
+      "seed": 0
+    },
+    "output_json": "/home/jxy/mmbench_cn_results/ttl_qwen35_2b/come.json"
+  }
+}

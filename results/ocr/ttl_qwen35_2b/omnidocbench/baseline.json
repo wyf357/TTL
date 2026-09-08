@@ -1,0 +1,66 @@
+{
+  "metrics": {
+    "overall": 42.11323211266198,
+    "text_edit": 0.6092109357001542,
+    "table_teds": 0.6164518276766411,
+    "formula_edit": 0.7438439285966274,
+    "total": 981,
+    "benchmark": "omnidocbench",
+    "strategy": "none",
+    "online_enabled": false,
+    "model": "/home/jxy/TTL/Qwen3.5-2B",
+    "gen_max_new_tokens": 4096,
+    "elapsed_sec": 56099.1
+  },
+  "config": {
+    "model": {
+      "adapter": null,
+      "pretrained_model_name_or_path": "/home/jxy/TTL/Qwen3.5-2B",
+      "revision": null,
+      "trust_remote_code": true,
+      "torch_dtype": "bfloat16",
+      "attn_implementation": "sdpa",
+      "device_map": null,
+      "use_flash_attention_2": false,
+      "tokenizer": {
+        "padding_side": "right",
+        "model_max_length": 2048
+      },
+      "peft": {
+        "enabled": false,
+        "r": 8,
+        "lora_alpha": 16,
+        "lora_dropout": 0.05,
+        "bias": "none",
+        "target_modules": [
+          "q_proj",
+          "v_proj"
+        ],
+        "task_type": "CAUSAL_LM",
+        "path": null
+      }
+    },
+    "strategy": {
+      "name": "tent",
+      "epsilon": 1e-08
+    },
+    "backend": "hf",
+    "benchmark": "omnidocbench",
+    "max_samples": null,
+    "gen_max_new_tokens": null,
+    "online": {
+      "enabled": false,
+      "lr": 1e-05,
+      "weight_decay": 0.0,
+      "sync_every_n_updates": 0,
+      "adapter_root": null,
+      "max_length": 4096,
+      "gradient_checkpointing": true
+    },
+    "train": {
+      "output_dir": "./outputs/online_tta",
+      "seed": 0
+    },
+    "output_json": "/home/jxy/ocr_results/ttl_qwen35_2b/omnidocbench/baseline.json"
+  }
+}
