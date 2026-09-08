@@ -26,6 +26,11 @@ class HuggingFaceEngine(InferenceEngine):
     def current_lora_name(self) -> Optional[str]:
         return self._fake_lora
 
+    @property
+    def model(self) -> torch.nn.Module:
+        """底层 HF 模型（MMA 等需要直接操作中间层的路径使用）。"""
+        return self._model
+
     def sync_lora(self, local_dir: str, new_name: str) -> str:
         del local_dir
         self._fake_lora = new_name

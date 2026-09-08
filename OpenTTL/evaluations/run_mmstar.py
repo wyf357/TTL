@@ -127,6 +127,8 @@ def evaluate_mmstar(
     mmstar_enable_thinking = bool(
         OmegaConf.select(cfg, "mmstar.enable_thinking", default=True)
     )
+    # MMA（Modality Mirror Alignment）：冻结参数的中间层偏移对齐，独立于 online TTA
+    mma_enabled = bool(OmegaConf.select(cfg, "mma.enabled") or False)
 
     correct = 0
     total = 0
@@ -212,12 +214,31 @@ def evaluate_mmstar(
                 "temperature": 0.0,
                 "top_p": 1.0,
             }
-            raw_out = inference.generate(
-                chat_prompt_text,
-                image_data=img_arg,
-                sampling_params=sampling,
-                lora_name=inference.current_lora_name,
-            )
+            if mma_enabled:
+                # MMA：前向至 l* 层提取视觉/文本隐状态，优化偏移 δ 后注入并生成
+                from openttl.strategies.mma import mma_generate
+
+                raw_out = mma_generate(
+                    model=inference.model,
+                    adapter=adapter,
+                    prompt_text=chat_prompt_text,
+                    images=img_arg,
+                    device=device,
+                    l_star=OmegaConf.select(cfg, "mma.l_star"),
+                    K=int(OmegaConf.select(cfg, "mma.K") or 5),
+                    eta=float(OmegaConf.select(cfg, "mma.eta") or 0.1),
+                    lambda_reg=float(OmegaConf.select(cfg, "mma.lambda_reg") or 0.01),
+                    max_new_tokens=gen_max,
+                    temperature=float(sampling["temperature"]),
+                    top_p=float(sampling["top_p"]),
+                )
+            else:
+                raw_out = inference.generate(
+                    chat_prompt_text,
+                    image_data=img_arg,
+                    sampling_params=sampling,
+                    lora_name=inference.current_lora_name,
+                )
             response = str(raw_out).strip()
 
             if response and not any(l in response for l in ['A', 'B', 'C', 'D']):

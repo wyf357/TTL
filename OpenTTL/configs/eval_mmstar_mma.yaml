@@ -1,0 +1,46 @@
+# MMStar + MMA (Modality Mirror Alignment) 评测配置
+#
+# MMA 冻结全部模型参数，仅在目标中间层对视觉 token 隐状态学习一个
+# 偏移向量 δ（测试时优化），与 LoRA-TTA 路径（online.enabled）互斥。
+#
+# Usage:
+#   python evaluations/run_mmstar.py --config-name=eval_mmstar_mma max_examples=10   # smoke
+#   python evaluations/run_mmstar.py --config-name=eval_mmstar_mma                   # 全量 MMA
+#   python evaluations/run_mmstar.py --config-name=eval_mmstar_mma mma.enabled=false # 同设置 baseline
+#
+defaults:
+  - model: qwen35_2b
+  - strategy: tent   # 占位，MMA 路径不使用
+  - inference: hf
+  - online: tta      # 默认 enabled: false，MMA 不经过 OnlineTTARunner
+  - train: eval_minimal
+  - _self_
+
+model:
+  torch_dtype: bfloat16
+
+# MMStar 数据：优先本地目录（含 mmstar.parquet），缺失时走 Hub
+mmstar_local_root: null
+mmstar_hf_path: Lin-Chen/MMStar
+
+model_path: ${model.pretrained_model_name_or_path}
+
+mmstar:
+  # 关闭 thinking；非思考模式下答案很短，1024 足够
+  max_new_tokens: 1024
+  enable_thinking: false
+
+# MMA 超参数
+mma:
+  enabled: true
+  l_star: null      # null -> floor(2L/3)，Qwen3.5-2B (L=24) 即第 16 层
+  K: 5              # 测试时优化步数
+  eta: 0.1          # δ 优化步长
+  lambda_reg: 0.01  # L2 正则系数
+
+# Evaluation settings
+max_examples: null
+start_example: 0
+
+# Output configuration
+output_json: outputs/mmstar_mma_results.json
