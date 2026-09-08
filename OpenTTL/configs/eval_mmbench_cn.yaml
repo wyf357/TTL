@@ -1,0 +1,44 @@
+# MMBench-CN (dev) 评测配置：HF 后端 + 可选 online TTA
+#
+# 注意：configs/online/tta.yaml 与 configs/train/eval_minimal.yaml 带
+# `# @package _global_`（组内容会平铺到根命名空间，cfg.online 不存在），
+# 因此本配置不使用这两个 defaults 组，直接内联 online / train 节。
+#
+# Usage:
+#   # 无 TTA 基线
+#   python evaluations/run_mmbench_cn.py online.enabled=false model.peft.enabled=false \
+#     output_json=.../baseline.json
+#   # TTA（tent/eata/come/tlm）
+#   python evaluations/run_mmbench_cn.py strategy=tent online.enabled=true model.peft.enabled=true \
+#     output_json=.../tent.json
+
+defaults:
+  - model: qwen35_2b
+  - strategy: tent
+  - inference: hf
+  - _self_
+
+dataset_path: lmms-lab-encoder/MMBench
+dataset_name: cn
+split: dev
+max_samples: null
+
+mmbench:
+  max_new_tokens: 256       # 对齐 lmms-eval mmbench_cn 默认模板
+  enable_thinking: false    # 对齐 lmms-eval 基线（72.94%），且更快
+
+# online TTA（HF+PEFT 反传；HF 后端推理与 TTA 共用同一模型，权重即时生效）
+online:
+  enabled: false            # 评测默认关闭 TTA；命令行 online.enabled=true 开启
+  lr: 1.0e-4
+  weight_decay: 0.0
+  sync_every_n_updates: 0   # HF 后端无需导出/同步 LoRA；>0 时按步写盘（SGLang 用）
+  adapter_root: null
+  max_length: 4096
+  gradient_checkpointing: true
+
+train:
+  output_dir: ./outputs/online_tta
+  seed: 0
+
+output_json: outputs/mmbench_cn/qwen35_2b_tent.json

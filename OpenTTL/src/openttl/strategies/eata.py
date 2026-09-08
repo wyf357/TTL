@@ -33,8 +33,11 @@ class EATAStrategy(TentStrategy):
         else:
             base_mask = labels.ne(-100)
 
+        # 与 tta_shared 相同的恒等式：logp = logits - logsumexp(logits)，
+        # bf16/fp16 下安全且省去 fp32 的 [B,T,V] 显存占用
+        lse = torch.logsumexp(logits, dim=-1, keepdim=True)
         p = F.softmax(logits, dim=-1)
-        logp = F.log_softmax(logits, dim=-1)
+        logp = logits - lse
         ent = -(p * logp).sum(dim=-1)
 
         flat = ent[base_mask]
